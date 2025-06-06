@@ -2,7 +2,6 @@ import React from 'react'
 import { NavLink, Outlet } from 'react-router'
 import logo from '../assets/LogoAgua.jpeg'
 import { Icon } from '@iconify/react'
-import './Layout.css'
 
 export const Layout = () => {
   return (

@@ -5,27 +5,23 @@ const router = createBrowserRouter(
     [
         {
             path: '/',
-            Component: Layout,
+            element: <Layout />,
             errorElement: <div>Error</div>,
             children: [
                 {
                     index: true,
-                    Component: () => <div>Home</div>,
+                    element: <div>Home</div>,
                     errorElement: <div>Error</div>
+                },
+                {
+                    path: '/ejemplo',
+                    element: <div>Ejemplo</div>
                 }
-            ],
-            loader: async () => {
-                // Simulate a data fetch
-                return new Promise((resolve) => {
-                    setTimeout(() => {
-                        resolve({ message: "Data loaded" });
-                    }, 1000);
-                });
-            }
+            ]
         },
         {
             path: '*',
-            Component: () => <div>404 Not Found</div>
+            element: <div >404 Not Found</div>
         }
     ]
 )
