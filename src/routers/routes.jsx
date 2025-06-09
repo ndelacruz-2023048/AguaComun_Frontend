@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider, Route, Routes } from "react-router"
 import { Layout } from "../layout/Layout"
+import { LoginPage } from "../pages/LoginPage"
 
 const router = createBrowserRouter(
     [
@@ -22,6 +23,10 @@ const router = createBrowserRouter(
         {
             path: '*',
             element: <div >404 Not Found</div>
+        },
+        {
+            path: '/login',
+            element: <LoginPage/>
         }
     ]
 )
