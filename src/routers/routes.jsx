@@ -1,12 +1,16 @@
 import { createBrowserRouter, RouterProvider, Route, Routes } from "react-router"
 import { Layout } from "../layout/Layout"
 import { LoginPage } from "../pages/LoginPage"
+import { ProtectedRoutes } from "../hooks/ProtectedRoutes"
+import { RegisterPage } from "../pages/RegisterPage"
 
 const router = createBrowserRouter(
     [
         {
             path: '/',
-            element: <Layout />,
+            element: <ProtectedRoutes accesBy="authenticated">
+                <Layout />
+            </ProtectedRoutes> ,
             errorElement: <div>Error</div>,
             children: [
                 {
@@ -26,8 +30,19 @@ const router = createBrowserRouter(
         },
         {
             path: '/login',
-            element: <LoginPage/>
-        }
+            element:
+            <ProtectedRoutes accesBy="non-authenticated">
+                <LoginPage/>
+            </ProtectedRoutes>
+        },
+        {
+            path: '/register',
+            element:
+            <ProtectedRoutes accesBy="non-authenticated">
+                <RegisterPage/>
+            </ProtectedRoutes>
+        },
+        
     ]
 )
 
