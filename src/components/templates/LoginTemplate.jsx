@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form'
 import AguaComunLogin from '../../assets/AguaComunLogin.webp';
 import { useLogin } from '../../hooks/useLogin'
+import { NavLink } from 'react-router';
 
 export const LoginTemplate = () => {
   const { login } = useLogin()
@@ -51,7 +52,9 @@ export const LoginTemplate = () => {
 
                 <div className='flex w-full gap-5'>
                     <button type="submit" form='FormLogin' className='bg-[#10521e] text-white w-1/2 p-2 rounded hover:bg-[#175210da]'>Login now</button>
-                    <button className='border-1 border-[#50a82d] w-1/2 p-2  text-[#50a82d] rounded hover:font-bold'>Register</button>
+                    <NavLink to={'/register'} className='w-1/2'>
+                      <button className='border-1 border-[#50a82d] w-2/2 p-2  text-[#50a82d] rounded hover:font-bold'>Register</button>
+                    </NavLink>
                 </div>
             </form>
         </div>
