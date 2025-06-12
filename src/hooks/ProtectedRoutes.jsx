@@ -1,9 +1,10 @@
 import React from 'react'
 import { UserAuth } from '../context/AuthContext';
+import { Navigate } from 'react-router';
 
 export const ProtectedRoutes = ({children,accesBy}) => {
     // const {user} = UserAuth(); 
-    const user = 'fdfd';
+    const user = '';
     if (accesBy === "non-authenticated") {
         if (!user) {
             return children;

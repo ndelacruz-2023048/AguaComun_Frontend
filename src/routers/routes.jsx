@@ -25,10 +25,6 @@ const router = createBrowserRouter(
             ]
         },
         {
-            path: '*',
-            element: <div >404 Not Found</div>
-        },
-        {
             path: '/login',
             element:
             <ProtectedRoutes accesBy="non-authenticated">
