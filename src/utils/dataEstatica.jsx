@@ -8,7 +8,7 @@ export const LinksArraySidebarAdmin = [
     {
         label: "Community",
         icon: "material-symbols-light:event-note",
-        to: "/community/manager/users",
+        to: "/community/manager",
     },
     {
         label: "Campaigns",
