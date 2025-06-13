@@ -6,6 +6,7 @@ import { RegisterPage } from "../pages/RegisterPage"
 import { FundraisingCampaignsPage } from "../pages/FundraisingCampaignsPage"
 import { HomePage } from "../pages/HomePage"
 import { CommunityPage } from "../pages/CommunityPage"
+import { CommunityCollaborationPage } from "../pages/CommunityCollaborationPage"
 
 const router = createBrowserRouter(
     [
@@ -27,6 +28,10 @@ const router = createBrowserRouter(
                 {
                     path: '/campaigns',
                     element: <FundraisingCampaignsPage/>
+                },
+                {
+                    path: '/community-collaboration',
+                    element: <CommunityCollaborationPage/>
                 }
             ]
         },
