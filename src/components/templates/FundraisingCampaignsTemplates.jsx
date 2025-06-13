@@ -1,5 +1,6 @@
 import React from 'react'
 import { UserAuth } from '../../context/AuthContext';
+import { NavLink } from 'react-router';
 
 export const FundraisingCampaignsTemplates = () => {
 const campaigns = [
@@ -102,7 +103,9 @@ const campaigns = [
                     </span>
                   </td>
                   <td className="px-4 py-3 text-blue-600 hover:underline cursor-pointer">
-                    {c.action}
+                    <NavLink to={`/campaigns/detail`}>
+                      {c.action}
+                    </NavLink>
                   </td>
                   <td className="px-4 py-3">
                     <span

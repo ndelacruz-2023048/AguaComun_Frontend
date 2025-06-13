@@ -17,6 +17,6 @@ export const LinksArraySidebarAdmin = [
     {
         label: "Historial",
         icon: "ic:baseline-history",
-        to: "/historial",
+        to: "/historialEconomyFundraising",
     }
 ]

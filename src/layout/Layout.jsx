@@ -27,11 +27,11 @@ export const Layout = () => {
                 </NavLink>
 
                 <NavLink to={'*'}>
-                    <span className='text-lg'>Projects</span>
+                    <span className='text-lg'>Community</span>
                 </NavLink>
 
-                <NavLink to={'*'}>
-                    <span className='text-lg'>Community</span>
+                <NavLink to={'campaigns'}>
+                    <span className='text-lg'>Fundraising Campaings</span>
                 </NavLink>
 
                 <NavLink to={'*'}>

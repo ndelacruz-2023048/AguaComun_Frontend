@@ -7,6 +7,7 @@ import { FundraisingCampaignsPage } from "../pages/FundraisingCampaignsPage"
 import { HomePage } from "../pages/HomePage"
 import { CommunityPage } from "../pages/CommunityPage"
 import { HistorialPage } from "../pages/HistorialTransactionsPage.jsx"
+import { FundraisingCampaignsDetailPage } from "../pages/FundraisingCampaignsDetailPage.jsx"
 
 const router = createBrowserRouter(
     [
@@ -29,8 +30,13 @@ const router = createBrowserRouter(
                     path: '/campaigns',
                     element: <FundraisingCampaignsPage/>
                 },
+                ,
                 {
-                    path: '/historial',
+                    path: '/campaigns/detail',
+                    element: <FundraisingCampaignsDetailPage/>
+                },
+                {
+                    path: '/historialEconomyFundraising',
                     element: <HistorialPage />
                 }
             ]
