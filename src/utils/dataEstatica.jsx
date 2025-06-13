@@ -13,5 +13,10 @@ export const LinksArraySidebarAdmin = [
         label: "Campaigns",
         icon: "mingcute:hotel-line",
         to: "/campaigns",
+    },
+    {
+        label: "Historial",
+        icon: "ic:baseline-history",
+        to: "/historial",
     }
 ]
