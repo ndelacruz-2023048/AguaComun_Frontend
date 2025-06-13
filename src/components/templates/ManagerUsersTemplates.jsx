@@ -49,7 +49,7 @@ export const ManagerUsersTemplate = () => {
                             {users.map((user, index) => (
                                 <tr key={index} className="text-base md:text-lg lg:text-xl">
                                     <td className="p-3 md:p-4 border-b border-[#E5E8EB]">{user.name}</td>
-                                    <td className="p-3 md:p-4 border-b border-[#E5E8EB]">{user.email}</td>
+                                    <td className="p-3 md:p-4 border-b border-[#E5E8EB] text-[#5C7D8A]">{user.email}</td>
 
                                     <td className="p-3 md:p-4 border-b border-[#E5E8EB]">
                                         <span className={`inline-block rounded-full px-3 py-1 text-sm md:text-base lg:text-lg ${

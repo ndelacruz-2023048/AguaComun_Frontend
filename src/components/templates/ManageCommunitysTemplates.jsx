@@ -38,13 +38,12 @@ export const ManagerCommunityTemplate = () => {
             <tbody>
               {[1, 2, 3, 4, 5].map((item) => (
                 <tr key={item} className="text-base md:text-lg lg:text-xl">
-                  <td className="p-3 md:p-4 border-b border-[#E5E8EB]">Comunidad {['Lectura', 'Deportes', 'Arte', 'Tecnología', 'Cocina'][item-1]}</td>
-                  <td className="p-3 md:p-4 border-b border-[#E5E8EB]">Descripción de la comunidad</td>
-                  <td className="p-3 md:p-4 border-b border-[#E5E8EB]">{[150, 200, 100, 250, 180][item-1]}</td>
-                  <td className="p-3 md:p-4 border-b border-[#E5E8EB]">{[ 'Ana García', 'Carlos López', 'Sofía Martínez', 'Javier Fernández', 'Elena Ruiz'][item-1]}</td>
+                  <td className="p-3 md:p-4 border-b border-[#E5E8EB] text-[#A48647]">Comunidad {['Lectura', 'Deportes', 'Arte', 'Tecnología', 'Cocina'][item-1]}</td>
+                  <td className="p-3 md:p-4 border-b border-[#E5E8EB] text-[#4D8599]">Descripción de la comunidad</td>
+                  <td className="p-3 md:p-4 border-b border-[#E5E8EB] text-[#4D8599]">{[150, 200, 100, 250, 180][item-1]}</td>
+                  <td className="p-3 md:p-4 border-b border-[#E5E8EB] text-[#4D8599]">{[ 'Ana García', 'Carlos López', 'Sofía Martínez', 'Javier Fernández', 'Elena Ruiz'][item-1]}</td>
                   <td className="p-3 md:p-4 border-b border-[#E5E8EB]">
-                    <span className="text-[#4D8599] font-semibold flex items-center">
-                      <Icon icon="material-symbols-light:edit" className="mr-1 md:mr-2 text-xl md:text-2xl"/>
+                    <span className="text-[#D7AD2C] font-semibold flex items-center box-border border-1 rounded-[5px] px-3 py-1 cursor-pointer hover:bg-[#D7AD2C] hover:text-white transition-all">
                       Editar
                     </span>
                   </td>
