@@ -6,6 +6,8 @@ import { RegisterPage } from "../pages/RegisterPage"
 import { FundraisingCampaignsPage } from "../pages/FundraisingCampaignsPage"
 import { HomePage } from "../pages/HomePage"
 import { CommunityPage } from "../pages/CommunityPage"
+import { ManageCommunityPage as C } from "../pages/ManageCommunitiesPage"
+
 
 const router = createBrowserRouter(
     [
@@ -23,6 +25,10 @@ const router = createBrowserRouter(
                 {
                     path: '/community',
                     element: <CommunityPage/>
+                },
+                {
+                    path: '/community/manager',
+                    element: <C/>
                 },
                 {
                     path: '/campaigns',
@@ -44,6 +50,7 @@ const router = createBrowserRouter(
                 <RegisterPage/>
             </ProtectedRoutes>
         },
+        
         
     ]
 )

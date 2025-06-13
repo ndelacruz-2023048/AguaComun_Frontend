@@ -30,7 +30,7 @@ export const Layout = () => {
                     <span className='text-lg'>Projects</span>
                 </NavLink>
 
-                <NavLink to={'*'}>
+                <NavLink to={'/community'}>
                     <span className='text-lg'>Community</span>
                 </NavLink>
 
