@@ -1,116 +1,64 @@
-import React from 'react'
+import React from 'react';
 import { Icon } from '@iconify/react';
 
 export const ManagerCommunityTemplate = () => {
   return (
-    <div className="flex flex-col  h-screen  w-3/3 bg-[#F7FAFC]" >
-      <div className="flex-grow p-5 ">
-        
-        {/* Título de la página */}
-        <h1 className="text-[50px] font-bold mb-10">Manage Communities</h1>
-        
-        {/* Barra de búsqueda */}
-        <div className="relative w-2/3 mb-20">
-          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <Icon 
-              icon="material-symbols-light:search" 
-              className="text-[#4D8599] text-[60px] h-10 w-10" 
-            />
-          </div>
-          <input
-            type="text"
-            placeholder="Search communities..."
-            className=" border-[#4D8599] bg-[#E8F0F2] rounded-[5px] p-2 pl-15 w-full h-15 text-2xl text-[#4D8599] focus:outline-none focus:ring-2 focus:ring-[#4D8599] transition-all"
+    <div className="flex flex-col min-h-screen w-full bg-[#F7FAFC] px-4 sm:px-6 lg:px-8 py-5">
+      {/* Título de la página */}
+      <h1 className="text-3xl md:text-4xl lg:text-[40px] font-bold mb-6 md:mb-8 lg:mb-10 text-[#338826]" >Manage Communities</h1>
+      
+      {/* Barra de búsqueda */}
+      <div className="relative w-full lg:w-2/3 mb-10 md:mb-16 lg:mb-20">
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <Icon 
+            icon="material-symbols-light:search" 
+            className="text-[#4D8599] text-4xl md:text-5xl lg:text-[60px] h-8 w-8 md:h-10 md:w-10" 
           />
         </div>
+        <input
+          type="text"
+          placeholder="Search communities..."
+          className="border-[#4D8599] bg-[#E8F0F2] rounded-[5px] p-2 pl-12 md:pl-14 lg:pl-16 w-full h-12 md:h-14 text-lg md:text-xl lg:text-2xl text-[#4D8599] focus:outline-none focus:ring-2 focus:ring-[#4D8599] transition-all"
+        />
+      </div>
 
-        {/* Tabla de comunidades */}
-        <div className="overflow-x-auto box-border border-[#CFE0E8] bg-transparent rounded-[10px] border-2 border-solid shadow-lg">
-          <table className="min-w-full  bg-transparent">
+      {/* Tabla de comunidades - Contenedor responsive */}
+      <div className="overflow-x-auto w-full mb-8">
+        <div className="box-border border-[#CFE0E8] bg-transparent rounded-[10px] border-2 border-solid shadow-lg min-w-max">
+          <table className="min-w-full bg-transparent">
             <thead>
-              <tr className=" text-balck text-2xl">
-                <th className="p-4 border-b border-[#E5E8EB] text-left rounded-tl-[5px]">Nombre</th>
-                <th className="p-4 border-b border-[#E5E8EB] text-left">Descripción</th>
-                <th className="p-4 border-b border-[#E5E8EB] text-left">Miembros</th>
-                <th className="p-4 border-b border-[#E5E8EB] text-left">Coordinador</th>
-                <th className="p-4 border-b border-[#E5E8EB] text-left rounded-tr-[5px]">Acciones</th>
+              <tr className="text-black text-xl md:text-2xl">
+                <th className="p-3 md:p-4 border-b border-[#E5E8EB] text-[#338826] text-left rounded-tl-[5px]">Nombre</th>
+                <th className="p-3 md:p-4 border-b border-[#E5E8EB] text-[#338826] text-left">Descripción</th>
+                <th className="p-3 md:p-4 border-b border-[#E5E8EB] text-[#338826] text-left">Miembros</th>
+                <th className="p-3 md:p-4 border-b border-[#E5E8EB] text-[#338826] text-left">Coordinador</th>
+                <th className="p-3 md:p-4 border-b border-[#E5E8EB] text-[#338826] text-left rounded-tr-[5px]">Acciones</th>
               </tr>
             </thead>
             <tbody>
-              {/* Fila 1 */}
-              <tr className="text-xl">
-                <td className="p-4 border-b border-[#E5E8EB]">Comunidad de Lectura</td>
-                <td className="p-4 border-b border-[#E5E8EB]">Un grupo para amantes de la lectura</td>
-                <td className="p-4 border-b border-[#E5E8EB]">150</td>
-                <td className="p-4 border-b border-[#E5E8EB]">Ana García</td>
-                <td className="p-4 border-b border-[#E5E8EB]">
-                  <span className="text-[#4D8599] font-semibold flex items-center">
-                    <Icon icon="material-symbols-light:edit" className="mr-2 text-[28px]"/>
-                    Editar
-                  </span>
-                </td>
-              </tr>
-              
-              {/* Fila 2 */}
-              <tr className="text-xl">
-                <td className="p-4 border-b border-[#E5E8EB]">Comunidad de Deportes</td>
-                <td className="p-4 border-b border-[#E5E8EB]">Para los entusiastas del deporte</td>
-                <td className="p-4 border-b border-[#E5E8EB]">200</td>
-                <td className="p-4 border-b border-[#E5E8EB]">Carlos López</td>
-                <td className="p-4 border-b border-[#E5E8EB]">
-                  <span className="text-[#4D8599] font-semibold flex items-center">
-                    <Icon icon="material-symbols-light:edit" className="mr-2 text-[28px]"/>
-                    Editar
-                  </span>
-                </td>
-              </tr>
-              
-              {/* Fila 3 */}
-              <tr className="text-xl">
-                <td className="p-4 border-b border-[#E5E8EB]">Comunidad de Arte</td>
-                <td className="p-4 border-b border-[#E5E8EB]">Un espacio para artistas y creativos</td>
-                <td className="p-4 border-b border-[#E5E8EB]">100</td>
-                <td className="p-4 border-b border-[#E5E8EB]">Sofía Martínez</td>
-                <td className="p-4 border-b border-[#E5E8EB]">
-                  <span className="text-[#4D8599] font-semibold flex items-center">
-                    <Icon icon="material-symbols-light:edit" className="mr-2 text-[28px]"/>
-                    Editar
-                  </span>
-                </td>
-              </tr>
-              
-              {/* Fila 4 */}
-              <tr className="text-xl">
-                <td className="p-4 border-b border-[#E5E8EB]">Comunidad de Tecnología</td>
-                <td className="p-4 border-b border-[#E5E8EB]">Para discutir sobre tecnología y gadgets</td>
-                <td className="p-4 border-b border-[#E5E8EB]">250</td>
-                <td className="p-4 border-b border-[#E5E8EB]">Javier Fernández</td>
-                <td className="p-4 border-b border-[#E5E8EB]">
-                  <span className="text-[#4D8599] font-semibold flex items-center">
-                    <Icon icon="material-symbols-light:edit" className="mr-2 text-[28px]"/>
-                    Editar
-                  </span>
-                </td>
-              </tr>
-              
-              {/* Fila 5 */}
-              <tr className="text-xl">
-                <td className="p-4 border-b border-[#E5E8EB]">Comunidad de Cocina</td>
-                <td className="p-4 border-b border-[#E5E8EB]">Compartiendo recetas y consejos de cocina</td>
-                <td className="p-4 border-b border-[#E5E8EB]">180</td>
-                <td className="p-4 border-b border-[#E5E8EB]">Elena Ruiz</td>
-                <td className="p-4 border-b border-[#E5E8EB]">
-                  <span className="text-[#4D8599] font-semibold flex items-center">
-                    <Icon icon="material-symbols-light:edit" className="mr-2 text-[28px]"/>
-                    Editar
-                  </span>
-                </td>
-              </tr>
+              {[1, 2, 3, 4, 5].map((item) => (
+                <tr key={item} className="text-base md:text-lg lg:text-xl">
+                  <td className="p-3 md:p-4 border-b border-[#E5E8EB]">Comunidad {['Lectura', 'Deportes', 'Arte', 'Tecnología', 'Cocina'][item-1]}</td>
+                  <td className="p-3 md:p-4 border-b border-[#E5E8EB]">Descripción de la comunidad</td>
+                  <td className="p-3 md:p-4 border-b border-[#E5E8EB]">{[150, 200, 100, 250, 180][item-1]}</td>
+                  <td className="p-3 md:p-4 border-b border-[#E5E8EB]">{[ 'Ana García', 'Carlos López', 'Sofía Martínez', 'Javier Fernández', 'Elena Ruiz'][item-1]}</td>
+                  <td className="p-3 md:p-4 border-b border-[#E5E8EB]">
+                    <span className="text-[#4D8599] font-semibold flex items-center">
+                      <Icon icon="material-symbols-light:edit" className="mr-1 md:mr-2 text-xl md:text-2xl"/>
+                      Editar
+                    </span>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
-        <button className="bg-[#12B0EB] hover:bg-[#12b1ebda] transition-all rounded-[10px] p-3 w-1/9 ml-374 mt-10 flex items-center justify-center">
-          <span className="text-black font-semibold flex items-center justify-center text-[20px]">
+      </div>
+
+      {/* Botón Add Community - Responsive */}
+      <div className="flex justify-center lg:justify-start">
+        <button className="bg-[#12B0EB] hover:bg-[#12b1ebda] transition-all rounded-[10px] px-4 py-2 md:px-6 md:py-3 w-full sm:w-auto mt-6 md:mt-8 lg:mt-10 lg:ml-258 flex items-center justify-center">
+          <span className="text-black font-semibold flex items-center justify-center text-lg md:text-xl">
             Add Community
           </span>
         </button>

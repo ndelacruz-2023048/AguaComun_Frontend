@@ -7,6 +7,7 @@ import { FundraisingCampaignsPage } from "../pages/FundraisingCampaignsPage"
 import { HomePage } from "../pages/HomePage"
 import { CommunityPage } from "../pages/CommunityPage"
 import { ManageCommunityPage as C } from "../pages/ManageCommunitiesPage"
+import { ManagerUsersPage as M } from "../pages/ManagerUsersPage"
 
 
 const router = createBrowserRouter(
@@ -29,6 +30,10 @@ const router = createBrowserRouter(
                 {
                     path: '/community/manager',
                     element: <C/>
+                },
+                {
+                    path: '/community/manager/users',
+                    element: <M/>
                 },
                 {
                     path: '/campaigns',
