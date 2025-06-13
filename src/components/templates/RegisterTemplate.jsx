@@ -3,6 +3,8 @@ import Logo from '../../assets/AguaComunLogin.webp'
 import { defineStepper } from '@stepperize/react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { PhoneField } from '../molecules/PhoneField';
+import { useRegister } from '../../hooks/useRegister';
+import { useNavigate } from 'react-router';
 
 const { useStepper, utils } = defineStepper(
   {
@@ -28,6 +30,8 @@ const { useStepper, utils } = defineStepper(
 );
 
 export const RegisterTemplate = () => {
+  const { register: nuevo } = useRegister()
+  const navigate = useNavigate()
   const methods = useForm(
     {
       mode: 'onChange'
@@ -38,14 +42,31 @@ export const RegisterTemplate = () => {
 
   const currentIndex = utils.getIndex(stepper.current.id);
 
-  const onSubmit = (data) => {
-    if(stepper.isLast) {
+  const onSubmit = async (data) => {
+    if (stepper.isLast) {
       console.log('Registro completo:', data);
-      stepper.reset();
+
+      try {
+        const success = await nuevo(data); // Intenta registrar el usuario
+
+        if (success) {
+          stepper.reset(); // Reinicia el stepper
+          changeLogin(); // Redirige a /login solo si el registro fue exitoso
+        } else {
+          console.error('Por favor corrige los errores e inténtalo nuevamente');
+        }
+      } catch (error) {
+        // Maneja errores generales
+        console.error('Error al registrar:', error);
+      }
     } else {
       console.log('Datos del paso actual:', data);
       stepper.next();
     }
+  }
+
+  const changeLogin = ()=> {
+    navigate('/login')
   }
   return (
     <div style={{ backgroundImage: `url(${Logo})` }} className='bg-cover bg-center bg-no-repeat h-screen w-screen flex'>
@@ -67,7 +88,7 @@ export const RegisterTemplate = () => {
             </div>
           </div>
 
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" id='FormRegister'>
             {stepper.switch({
               personal: () => <PersonalComponent methods={methods}/>,
               address: () => <AddresAndContactComponent methods={methods}/>,
@@ -96,6 +117,7 @@ export const RegisterTemplate = () => {
                 <div className="space-y-3">
                   <button
                     type="submit"
+                    form='FormRegister'
                     className="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
                   >
                     Enviar Registro
@@ -116,7 +138,7 @@ export const RegisterTemplate = () => {
             </div>
           </form>
         </div>
-        <a href="/login" className='text-center text-green-500 hover:text-green-600 cursor-pointer'>Tienes Cuenta?</a>
+        <a href="" onClick={changeLogin} className='text-center text-green-500 hover:text-green-600 cursor-pointer'>Tienes Cuenta?</a>
       </div>
     </div>
   )
@@ -362,8 +384,8 @@ const CredentialsComponent = ({methods}) => {
                   message: 'La contraseña es obligatoria',
               },
               minLength: {
-                  value: 8,
-                  message: 'Debe tener al menos 8 caracteres'
+                  value: 4,
+                  message: 'Debe tener al menos 4 caracteres'
               },
               validate: {
                   hasUpper: value =>
