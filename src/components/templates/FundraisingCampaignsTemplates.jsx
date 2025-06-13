@@ -1,12 +1,41 @@
-import React from 'react';
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { useNavigate } from 'react-router';
+import React, { useEffect, useState } from 'react';
 
 export const FundraisingCampaignsTemplates = () => {
+  const [campaigns, setcampaigns] = useState([])
   const navigate = useNavigate();
 
+  const getCampaigns = async() =>{
+    try{
+      const res = await fetch('http://localhost:3662/v1/aguacomun/campaign')
+      const data = await res.json()
+      setcampaigns(data)
+    }catch(e){
+      console.error('Error al obtener campañas', e)
+    }
+  }
+
+  useEffect(()=>{
+    getCampaigns()
+  },[])
+  
+const actualizarEstado = async (id, nuevoEstado) => {
+  try {
+    await fetch(`http://localhost:3662/v1/aguacomun/campaign/${id}/status`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: nuevoEstado }),
+    });
+    getCampaigns()
+    console.log('Si funciona el boton')
+  } catch (error) {
+    console.error('Error al cambiar estado:', error);
+  }
+};
+
   return (
-    <div className="p-8 bg-gray-100 min-h-screen font-sans">
+    <div className="p-8 bg-gray-100 min-h-screen font-sans w-[80vw]">
       {/* Título y botón */}
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-2xl font-bold">Gestión de Campañas de Recaudación</h1>
@@ -66,51 +95,75 @@ export const FundraisingCampaignsTemplates = () => {
             </tr>
           </thead>
           <tbody>
-            {datosFalsos.map((c, idx) => (
+            {campaigns.map((c, idx) => (
               <tr key={idx} className="border-t">
-                <td className="p-4">{c.nombre}</td>
-                <td className="p-4 text-blue-600">{c.categoria}</td>
-                <td className="p-4">{c.fechas}</td>
-                <td className="p-4">{c.monto}</td>
-                <td className="p-4 w-40">
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div
-                      className="bg-blue-500 h-2 rounded-full"
-                      style={{ width: `${c.progreso}%` }}
-                    ></div>
-                  </div>
-                </td>
+                <td className="p-4">{c.name}</td>
+                  <td className="p-4 text-blue-600">{c.category}</td>
+                  <td className="p-4">
+                    {new Date(c.startDate).toLocaleDateString()} - {new Date(c.endDate).toLocaleDateString()}
+                  </td>
+                  <td className="p-4">
+                    ${c.amountRaised} / ${c.goalAmount}
+                  </td>
+                  <td className="p-4 w-40">
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div
+                        className="bg-blue-500 h-2 rounded-full"
+                        style={{ width: `${(c.amountRaised / c.goalAmount) * 100}%` }}
+                      ></div>
+                    </div>
+                  </td>
                 <td className="p-4">
                   <span
                     className={`px-2 py-1 rounded text-white text-xs ${
-                      c.estado === 'Activa'
+                      c.status === 'Activa'
                         ? 'bg-green-500'
-                        : c.estado === 'Finalizada'
+                        : c.status === 'Finalizada'
                         ? 'bg-gray-600'
                         : 'bg-yellow-500'
                     }`}
                   >
-                    {c.estado}
+                    {c.status}
                   </span>
                 </td>
-                <td className="p-4 space-y-1 text-blue-600">
+                <td className="p-4 space-y-1 text-sm">
                   <div
-                    onClick={() => navigate('/campaigns/edit/:id')}
-                    className="hover:underline cursor-pointer flex items-center gap-1"
+                    onClick={() => navigate(`/campaigns/edit/${c._id}`)}
+                    className="hover:underline cursor-pointer flex items-center gap-1 text-blue-600"
                   >
                     <Icon icon="mdi:pencil" className="text-lg" />
                     Editar
                   </div>
-                  <div className="hover:underline cursor-pointer flex items-center gap-1 text-gray-700">
+
+                  <button
+                    disabled={c.estado === 'Finalizada'}
+                    onClick={() => actualizarEstado(c._id, 'Finalizada')}
+                    className="flex items-center gap-1 text-gray-700 disabled:opacity-40"
+                  >
                     <Icon icon="mdi:check-circle-outline" className="text-lg" />
                     Finalizar
-                  </div>
-                  <div className="hover:underline cursor-pointer flex items-center gap-1 text-yellow-600">
+                  </button>
+
+                  <button
+                    disabled={c.estado === 'Pausada'}
+                    onClick={() => actualizarEstado(c._id, 'Pausada')}
+                    className="flex items-center gap-1 text-yellow-600 disabled:opacity-40"
+                  >
                     <Icon icon="mdi:pause-circle-outline" className="text-lg" />
                     Pausar
-                  </div>
+                  </button>
+
+                  <button
+                    disabled={c.estado === 'Activa'}
+                    onClick={() => actualizarEstado(c._id, 'Activa')}
+                    className="flex items-center gap-1 text-green-600 disabled:opacity-40"
+                  >
+                    <Icon icon="mdi:play-circle-outline" className="text-lg" />
+                    Activar
+                  </button>
+
                   <div
-                    onClick={() => navigate('/campaigns/delete/:id')}
+                    onClick={() => navigate(`/campaigns/delete/${c._id}`)}
                     className="hover:underline cursor-pointer flex items-center gap-1 text-red-600"
                   >
                     <Icon icon="mdi:delete-outline" className="text-lg" />
@@ -134,47 +187,3 @@ function Resumen({ titulo, valor }) {
     </div>
   );
 }
-
-// Datos estáticos
-const datosFalsos = [
-  {
-    nombre: 'Campaña de Ayuda a Familias',
-    categoria: 'Emergencia',
-    fechas: '2024-01-15 – 2024-03-15',
-    monto: '$5,000 / $10,000',
-    progreso: 50,
-    estado: 'Activa',
-  },
-  {
-    nombre: 'Apoyo a la Educación Infantil',
-    categoria: 'Educación',
-    fechas: '2024-02-01 – 2024-04-01',
-    monto: '$7,500 / $15,000',
-    progreso: 50,
-    estado: 'Activa',
-  },
-  {
-    nombre: 'Fondos para la Salud Comunitaria',
-    categoria: 'Salud',
-    fechas: '2024-01-15 – 2024-03-15',
-    monto: '$2,000 / $8,000',
-    progreso: 25,
-    estado: 'Activa',
-  },
-  {
-    nombre: 'Asistencia para Desastres Naturales',
-    categoria: 'Emergencia',
-    fechas: '2024-01-10 – 2024-02-05',
-    monto: '$10,000 / $10,000',
-    progreso: 100,
-    estado: 'Finalizada',
-  },
-  {
-    nombre: 'Becas para Estudiantes',
-    categoria: 'Educación',
-    fechas: '2024-03-01 – 2024-05-15',
-    monto: '$3,000 / $12,000',
-    progreso: 25,
-    estado: 'Pausada',
-  },
-];
