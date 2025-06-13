@@ -10,6 +10,7 @@ import { CommunityCollaborationPage } from "../pages/CommunityCollaborationPage"
 import { ManageCommunityPage as C } from "../pages/ManageCommunitiesPage"
 import { ManagerUsersPage as M } from "../pages/ManagerUsersPage"
 
+import {CashPayment} from "../components/templates/CashPayment"
 
 const router = createBrowserRouter(
     [
@@ -43,6 +44,10 @@ const router = createBrowserRouter(
                 {
                     path: '/community-collaboration',
                     element: <CommunityCollaborationPage/>
+                },
+                {
+                    path: '/cashpayment',
+                    element: <CashPayment/>
                 }
             ]
         },
