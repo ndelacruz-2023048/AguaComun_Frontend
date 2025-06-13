@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from 'react'
-import { UserAuth } from '../../context/AuthContext';
-import { jwtDecode } from 'jwt-decode';
+import { Icon } from "@iconify/react/dist/iconify.js"
+import { LinksButtonsHome } from "../../utils/dataEstatica"
+import { NavLink } from "react-router"
 
 export const HomeTemplate = () => {
-    const { user, loading } = UserAuth();
-    const [descodeUserState, setdescodeUserState] = useState()
-    useEffect(() => {
-      const decodeUser = jwtDecode(user)
-      setdescodeUserState(decodeUser)
-    }, [])
-    console.log(descodeUserState);
-  
-
   return (
-    <div className='w-6/7'>HomeTemplate</div>
+    <div className='w-6/7'>
+      {LinksButtonsHome.map(({ label, icon, to }) => (
+          <div className="LinkContainer">
+
+            <NavLink to={to} key={label} className={({ isActive }) => `Links${isActive ? " active" : ""}`}>
+              <section>
+                <Icon icon={icon} className="text-2xl" />
+              </section>
+            </NavLink>
+          </div>
+        ))}
+    </div>
   )
 }
