@@ -1,9 +1,19 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { NavLink, Outlet } from 'react-router'
 import logo from '../assets/LogoAguaComun.svg'
 import { Icon } from '@iconify/react'
+import { SidebarAdmin } from '../components/sidebar/sidebarAdmin'
+import { UserAuth } from '../context/AuthContext'
+import { jwtDecode } from 'jwt-decode';
 
 export const Layout = () => {
+  
+  const { user, loading } = UserAuth();
+      const [descodeUserState, setdescodeUserState] = useState()
+      useEffect(() => {
+        const decodeUser = jwtDecode(user)
+        setdescodeUserState(decodeUser)
+      }, [])
   return (
     <div>
         <header className='flex justify-between items-center text-black py-4 px-8 md:px-15 bg-white drop-shadow-md'>
@@ -33,7 +43,12 @@ export const Layout = () => {
             </div>
         </header>
         <main>
-            <Outlet/>
+            <div className='flex flex-col md:flex-row'>
+                {descodeUserState?.type === "ADMIN" && (
+                    <SidebarAdmin/>
+                )}
+                <Outlet/>
+            </div>
         </main>
     </div>
   )

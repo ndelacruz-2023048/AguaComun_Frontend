@@ -3,6 +3,9 @@ import { Layout } from "../layout/Layout"
 import { LoginPage } from "../pages/LoginPage"
 import { ProtectedRoutes } from "../hooks/ProtectedRoutes"
 import { RegisterPage } from "../pages/RegisterPage"
+import { FundraisingCampaignsPage } from "../pages/FundraisingCampaignsPage"
+import { HomePage } from "../pages/HomePage"
+import { CommunityPage } from "../pages/CommunityPage"
 
 const router = createBrowserRouter(
     [
@@ -14,13 +17,16 @@ const router = createBrowserRouter(
             errorElement: <div>Error</div>,
             children: [
                 {
-                    index: true,
-                    element: <div>Home</div>,
-                    errorElement: <div>Error</div>
+                    path:'',
+                    element: <HomePage/>
                 },
                 {
-                    path: '/ejemplo',
-                    element: <div>Ejemplo</div>
+                    path: '/community',
+                    element: <CommunityPage/>
+                },
+                {
+                    path: '/campaigns',
+                    element: <FundraisingCampaignsPage/>
                 }
             ]
         },
