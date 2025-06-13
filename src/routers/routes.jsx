@@ -11,6 +11,7 @@ import { ManageCommunityPage as C } from "../pages/ManageCommunitiesPage"
 import { ManagerUsersPage as M } from "../pages/ManagerUsersPage"
 
 import {CashPayment} from "../components/templates/CashPayment"
+import { WatterPage } from "../pages/WatterPage"
 
 const router = createBrowserRouter(
     [
@@ -28,6 +29,10 @@ const router = createBrowserRouter(
                 {
                     path: '/community',
                     element: <CommunityPage/>
+                },
+                {
+                    path: '/watter',
+                    element: <WatterPage/>
                 },
                 {
                     path: '/community/manager',

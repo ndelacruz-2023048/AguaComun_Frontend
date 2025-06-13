@@ -14,6 +14,11 @@ export const LinksArraySidebarAdmin = [
         label: "Campaigns",
         icon: "mingcute:hotel-line",
         to: "/campaigns",
+    },
+    {
+        label: 'Report a Water Issue',
+        icon: 'ion:water-outline',
+        to: '/watter'
     }
 ]
 
