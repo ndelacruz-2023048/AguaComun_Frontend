@@ -52,27 +52,27 @@ const campaigns = [
   ];
 
   return (
-    <div className="bg-gray-100 min-h-screen px-6 py-10 text-gray-800">
+    <div className="min-h-screen px-6 py-10 text-gray-800">
       <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold mb-1">Campañas de recaudación</h1>
-        <p className="text-sm text-gray-500 mb-8">
+        <h1 className="text-3xl font-bold mb-1 text-[#338826]">Campañas de recaudación</h1>
+        <p className="text-sm mb-8 text-[#338826]">
           Explora las iniciativas de recaudación de fondos en curso y apoya a tu comunidad.
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-          <div className="bg-white p-5 rounded shadow">
+          <div className="bg-[#fffddf] p-5 rounded shadow ">
             <p className="text-sm text-gray-500">Total recaudado</p>
             <p className="text-2xl font-bold">$25,000</p>
           </div>
-          <div className="bg-white p-5 rounded shadow">
+          <div className="bg-[#fffddf] p-5 rounded shadow">
             <p className="text-sm text-gray-500">Campañas activas</p>
             <p className="text-2xl font-bold">12</p>
           </div>
         </div>
 
-        <div className="overflow-x-auto bg-white rounded shadow">
+        <div className="overflow-x-auto bg-white rounded-xl shadow border-[0.5px] border-[#e4e4e4]">
           <table className="min-w-full text-sm text-left">
-            <thead className="bg-gray-100 text-gray-600">
+            <thead className=" text-[#589e4f]">
               <tr>
                 <th className="px-4 py-3">Proyecto</th>
                 <th className="px-4 py-3">Objetivo</th>
@@ -85,32 +85,33 @@ const campaigns = [
             </thead>
             <tbody>
               {campaigns.map((c, i) => (
-                <tr key={i} className="border-b hover:bg-gray-50">
-                  <td className="px-4 py-3">{c.name}</td>
-                  <td className="px-4 py-3">${c.goal.toLocaleString()}</td>
-                  <td className="px-4 py-3">${c.raised.toLocaleString()}</td>
-                  <td className="px-4 py-3 w-48">
-                    <div className="h-2 w-full bg-gray-200 rounded-full">
+                <tr key={i} className="border-[0.5px] border-[#e4e4e4] border-x-[0px] hover:bg-gray-50">
+                  <td className="px-4 py-3 text-[#a48647]">{c.name}</td>
+                  <td className="px-4 py-3 text-[#4f8096]">${c.goal.toLocaleString()}</td>
+                  <td className="px-4 py-3 text-[#4f8096]">${c.raised.toLocaleString()}</td>
+                  <td className="px-4 py-6 w-48">
+                    <div className="h-2 w-full bg-gray-200 rounded-full flex">
                       <div
-                        className="h-2 bg-blue-500 rounded-full"
-                        style={{ width: `${c.progress}%` }}
+                        className="h-2 bg-[#d7ad2c] rounded-full"
+                        style={{ width: `${c.progress}%`}}
                       />
                     </div>
+                      {c.progress}
                   </td>
                   <td className="px-4 py-3">
-                    <span className="bg-gray-100 px-3 py-1 rounded-full text-xs font-medium">
+                    <span className="bg-[#d7ad2c] text-[#ffffff] px-4 py-2 rounded-xl text-xs font-medium flex justify-center border-[#d7ad2c] border-[1px] hover:bg-gray-50 hover:text-[#d7ad2c]">
                       {c.category}
                     </span>
                   </td>
                   <td className="px-4 py-3 text-blue-600 hover:underline cursor-pointer">
-                    <NavLink to={`/campaigns/detail`}>
+                    <NavLink className='flex justify-center' to={`/campaigns/detail`}>
                       {c.action}
                     </NavLink>
                   </td>
                   <td className="px-4 py-3">
                     <span
-                      className={`text-xs font-semibold ${
-                        c.status === 'Activo' ? 'text-green-600' : 'text-gray-500'
+                      className={`text-xs font-semibold flex justify-center ${
+                        c.status === 'Activo' ? 'text-[#338826]' : 'text-[#d7ad2c]'
                       }`}
                     >
                       {c.status}

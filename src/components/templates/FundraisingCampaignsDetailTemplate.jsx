@@ -36,8 +36,8 @@ export const FundraisingCampaignsDetailTemplate = () => {
           </div>
         </div>
 
-        <div className="mb-8">
-          <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded">
+        <div className="mb-8 flex justify-end">
+          <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-4xl left-[30%]">
             Donate
           </button>
         </div>
@@ -45,10 +45,10 @@ export const FundraisingCampaignsDetailTemplate = () => {
         <div className="mb-8">
           <h3 className="font-semibold text-lg mb-2">Donor List</h3>
           <ul className="text-sm text-gray-700">
-            <li className="flex justify-between"><span>Elena Morales</span><span>500 Q</span></li>
-            <li className="flex justify-between"><span>Carlos Lopez</span><span>200 Q</span></li>
-            <li className="flex justify-between"><span>Sofia Ramirez</span><span>1000 Q</span></li>
-            <li className="flex justify-between"><span>Anonymous</span><span>1300 Q</span></li>
+            <li className="flex justify-between py-2"><span>Elena Morales</span><span>500 Q</span></li>
+            <li className="flex justify-between py-2"><span>Carlos Lopez</span><span>200 Q</span></li>
+            <li className="flex justify-between py-2"><span>Sofia Ramirez</span><span>1000 Q</span></li>
+            <li className="flex justify-between py-2"><span>Anonymous</span><span>1300 Q</span></li>
           </ul>
         </div>
 
@@ -57,7 +57,7 @@ export const FundraisingCampaignsDetailTemplate = () => {
           <p className="text-sm text-gray-600 mb-4">
             Upload photos or documents showing the completed well repair or expenditure.
           </p>
-          <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded">
+          <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-4xl">
             Upload
           </button>
         </div>
