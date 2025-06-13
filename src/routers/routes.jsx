@@ -6,6 +6,9 @@ import { RegisterPage } from "../pages/RegisterPage"
 import { FundraisingCampaignsPage } from "../pages/FundraisingCampaignsPage"
 import { HomePage } from "../pages/HomePage"
 import { CommunityPage } from "../pages/CommunityPage"
+import { CreateCampaignPage } from "../pages/CreateCampaignPage"
+import { EditCampaignPage } from "../pages/EditCampaignPage"
+import { DeleteCampaignPage } from "../pages/DeleteCampaignPage"
 
 const router = createBrowserRouter(
     [
@@ -27,7 +30,19 @@ const router = createBrowserRouter(
                 {
                     path: '/campaigns',
                     element: <FundraisingCampaignsPage/>
-                }
+                },
+                {
+                    path: '/campaigns/new',
+                    element: <CreateCampaignPage />
+                },
+                {
+                    path: '/campaigns/edit/:id',
+                    element: <EditCampaignPage />
+                },
+                {
+                    path: '/campaigns/delete/:id',
+                    element: <DeleteCampaignPage />
+                },
             ]
         },
         {
