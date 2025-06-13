@@ -12,13 +12,13 @@ export const ManagerUsersTemplate = () => {
     ];
 
     return(
-        <div className="flex flex-col min-h-screen w-3/3 bg-[#F7FAFC] px-4 sm:px-6 lg:px-8 py-5">
+        <div className="flex flex-col min-h-screen w-6/7 bg-[#F7FAFC] px-4 sm:px-6 lg:px-8 py-5">
             {/* Título de la página y subtitulo */}
-            <h1 className="md:text-4xl lg:text-[40px] font-bold mb-6 md:mb-8 lg:mb-10 text-[#338826]">Manage User</h1>
-            <p className="md:text-4xl lg:text-[25px] mb-6 md:mb-8 lg:mb-10 text-[#338826]">View and manage user roles within the community.</p>
+            <h1 className="md:text-4xl lg:text-[40px] font-bold mb-6 md:mb-8 lg:mb-5 text-[#338826]">Manage User</h1>
+            <p className="md:text-4xl lg:text-[25px] mb-6 md:mb-8 lg:mb-5 text-[#338826]">View and manage user roles within the community.</p>
 
             {/* Barra de búsqueda */}
-            <div className="relative w-full lg:w-2/3 mb-10 md:mb-16 lg:mb-10">
+            <div className="relative w-full lg:w-2/3 mb-5 md:mb-8 lg:mb-5">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                 <Icon 
                     icon="material-symbols-light:search" 

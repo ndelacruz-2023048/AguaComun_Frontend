@@ -3,12 +3,12 @@ import { Icon } from '@iconify/react';
 
 export const ManagerCommunityTemplate = () => {
   return (
-    <div className="flex flex-col min-h-screen w-full bg-[#F7FAFC] px-4 sm:px-6 lg:px-8 py-5">
+    <div className="flex flex-col min-h-screen w-6/7 bg-[#F7FAFC] px-4 sm:px-6 lg:px-8 py-5">
       {/* Título de la página */}
-      <h1 className="text-3xl md:text-4xl lg:text-[40px] font-bold mb-6 md:mb-8 lg:mb-10 text-[#338826]" >Manage Communities</h1>
+      <h1 className="text-3xl md:text-4xl lg:text-[40px] font-bold mb-6 md:mb-8 lg:mb-5 text-[#338826]" >Manage Communities</h1>
       
       {/* Barra de búsqueda */}
-      <div className="relative w-full lg:w-2/3 mb-10 md:mb-16 lg:mb-20">
+      <div className="relative w-full lg:w-2/3 mb-10 md:mb-8 lg:mb-8">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <Icon 
             icon="material-symbols-light:search" 
@@ -23,7 +23,7 @@ export const ManagerCommunityTemplate = () => {
       </div>
 
       {/* Tabla de comunidades - Contenedor responsive */}
-      <div className="overflow-x-auto w-full mb-8">
+      <div className="overflow-x-auto w-full mb-[-20px]">
         <div className="box-border border-[#CFE0E8] bg-transparent rounded-[10px] border-2 border-solid shadow-lg min-w-max">
           <table className="min-w-full bg-transparent">
             <thead>
@@ -56,7 +56,7 @@ export const ManagerCommunityTemplate = () => {
 
       {/* Botón Add Community - Responsive */}
       <div className="flex justify-center lg:justify-start">
-        <button className="bg-[#338826] hover:bg-[#338826c7] transition-all rounded-[10px] px-4 py-2 md:px-6 md:py-3 w-full sm:w-auto mt-6 md:mt-8 lg:mt-10 lg:ml-258 flex items-center justify-center">
+        <button className="bg-[#338826] hover:bg-[#338826c7] transition-all rounded-[10px] px-4 py-2 md:px-6 md:py-3 w-full sm:w-auto mt-6 md:mt-8 lg:mt-10 lg:ml-274 flex items-center justify-center">
           <span className="text-white font-semibold flex items-center justify-center text-lg md:text-xl">
             Add Community
           </span>
