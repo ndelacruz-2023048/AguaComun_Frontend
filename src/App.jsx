@@ -1,9 +1,12 @@
 import MyRouter from "./routers/routes"
+import { AuthContextProvider } from './context/AuthContext'
 
 function App() {
 
   return (
-    <MyRouter />
+    <AuthContextProvider>
+      <MyRouter />
+    </AuthContextProvider>
   )
 }
 
