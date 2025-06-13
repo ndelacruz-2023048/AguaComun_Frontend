@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { PaymentModal } from '../modal/PaymentModal'
 
 export const CashPayment = () => {
+  const [showModal, setShowModal] = useState(false)
+
   return (
     <div className="fixed min-h-screen w-[40vw] left-[30%] p-6">
-
       <div className="max-w-xl mx-auto bg-white p-8 rounded-xl shadow">
         <h2 className="text-2xl font-semibold text-gray-800 mb-8">Registrar Aporte en Efectivo</h2>
 
@@ -58,7 +59,15 @@ export const CashPayment = () => {
             </div>
           </div>
 
-          <div className="text-right">
+          <div className="flex justify-between items-center">
+            <button
+              type="button"
+              onClick={() => setShowModal(true)}
+              className="bg-blue-600 text-white font-semibold px-6 py-2 rounded-md hover:bg-blue-700 transition"
+            >
+              Abrir Modal de Pago
+            </button>
+
             <button
               type="submit"
               className="bg-[#12a019] text-white font-semibold px-6 py-2 rounded-md hover:bg-[#138519] transition"
@@ -68,8 +77,8 @@ export const CashPayment = () => {
           </div>
         </form>
       </div>
-      
-      <PaymentModal/>
+
+      {showModal && <PaymentModal onClose={() => setShowModal(false)} />}
     </div>
   )
 }
