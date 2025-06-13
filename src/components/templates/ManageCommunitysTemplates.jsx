@@ -56,8 +56,8 @@ export const ManagerCommunityTemplate = () => {
 
       {/* Botón Add Community - Responsive */}
       <div className="flex justify-center lg:justify-start">
-        <button className="bg-[#12B0EB] hover:bg-[#12b1ebda] transition-all rounded-[10px] px-4 py-2 md:px-6 md:py-3 w-full sm:w-auto mt-6 md:mt-8 lg:mt-10 lg:ml-258 flex items-center justify-center">
-          <span className="text-black font-semibold flex items-center justify-center text-lg md:text-xl">
+        <button className="bg-[#338826] hover:bg-[#338826c7] transition-all rounded-[10px] px-4 py-2 md:px-6 md:py-3 w-full sm:w-auto mt-6 md:mt-8 lg:mt-10 lg:ml-258 flex items-center justify-center">
+          <span className="text-white font-semibold flex items-center justify-center text-lg md:text-xl">
             Add Community
           </span>
         </button>
