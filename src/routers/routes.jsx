@@ -6,6 +6,9 @@ import { RegisterPage } from "../pages/RegisterPage"
 import { FundraisingCampaignsPage } from "../pages/FundraisingCampaignsPage"
 import { HomePage } from "../pages/HomePage"
 import { CommunityPage } from "../pages/CommunityPage"
+import { CreateCampaignPage } from "../pages/CreateCampaignPage"
+import { EditCampaignPage } from "../pages/EditCampaignPage"
+import { DeleteCampaignPage } from "../pages/DeleteCampaignPage"
 import { CommunityCollaborationPage } from "../pages/CommunityCollaborationPage"
 import { ManageCommunityPage as C } from "../pages/ManageCommunitiesPage"
 import { ManagerUsersPage as M } from "../pages/ManagerUsersPage"
@@ -53,7 +56,19 @@ const router = createBrowserRouter(
                 {
                     path: '/cashpayment',
                     element: <CashPayment/>
-                }
+                },
+                {
+                    path: '/campaigns/new',
+                    element: <CreateCampaignPage />
+                },
+                {
+                    path: '/campaigns/edit/:id',
+                    element: <EditCampaignPage />
+                },
+                {
+                    path: '/campaigns/delete/:id',
+                    element: <DeleteCampaignPage />
+                },
             ]
         },
         {
