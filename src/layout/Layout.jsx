@@ -27,6 +27,10 @@ export const Layout = () => {
                 </NavLink>
 
                 <NavLink to={'*'}>
+                    <span className='text-lg'>Projects</span>
+                </NavLink>
+
+                <NavLink to={'/community'}>
                     <span className='text-lg'>Community</span>
                 </NavLink>
 
@@ -34,8 +38,8 @@ export const Layout = () => {
                     <span className='text-lg'>Fundraising Campaings</span>
                 </NavLink>
 
-                <NavLink to={'*'}>
-                    <span className='text-lg'>Resources</span>
+                <NavLink to={'/community-collaboration'}>
+                    <span className='text-lg'>Collaboration</span>
                 </NavLink>
             </div>
             <div className='bg-zinc-300 rounded-full p-2 hover:bg-zinc-400 transition-all cursor-pointer'>

@@ -1,128 +1,212 @@
-import React from 'react'
-import { UserAuth } from '../../context/AuthContext';
+import { Icon } from '@iconify/react/dist/iconify.js';
+import { useNavigate } from 'react-router';
+import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router';
 
 export const FundraisingCampaignsTemplates = () => {
-const campaigns = [
-    {
-      name: 'Renovación del parque infantil',
-      goal: 5000,
-      raised: 3500,
-      progress: 70,
-      category: 'Comunidad',
-      action: 'Ver más',
-      status: 'Finalizado',
-    },
-    {
-      name: 'Apoyo a familias necesitadas',
-      goal: 10000,
-      raised: 8000,
-      progress: 80,
-      category: 'Social',
-      action: 'Donar',
-      status: 'Activo',
-    },
-    {
-      name: 'Equipamiento para el centro comunitario',
-      goal: 7500,
-      raised: 4500,
-      progress: 60,
-      category: 'Comunidad',
-      action: 'Ver más',
-      status: 'Finalizado',
-    },
-    {
-      name: 'Becas para estudiantes locales',
-      goal: 12000,
-      raised: 9000,
-      progress: 75,
-      category: 'Educación',
-      action: 'Donar',
-      status: 'Activo',
-    },
-    {
-      name: 'Mejora de la biblioteca pública',
-      goal: 4000,
-      raised: 4000,
-      progress: 67,
-      category: 'Comunidad',
-      action: 'Ver más',
-      status: 'Finalizado',
-    },
-  ];
+  const [campaigns, setcampaigns] = useState([])
+  const [search, setSearch] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+  const navigate = useNavigate();
+
+  const getCampaigns = async() =>{
+    try{
+      const res = await fetch('http://localhost:3662/v1/aguacomun/campaign')
+      const data = await res.json()
+      setcampaigns(data)
+    }catch(e){
+      console.error('Error al obtener campañas', e)
+    }
+  }
+
+  const filteredCampaigns = campaigns.filter((c) => {
+    const matchesName = c.name.toLowerCase().includes(search.toLowerCase());
+    const matchesCategory = categoryFilter ? c.category === categoryFilter : true;
+    const matchesStatus = statusFilter ? c.status === statusFilter : true;
+    return matchesName && matchesCategory && matchesStatus;
+  });
+
+
+  
+
+  useEffect(()=>{
+    getCampaigns()
+  },[])
+  
+const actualizarEstado = async (id, nuevoEstado) => {
+  try {
+    await fetch(`http://localhost:3662/v1/aguacomun/campaign/${id}/status`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ status: nuevoEstado }),
+    });
+    getCampaigns()
+    console.log('Si funciona el boton')
+  } catch (error) {
+    console.error('Error al cambiar estado:', error);
+  }
+};
 
   return (
-    <div className="min-h-screen px-6 py-10 text-gray-800">
-      <div className="max-w-6xl mx-auto">
-        <h1 className="text-3xl font-bold mb-1 text-[#338826]">Campañas de recaudación</h1>
-        <p className="text-sm mb-8 text-[#338826]">
-          Explora las iniciativas de recaudación de fondos en curso y apoya a tu comunidad.
-        </p>
+    <div className="p-8 bg-gray-100 min-h-screen font-sans w-[80vw]">
+      {/* Título y botón */}
+      <div className="flex justify-between items-center mb-8">
+        <h1 className="text-2xl font-bold">Gestión de Campañas de Recaudación</h1>
+        <button
+          onClick={() => navigate('/campaigns/new')}
+          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+        >
+          Crear nueva campaña
+        </button>
+      </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-          <div className="bg-[#fffddf] p-5 rounded shadow ">
-            <p className="text-sm text-gray-500">Total recaudado</p>
-            <p className="text-2xl font-bold">$25,000</p>
-          </div>
-          <div className="bg-[#fffddf] p-5 rounded shadow">
-            <p className="text-sm text-gray-500">Campañas activas</p>
-            <p className="text-2xl font-bold">12</p>
-          </div>
-        </div>
+      {/* Resumen */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <Resumen titulo="Recaudado Mensual" valor="$12,500" />
+        <Resumen titulo="Campañas Activas" valor="15" />
+        <Resumen titulo="Campañas Próximas a Finalizar" valor="3" />
+      </div>
 
-        <div className="overflow-x-auto bg-white rounded-xl shadow border-[0.5px] border-[#e4e4e4]">
-          <table className="min-w-full text-sm text-left">
-            <thead className=" text-[#589e4f]">
-              <tr>
-                <th className="px-4 py-3">Proyecto</th>
-                <th className="px-4 py-3">Objetivo</th>
-                <th className="px-4 py-3">Recaudado</th>
-                <th className="px-4 py-3">Progreso</th>
-                <th className="px-4 py-3">Categoría</th>
-                <th className="px-4 py-3">Acción</th>
-                <th className="px-4 py-3">Estado</th>
-              </tr>
-            </thead>
-            <tbody>
-              {campaigns.map((c, i) => (
-                <tr key={i} className="border-[0.5px] border-[#e4e4e4] border-x-[0px] hover:bg-gray-50">
-                  <td className="px-4 py-3 text-[#a48647]">{c.name}</td>
-                  <td className="px-4 py-3 text-[#4f8096]">${c.goal.toLocaleString()}</td>
-                  <td className="px-4 py-3 text-[#4f8096]">${c.raised.toLocaleString()}</td>
-                  <td className="px-4 py-6 w-48">
-                    <div className="h-2 w-full bg-gray-200 rounded-full flex">
-                      <div
-                        className="h-2 bg-[#d7ad2c] rounded-full"
-                        style={{ width: `${c.progress}%`}}
-                      />
-                    </div>
-                      {c.progress}
-                  </td>
-                  <td className="px-4 py-3">
-                    <span className="bg-[#d7ad2c] text-[#ffffff] px-4 py-2 rounded-xl text-xs font-medium flex justify-center border-[#d7ad2c] border-[1px] hover:bg-gray-50 hover:text-[#d7ad2c]">
-                      {c.category}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-blue-600 hover:underline cursor-pointer">
-                    <NavLink className='flex justify-center' to={`/campaigns/detail`}>
-                      {c.action}
-                    </NavLink>
-                  </td>
-                  <td className="px-4 py-3">
-                    <span
-                      className={`text-xs font-semibold flex justify-center ${
-                        c.status === 'Activo' ? 'text-[#338826]' : 'text-[#d7ad2c]'
-                      }`}
-                    >
-                      {c.status}
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+      {/* Filtros */}
+      <div className="bg-white p-4 rounded shadow mb-6 space-y-4">
+        <input
+          type="text"
+          placeholder="Buscar campañas por nombre"
+          className="w-full border border-gray-300 p-2 rounded"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <div className="flex flex-wrap gap-4">
+          <select className="p-2 border rounded w-full md:w-auto"
+          value={categoryFilter}
+          onChange={(e)=>setCategoryFilter(e.target.value)}
+          >
+            <option value="">Categoría</option>
+            <option value="Emergencia">Emergencia</option>
+            <option value="Educación">Educación</option>
+            <option value="Salud">Salud</option>
+          </select>
+          <select
+            className="p-2 border rounded w-full md:w-auto"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            <option value="">Estado</option>
+            <option value="Activa">Activa</option>
+            <option value="Pausada">Pausada</option>
+            <option value="Finalizada">Finalizada</option>
+          </select>
+          <select className="p-2 border rounded w-full md:w-auto">
+            <option>Fechas</option>
+          </select>
         </div>
       </div>
+
+      {/* Tabla */}
+      <div className="bg-white shadow rounded overflow-x-auto">
+        <table className="w-full text-sm text-left">
+          <thead className="bg-gray-100 text-gray-600 uppercase text-xs">
+            <tr>
+              <th className="p-4">Nombre</th>
+              <th className="p-4">Categoría</th>
+              <th className="p-4">Fechas</th>
+              <th className="p-4">Montos</th>
+              <th className="p-4">Progreso</th>
+              <th className="p-4">Estado</th>
+              <th className="p-4">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {filteredCampaigns.map((c, idx) => (
+              <tr key={idx} className="border-t">
+                <td className="p-4">{c.name}</td>
+                  <td className="p-4 text-blue-600">{c.category}</td>
+                  <td className="p-4">
+                    {new Date(c.startDate).toLocaleDateString()} - {new Date(c.endDate).toLocaleDateString()}
+                  </td>
+                  <td className="p-4">
+                    ${c.amountRaised} / ${c.goalAmount}
+                  </td>
+                  <td className="p-4 w-40">
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div
+                        className="bg-blue-500 h-2 rounded-full"
+                        style={{ width: `${(c.amountRaised / c.goalAmount) * 100}%` }}
+                      ></div>
+                    </div>
+                  </td>
+                <td className="p-4">
+                  <span
+                    className={`px-2 py-1 rounded text-white text-xs ${
+                      c.status === 'Activa'
+                        ? 'bg-green-500'
+                        : c.status === 'Finalizada'
+                        ? 'bg-gray-600'
+                        : 'bg-yellow-500'
+                    }`}
+                  >
+                    {c.status}
+                  </span>
+                </td>
+                <td className="p-4 space-y-1 text-sm">
+                  <div
+                    onClick={() => navigate(`/campaigns/edit/${c._id}`)}
+                    className="hover:underline cursor-pointer flex items-center gap-1 text-blue-600"
+                  >
+                    <Icon icon="mdi:pencil" className="text-lg" />
+                    Editar
+                  </div>
+
+                  <button
+                    disabled={c.estado === 'Finalizada'}
+                    onClick={() => actualizarEstado(c._id, 'Finalizada')}
+                    className="flex items-center gap-1 text-gray-700 disabled:opacity-40"
+                  >
+                    <Icon icon="mdi:check-circle-outline" className="text-lg" />
+                    Finalizar
+                  </button>
+
+                  <button
+                    disabled={c.estado === 'Pausada'}
+                    onClick={() => actualizarEstado(c._id, 'Pausada')}
+                    className="flex items-center gap-1 text-yellow-600 disabled:opacity-40"
+                  >
+                    <Icon icon="mdi:pause-circle-outline" className="text-lg" />
+                    Pausar
+                  </button>
+
+                  <button
+                    disabled={c.estado === 'Activa'}
+                    onClick={() => actualizarEstado(c._id, 'Activa')}
+                    className="flex items-center gap-1 text-green-600 disabled:opacity-40"
+                  >
+                    <Icon icon="mdi:play-circle-outline" className="text-lg" />
+                    Activar
+                  </button>
+
+                  <div
+                    onClick={() => navigate(`/campaigns/delete/${c._id}`)}
+                    className="hover:underline cursor-pointer flex items-center gap-1 text-red-600"
+                  >
+                    <Icon icon="mdi:delete-outline" className="text-lg" />
+                    Eliminar
+                  </div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+};
+
+function Resumen({ titulo, valor }) {
+  return (
+    <div>
+      FundraisingCampaignsTemplates
+      {/* You can add more components or content here as needed */}
     </div>
   );
 }
