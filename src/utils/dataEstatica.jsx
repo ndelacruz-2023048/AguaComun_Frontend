@@ -19,6 +19,11 @@ export const LinksArraySidebarAdmin = [
         label: 'Report a Water Issue',
         icon: 'ion:water-outline',
         to: '/watter'
+    },
+    {
+        label: "Historial",
+        icon: "ic:baseline-history",
+        to: "/historialEconomyFundraising",
     }
 ]
 
