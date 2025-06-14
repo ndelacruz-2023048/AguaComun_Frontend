@@ -17,6 +17,7 @@ import {CashPayment} from "../components/templates/CashPayment"
 import { WatterPage } from "../pages/WatterPage"
 import { HistorialPage } from "../pages/HistorialTransactionsPage.jsx"
 import { FundraisingCampaignsDetailPage } from "../pages/FundraisingCampaignsDetailPage.jsx"
+import { FundraisingCampaignsUserPage } from "../pages/FundraisingCampaignsUserPage.jsx"
 
 const router = createBrowserRouter(
     [
@@ -80,6 +81,10 @@ const router = createBrowserRouter(
                     path: '/campaigns/delete/:id',
                     element: <DeleteCampaignPage />
                 },
+                {
+                    path: '/campaigns/user',
+                    element: <FundraisingCampaignsUserPage/>
+                }
             ]
         },
         {
