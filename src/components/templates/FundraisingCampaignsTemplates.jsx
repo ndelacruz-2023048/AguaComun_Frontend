@@ -4,6 +4,9 @@ import React, { useEffect, useState } from 'react';
 
 export const FundraisingCampaignsTemplates = () => {
   const [campaigns, setcampaigns] = useState([])
+  const [search, setSearch] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
   const navigate = useNavigate();
 
   const getCampaigns = async() =>{
@@ -15,6 +18,16 @@ export const FundraisingCampaignsTemplates = () => {
       console.error('Error al obtener campañas', e)
     }
   }
+
+  const filteredCampaigns = campaigns.filter((c) => {
+    const matchesName = c.name.toLowerCase().includes(search.toLowerCase());
+    const matchesCategory = categoryFilter ? c.category === categoryFilter : true;
+    const matchesStatus = statusFilter ? c.status === statusFilter : true;
+    return matchesName && matchesCategory && matchesStatus;
+  });
+
+
+  
 
   useEffect(()=>{
     getCampaigns()
@@ -60,19 +73,28 @@ const actualizarEstado = async (id, nuevoEstado) => {
           type="text"
           placeholder="Buscar campañas por nombre"
           className="w-full border border-gray-300 p-2 rounded"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         />
         <div className="flex flex-wrap gap-4">
-          <select className="p-2 border rounded w-full md:w-auto">
-            <option>Categoría</option>
-            <option>Emergencia</option>
-            <option>Educación</option>
-            <option>Salud</option>
+          <select className="p-2 border rounded w-full md:w-auto"
+          value={categoryFilter}
+          onChange={(e)=>setCategoryFilter(e.target.value)}
+          >
+            <option value="">Categoría</option>
+            <option value="Emergencia">Emergencia</option>
+            <option value="Educación">Educación</option>
+            <option value="Salud">Salud</option>
           </select>
-          <select className="p-2 border rounded w-full md:w-auto">
-            <option>Estado</option>
-            <option>Activa</option>
-            <option>Pausada</option>
-            <option>Finalizada</option>
+          <select
+            className="p-2 border rounded w-full md:w-auto"
+            value={statusFilter}
+            onChange={(e) => setStatusFilter(e.target.value)}
+          >
+            <option value="">Estado</option>
+            <option value="Activa">Activa</option>
+            <option value="Pausada">Pausada</option>
+            <option value="Finalizada">Finalizada</option>
           </select>
           <select className="p-2 border rounded w-full md:w-auto">
             <option>Fechas</option>
@@ -95,7 +117,7 @@ const actualizarEstado = async (id, nuevoEstado) => {
             </tr>
           </thead>
           <tbody>
-            {campaigns.map((c, idx) => (
+            {filteredCampaigns.map((c, idx) => (
               <tr key={idx} className="border-t">
                 <td className="p-4">{c.name}</td>
                   <td className="p-4 text-blue-600">{c.category}</td>

@@ -1,11 +1,19 @@
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
-export const DeleteCampaignPage =()=> {
+export const DeleteCampaignPage = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
 
-  const handleDelete = () => {
-    console.log("Campaña eliminada");
-    navigate("/campaigns");
+  const handleDelete = async () => {
+    try {
+      await fetch(`http://localhost:3662/v1/aguacomun/campaign/${id}`, {
+        method: "DELETE",
+      });
+      console.log("Campaña eliminada");
+      navigate("/campaigns");
+    } catch (error) {
+      console.error("Error al eliminar campaña:", error);
+    }
   };
 
   return (
@@ -32,4 +40,4 @@ export const DeleteCampaignPage =()=> {
       </div>
     </div>
   );
-}
+};
