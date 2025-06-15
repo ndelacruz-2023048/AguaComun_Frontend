@@ -5,6 +5,9 @@ import { defineStepper } from '@stepperize/react';
 import { useForm } from 'react-hook-form';
 import FileUploadForm from '../../molecules/UploadFiles';
 import { Separator } from '../../molecules/Separator';
+import { useCommunity } from '../../../hooks/useCommunity'
+import { useReport } from '../../../hooks/useReport'
+import { useSocket } from '../../../hooks/useSocket'
 
 const { useStepper, steps, utils } = defineStepper(
     {
@@ -25,20 +28,46 @@ const { useStepper, steps, utils } = defineStepper(
 )
 
 const ModalReport = ({ isOpen, onClose }) => {
+    const { createReport: nuevo } = useReport()
+
     const methods = useForm(
         {
             mode: 'onChange'
         }
     )
-    // const { handleSubmit } = methods;
+    const { handleSubmit } = methods;
     const stepper = useStepper();
+    const socket = useSocket()
 
     const currentIndex = utils.getIndex(stepper.current.id);
     if (!isOpen) return null;
 
+    const onSubmit = async (data) => {
+        if (stepper.isLast) {
+        console.log('Registro completo:', data);
+
+            try {
+                const success = await nuevo(data, socket); // Intenta registrar el usuario
+
+                if (success) {
+                    methods.reset()
+                    stepper.reset(); // Reinicia el stepper
+                } else {
+                    console.error('Por favor corrige los errores e inténtalo nuevamente');
+                }
+            } catch (error) {
+                // Maneja errores generales
+                console.error('Error al registrar:', error);
+            }
+        } else {
+            console.log('Datos del paso actual:', data);
+            stepper.next();
+        }
+    }
+
     return (
         <div className="fixed inset-0 backdrop-blur-xl bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg shadow-lg p-7 w-[650px] relative">
+            <div className="bg-white rounded-lg shadow-lg p-7 w-[700px] relative">
                 <div className='flex flex-col gap-4'>
                     <div className="flex justify-between">
                         <h2 className="text-lg font-medium">Create New Water Report</h2>
@@ -93,7 +122,7 @@ const ModalReport = ({ isOpen, onClose }) => {
                     ))}
                     </ol>
                 </nav>
-                <div className="space-y-6" id='FormRegister'>
+                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" id='FormRegister'>
                     {stepper.switch({
                         basic: () => <BasicInfoComponent methods={methods} />,
                         attachments: () => <AttachmentsComponent methods={methods} />,
@@ -112,7 +141,6 @@ const ModalReport = ({ isOpen, onClose }) => {
                         </button>
                         <button
                             type="submit"
-                            onClick={stepper.next}
                             className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors"
                         >
                             Next
@@ -141,7 +169,7 @@ const ModalReport = ({ isOpen, onClose }) => {
                         </div>
                     )}
                     </div>
-                </div>
+                </form>
             </div>
         </div>
     )
@@ -158,7 +186,12 @@ const BasicInfoComponent = ({ methods }) => {
                 </label>
                 <input
                     id="issueTitle"
-                    {...register('issueTitle', { required: 'Issue Title is required' })}
+                    {...register('issueTitle', { 
+                        required: {
+                            value: true,
+                            message: 'Issue Title is required' 
+                        }
+                    })}
                     placeholder="Briefly describe the issue"
                     className="w-full bg-[#E7F5E7] rounded-xl p-2"
                 />
@@ -173,10 +206,18 @@ const BasicInfoComponent = ({ methods }) => {
                 </label>
                 <input
                     id="issueCategory"
-                    {...register('issueCategory')}
-                    placeholder="Select category"
+                    {...register('issueCategory', { 
+                        required: {
+                            value: true,
+                            message: 'Issue Category is required' 
+                        }
+                    })}
+                    placeholder="Briefly describe the issue"
                     className="w-full bg-[#E7F5E7] rounded-xl p-2"
                 />
+                {errors.issueCategory && (
+                    <p className="text-red-500 text-xs mt-1">{errors.issueCategory.message}</p>
+                )}
             </div>
 
             <div className="grid gap-2">
@@ -185,7 +226,12 @@ const BasicInfoComponent = ({ methods }) => {
                 </label>
                 <textarea
                     id="description"
-                    {...register('description', { required: 'Description is required' })}
+                    {...register('description', { 
+                        required: {
+                            value: true,
+                            message: 'Description is required' 
+                        }
+                    })}
                     placeholder="Provide a detailed description of the issue"
                     className="w-full bg-[#E7F5E7] rounded-xl p-2"
                 />
@@ -198,7 +244,11 @@ const BasicInfoComponent = ({ methods }) => {
 }
 
 const AttachmentsComponent = ({ methods }) => {
+
+    const { community } = useCommunity()
+
     const { register, formState: { errors } } = methods;
+
     const handleImageUpload = (imageUrl) => {
         methods.setValue('uploadPhoto', imageUrl);
     }
@@ -213,32 +263,32 @@ const AttachmentsComponent = ({ methods }) => {
             </div>
 
             <div className="grid gap-2">
-                <label htmlFor="date" className="text-sm font-medium text-start text-[#338826]">
-                    Date
+                <label htmlFor="community" className="text-sm font-medium text-start text-[#338826]">
+                    Community
                 </label>
-                <input
-                    type="date"
-                    id="date"
-                    {...register('date', { required: 'Date is required' })}
+                <select
+                    id="community"
+                    {...register('community', { 
+                        required: {
+                            value: true,
+                            message: 'Community is required' 
+                        }
+                    })}
                     className="w-full bg-[#E7F5E7] rounded-xl p-2"
-                />
-                {errors.date && (
-                    <p className="text-red-500 text-xs mt-1">{errors.date.message}</p>
-                )}
-            </div>
-
-            <div className="grid gap-2">
-                <label htmlFor="time" className="text-sm font-medium text-start text-[#338826]">
-                    Time
-                </label>
-                <input
-                    type="time"
-                    id="time"
-                    {...register('time', { required: 'Time is required' })}
-                    className="w-full bg-[#E7F5E7] rounded-xl p-2"
-                />
-                {errors.time && (
-                    <p className="text-red-500 text-xs mt-1">{errors.time.message}</p>
+                >
+                    <option value="">Select to Community</option>
+                    { community.length===0  ? (
+                        <option value="">Non Community</option>
+                        
+                    ) : (
+                        community.map((comunity, index) => (
+                            <option key={index} value={`${comunity._id}`}>{comunity.name}</option>
+                        ))
+                    )}
+                    
+                </select>
+                {errors.community && (
+                    <p className="text-red-500 text-xs mt-1">{errors.community.message}</p>
                 )}
             </div>
 
@@ -248,13 +298,18 @@ const AttachmentsComponent = ({ methods }) => {
                 </label>
                 <select
                     id="urgencyLevel"
-                    {...register('urgencyLevel', { required: 'Urgency Level is required' })}
+                    {...register('urgencyLevel', { 
+                        required: {
+                            value: true,
+                            message: 'Urgency Level is required' 
+                        }
+                    })}
                     className="w-full bg-[#E7F5E7] rounded-xl p-2"
                 >
                     <option value="">Select urgency level</option>
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
                 </select>
                 {errors.urgencyLevel && (
                     <p className="text-red-500 text-xs mt-1">{errors.urgencyLevel.message}</p>
@@ -270,13 +325,14 @@ const ConfirmationComponent = ({ methods }) => {
 
     return (
         <div className="space-y-4 text-left">
-        <h3 className="font-bold text-lg">Confirm Your Report:</h3>
-        <div><strong>Issue Title:</strong> {data.issueTitle || '-'}</div>
-        <div><strong>Description:</strong> {data.description || '-'}</div>
-        <div><strong>Date:</strong> {data.date || '-'}</div>
-        <div><strong>Time:</strong> {data.time || '-'}</div>
-        <div><strong>Urgency Level:</strong> {data.urgencyLevel || '-'}</div>
-        <div><strong>Suggested Solutions:</strong> {data.suggestedSolutions || '-'}</div>
+            <h3 className="font-bold text-lg">Confirm Your Report:</h3>
+            <div><strong>Issue Title:</strong> {data.issueTitle || '-'}</div>
+            <div><strong>Description:</strong> {data.description || '-'}</div>
+            <div><strong>Image:</strong> {data.uploadPhoto || '-'}</div>
+            <div><strong>Time:</strong> {data.time || '-'}</div>
+            <div><strong>Community:</strong> {data.community || '-'}</div>
+            <div><strong>Urgency Level:</strong> {data.urgencyLevel || '-'}</div>
+            <div><strong>Suggested Solutions:</strong> {data.suggestedSolutions || '-'}</div>
         </div>
     );
 };

@@ -33,7 +33,7 @@ const FileUploadForm = ({ onImageUpload }) => {
 
     return (
         <div className="w-full h-fit flex items-center justify-center bg-content1">
-            <form className="file-upload-form">
+            <div className="file-upload-form">
                 <label 
                     htmlFor="file" 
                     className="cursor-pointer bg-default-100 px-50 py-3 rounded-3xl border-2 border-dashed border-[#338826] flex flex-col items-center justify-center gap-2 transition-all hover:bg-default-200"
@@ -54,7 +54,7 @@ const FileUploadForm = ({ onImageUpload }) => {
                     onChange={uploadImage} 
                 />
                 </label>
-            </form>
+            </div>
         </div>
     );
 }
