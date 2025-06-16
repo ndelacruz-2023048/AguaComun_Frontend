@@ -137,8 +137,8 @@ export const RegisterTemplate = () => {
               )}
             </div>
           </form>
-        </div>
         <a href="" onClick={changeLogin} className='text-center text-green-500 hover:text-green-600 cursor-pointer'>Tienes Cuenta?</a>
+        </div>
       </div>
     </div>
   )

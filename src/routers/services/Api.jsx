@@ -32,9 +32,82 @@ export const logoutRequest = async()=> {
     }
 }
 
+//REGISTER
 export const registerRequest = async(user) => {
     try {
         return await apiClient.post('/auth/register', user)
+    } catch (e) {
+        return {
+            error: true,
+            e
+        }
+    }
+}
+
+//NEW REPORT
+export const newReportRequest = async(report) => {
+    try {
+        return await apiClient.post('/reports/new', report)
+    } catch (e) {
+        return {
+            error: true,
+            e
+        }
+    }
+}
+
+//GET REPORTS
+export const getReportsRequest = async() => {
+    try {
+        return await apiClient.get('/reports/list')
+    } catch (e) {
+        return {
+            error: true,
+            e
+        }
+    }
+}
+
+//GET REPORT BY ID
+export const getReportByIdRequest = async(id) => {
+    try {
+        return await apiClient.get(`/reports/list/${id}`)
+    } catch (e) {
+        return {
+            error: true,
+            e
+        }
+    }
+}
+
+//UPDATE REPORT
+export const updateReportRequest = async(id, report) => {
+    try {
+        return await apiClient.put(`/reports/updated/${id}`, report)
+    } catch (e) {
+        return {
+            error: true,
+            e
+        }
+    }
+}
+
+//DELETE REPORT
+export const deleteReportRequest = async(id) => {
+    try {
+        return await apiClient.delete(`/reports/delete/${id}`)
+    } catch (e) {
+        return {
+            error: true,
+            e
+        }
+    }
+}
+
+//GET ALL COMMUNITY'S
+export const getCommunitysRequest = async()=> {
+    try {
+        return await apiClient.get('/community/list')
     } catch (e) {
         return {
             error: true,
