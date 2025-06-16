@@ -18,7 +18,7 @@ export const CommunityCollaborationTemplate = () => {
         const handleList = (data) => {
           setListActivityCollaboration(data);
         };
-    
+        
         // 🔌 Escuchar los datos emitidos desde el servidor
         socket.on("list-activity-collaboration", handleList);
     
@@ -32,8 +32,6 @@ export const CommunityCollaborationTemplate = () => {
         };
       }, [socket]);
         
-
-    
 
   return (
     <div className='flex justify-center w-full'>
@@ -63,7 +61,7 @@ export const CommunityCollaborationTemplate = () => {
                 <h2 className='text-[#D7AD2C] font-bold text-xl'>Upcoming Activities</h2>
                 {
                     listActivityCollaboration?.map((element)=>(
-                        <CardCommunityCollaboration title={element.activityName} description={element.description} />
+                        <CardCommunityCollaboration title={element?.activityName} description={element?.description} id={element?._id}/>
                     ))
                 }
             </div>
