@@ -2,6 +2,7 @@ import React from 'react'
 import { CardAssignTurn } from '../organismos/CommunityCollaboration/CardAssignTurn'
 
 export const AsignTurnTemplate = () => {
+  
   return (
     <div className='flex justify-center  w-full'>
         <div className='flex flex-col gap-5 w-[80%]'>

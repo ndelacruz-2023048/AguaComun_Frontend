@@ -1,9 +1,16 @@
 import React from 'react'
 import { NavLink } from 'react-router'
+import { useCommunityCollaboration } from '../../../stores/communityCollaborationStore';
 
 export const CardCommunityCollaboration = ({title, description, image, buttonText,id}) => {
   console.log(id);
-  
+
+  const {idCommunityCollaboration,setIdCommunityCollaboration} = useCommunityCollaboration()
+
+  const handleClickViewCommunityCollaboration = ()=>{
+    setIdCommunityCollaboration(id)
+  }
+
   return (
     <div className='flex justify-center items-center border-[#A48647] border-1 rounded-2xl h-[190px] w-full'>
       <div className='flex w-[97%] h-[85%] gap-5'>
@@ -11,7 +18,7 @@ export const CardCommunityCollaboration = ({title, description, image, buttonTex
             <h3 className='text-[#A48647] font-bold text-[18px]'>{title}</h3>
             <p className='text-[#A48647] text-[15px]'>{description}</p>
             <NavLink to={`/community-collaboration/assign-turn`}>
-              <button  className='border-[#A48647] border-1 text-[#A48647] p-[5px_15px] text-[15px] rounded-2xl w-[15%]'>View</button>
+              <button onClick={handleClickViewCommunityCollaboration} className='border-[#A48647] border-1 text-[#A48647] p-[5px_15px] text-[15px] rounded-2xl w-[15%]'>View</button>
             </NavLink>
         </div>
         <div className='flex w-1/3'>

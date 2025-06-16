@@ -21,4 +21,10 @@ export const useCommunityCollaboration = create((set,get)=>({
             data:responseJSON
         }
     },
+    idCommunityCollaboration:0,
+    setIdCommunityCollaboration:(p)=>{
+        set({idCommunityCollaboration:p})
+    },
+    
+
 }))
