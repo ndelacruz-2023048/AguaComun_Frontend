@@ -1,10 +1,43 @@
 import { Icon } from '@iconify/react/dist/iconify.js'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { CardCommunityCollaboration } from '../organismos/CommunityCollaboration/CardCommunityCollaboration'
+import { useCommunityCollaboration } from '../../stores/communityCollaborationStore'
+import { CommunityCollaborationModal } from '../modal/CommunityCollaboration/CommunityCollaborationModal'
+import { useSocket } from '../../hooks/useSocket'
 
 export const CommunityCollaborationTemplate = () => {
+    const socket = useSocket()
+    const {isModalCommunityCollaborationOpen,setIsModalCommunityCollaborationOpen} = useCommunityCollaboration()
+    const handleClickButtonCreateActivity = () => {
+        setIsModalCommunityCollaborationOpen()
+    }
+
+    const [listActivityCollaboration,setListActivityCollaboration] = useState([])
+    
+    useEffect(() => {
+        const handleList = (data) => {
+          setListActivityCollaboration(data);
+        };
+    
+        // 🔌 Escuchar los datos emitidos desde el servidor
+        socket.on("list-activity-collaboration", handleList);
+    
+        // 🔁 Emitir evento al conectar por primera vez
+        socket.emit("new-user","Nuevo usuario conectado");
+    
+        // 🧹 Limpiar al desmontar
+        return () => {
+          socket.off("list-activity-collaboration", handleList);
+          socket.off("connect");
+        };
+      }, [socket]);
+        
+
+    
+
   return (
     <div className='flex justify-center w-full'>
+        {isModalCommunityCollaborationOpen && <CommunityCollaborationModal/>}
         <div className='flex flex-col gap-5 w-[95%]'>
             <div className='flex justify-between items-center'>
                 <div className='flex flex-col gap-2'>
@@ -12,7 +45,7 @@ export const CommunityCollaborationTemplate = () => {
                     <p className='text-[#338826] text-[16px]'>Explore and sign up for community activities</p>
                 </div>
                 <div>
-                    <button className='bg-[#D7AD2C] text-white p-[5px_25px] rounded-2xl'>Crear Actividad</button>
+                    <button onClick={handleClickButtonCreateActivity} className='bg-[#D7AD2C] text-white p-[5px_25px] rounded-2xl'>Crear Actividad</button>
                 </div>
             </div>
             <div>
@@ -28,9 +61,11 @@ export const CommunityCollaborationTemplate = () => {
             </div>
             <div className='flex flex-col gap-5 '>
                 <h2 className='text-[#D7AD2C] font-bold text-xl'>Upcoming Activities</h2>
-                <CardCommunityCollaboration/>
-                <CardCommunityCollaboration/>
-                <CardCommunityCollaboration/>
+                {
+                    listActivityCollaboration?.map((element)=>(
+                        <CardCommunityCollaboration title={element.activityName} description={element.description} />
+                    ))
+                }
             </div>
         </div>
 

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { registerRequest } from '../routers/services/Api';
 import { toast } from 'sonner';
+import { useSocket } from './useSocket';
 
 export const useRegister = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null); // Cambiamos a null para tener mejor control
-
+    const socket = useSocket()
     const register = async (data) => {
         setIsLoading(true);
         setError(null);
@@ -46,6 +47,7 @@ export const useRegister = () => {
         }
 
         toast.success(`${user.name}, ¡Has sido registrado exitosamente!`);
+        socket.emit("new-user",user)
         return true; // ✅ Retorna true si todo fue correcto
 
         } catch (e) {

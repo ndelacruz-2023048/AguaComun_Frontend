@@ -18,6 +18,7 @@ import { WatterPage } from "../pages/WatterPage"
 import { HistorialPage } from "../pages/HistorialTransactionsPage.jsx"
 import { FundraisingCampaignsDetailPage } from "../pages/FundraisingCampaignsDetailPage.jsx"
 import { FundraisingCampaignsUserPage } from "../pages/FundraisingCampaignsUserPage.jsx"
+import { AsignTurnPage } from "../pages/AsignTurnPage.jsx"
 
 const router = createBrowserRouter(
     [
@@ -64,6 +65,10 @@ const router = createBrowserRouter(
                 {
                     path: '/community-collaboration',
                     element: <CommunityCollaborationPage/>
+                },
+                {
+                    path: '/community-collaboration/assign-turn',
+                    element: <AsignTurnPage/>
                 },
                 {
                     path: '/cashpayment',
