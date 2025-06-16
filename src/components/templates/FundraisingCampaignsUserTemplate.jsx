@@ -1,55 +1,23 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { UserAuth } from '../../context/AuthContext';
 import { NavLink } from 'react-router';
 
 export const FundraisingCampaignsTemplate = () => {
-const campaigns = [
-    {
-      name: 'Renovación del parque infantil',
-      goal: 5000,
-      raised: 3500,
-      progress: 70,
-      category: 'Comunidad',
-      action: 'Ver más',
-      status: 'Finalizado',
-    },
-    {
-      name: 'Apoyo a familias necesitadas',
-      goal: 10000,
-      raised: 8000,
-      progress: 80,
-      category: 'Social',
-      action: 'Donar',
-      status: 'Activo',
-    },
-    {
-      name: 'Equipamiento para el centro comunitario',
-      goal: 7500,
-      raised: 4500,
-      progress: 60,
-      category: 'Comunidad',
-      action: 'Ver más',
-      status: 'Finalizado',
-    },
-    {
-      name: 'Becas para estudiantes locales',
-      goal: 12000,
-      raised: 9000,
-      progress: 75,
-      category: 'Educación',
-      action: 'Donar',
-      status: 'Activo',
-    },
-    {
-      name: 'Mejora de la biblioteca pública',
-      goal: 4000,
-      raised: 4000,
-      progress: 67,
-      category: 'Comunidad',
-      action: 'Ver más',
-      status: 'Finalizado',
-    },
-  ];
+  const [campaigns, setcampaigns] = useState([])
+
+  const getCampaigns = async() =>{
+    try{
+      const res = await fetch('http://localhost:3662/v1/aguacomun/campaign')
+      const data = await res.json()
+      setcampaigns(data)
+    }catch(e){
+      console.error('Error al obtener campañas', e)
+    }
+  }
+
+  useEffect(()=>{
+    getCampaigns()
+  },[])
 
   return (
     <div className="min-h-screen px-6 py-10 text-gray-800">
@@ -75,8 +43,8 @@ const campaigns = [
             <thead className=" text-[#589e4f]">
               <tr>
                 <th className="px-4 py-3">Proyecto</th>
-                <th className="px-4 py-3">Objetivo</th>
                 <th className="px-4 py-3">Recaudado</th>
+                <th className="px-4 py-3">Objetivo</th>
                 <th className="px-4 py-3">Progreso</th>
                 <th className="px-4 py-3">Categoría</th>
                 <th className="px-4 py-3">Acción</th>
@@ -87,8 +55,8 @@ const campaigns = [
               {campaigns.map((c, i) => (
                 <tr key={i} className="border-[0.5px] border-[#e4e4e4] border-x-[0px] hover:bg-gray-50">
                   <td className="px-4 py-3 text-[#a48647]">{c.name}</td>
-                  <td className="px-4 py-3 text-[#4f8096]">${c.goal.toLocaleString()}</td>
-                  <td className="px-4 py-3 text-[#4f8096]">${c.raised.toLocaleString()}</td>
+                  <td className="px-4 py-3 text-[#4f8096]">${c.amountRaised}</td>
+                  <td className="px-4 py-3 text-[#4f8096]">${c.goalAmount}</td>
                   <td className="px-4 py-6 w-48">
                     <div className="h-2 w-full bg-gray-200 rounded-full flex">
                       <div
@@ -104,9 +72,7 @@ const campaigns = [
                     </span>
                   </td>
                   <td className="px-4 py-3 text-blue-600 hover:underline cursor-pointer">
-                    <NavLink className='flex justify-center' to={`/campaigns/detail`}>
-                      {c.action}
-                    </NavLink>
+                    <button className='flex justify-center' to={`/campaigns/detail`}>a</button>
                   </td>
                   <td className="px-4 py-3">
                     <span
