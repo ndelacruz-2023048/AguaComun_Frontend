@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { useSocket } from "../hooks/useSocket";
 
 
 export const useCommunityCollaboration = create((set,get)=>({
@@ -25,6 +24,22 @@ export const useCommunityCollaboration = create((set,get)=>({
     setIdCommunityCollaboration:(p)=>{
         set({idCommunityCollaboration:p})
     },
-    
+    turnByActivityCollaboration:[],
+    setTurnByActivityCollaboration:(p)=>{
+        set({turnByActivityCollaboration:p})
+    },
+    getTurnByActivityCollaboration:async(p)=>{
+        const response = await fetch(`http://localhost:3662/v1/aguacomun/communityTurn/${p}`)
+        const responseJSON = await response.json()
+        set({turnByActivityCollaboration:responseJSON})
+        return {
+            data:responseJSON
+        }
+    },
+    isModalCommunityTurnConfirmationOpen:false,
+    setIsModalCommunityTurnConfirmationOpen:()=>{
+        const {isModalCommunityTurnConfirmationOpen} = get()
+        set({isModalCommunityTurnConfirmationOpen:isModalCommunityTurnConfirmationOpen ? false : true})
+    }
 
 }))

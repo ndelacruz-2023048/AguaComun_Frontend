@@ -24,7 +24,14 @@ export const LinksArraySidebarAdmin = [
         label: "Historial",
         icon: "ic:baseline-history",
         to: "/historialEconomyFundraising",
-    }
+    },
+    {
+        label: "Collaboration and Turns",
+        icon: "hugeicons:activity-04",
+        to: "/historialEconomyFundraising",
+    },
+
+
 ]
 
 export const LinksButtonsHome = [

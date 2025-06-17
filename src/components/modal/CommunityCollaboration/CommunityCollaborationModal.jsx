@@ -75,7 +75,7 @@ export const CommunityCollaborationModal = () => {
       activityName:data?.name,
       description:data?.description,
       startDate:fechaInicio,
-      endDate:fechaFin,
+      endDate:fechaFin, 
       startTime:HoraInicio,
       endTime:HoraFin,
       address:data?.direction,
