@@ -28,7 +28,7 @@ export const LinksArraySidebarAdmin = [
     {
         label: "Collaboration and Turns",
         icon: "hugeicons:activity-04",
-        to: "/historialEconomyFundraising",
+        to: "/community-collaboration/dashboard",
     },
 
 
