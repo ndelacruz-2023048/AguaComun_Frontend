@@ -4,12 +4,14 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { NavLink } from 'react-router';
 
 export const FundraisingCampaignsTemplates = () => {
-  const [campaigns, setcampaigns] = useState([]);
-  const [search, setSearch] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
-  const [dateFilter, setDateFilter] = useState("");
-  const navigate = useNavigate();
+  const [campaigns, setcampaigns] = useState([])
+  const [search, setSearch] = useState("")
+  const [categoryFilter, setCategoryFilter] = useState("")
+  const [statusFilter, setStatusFilter] = useState("")
+  const [dateFilter, setDateFilter] = useState("")
+  const [startDateFilter, setStartDateFilter] = useState("")
+  const [endDateFilter, setEndDateFilter] = useState("")
+  const navigate = useNavigate()
 
   const getCampaigns = async () => {
     try {
@@ -17,24 +19,23 @@ export const FundraisingCampaignsTemplates = () => {
       const data = await res.json();
       setcampaigns(data);
     } catch (e) {
-      console.error('Error al obtener campañas', e);
+      console.error('Error al obtener campañas', e)
     }
-  };
+  }
 
   const filteredCampaigns = campaigns.filter((c) => {
     const matchesName = c.name.toLowerCase().includes(search.toLowerCase());
     const matchesCategory = categoryFilter ? c.category === categoryFilter : true;
     const matchesStatus = statusFilter ? c.status === statusFilter : true;
 
-    const now = new Date();
-    const start = new Date(c.startDate);
-    const end = new Date(c.endDate);
-    const matchesDate = (() => {
-      if (dateFilter === 'futuras') return start > now;
-      if (dateFilter === 'actuales') return start <= now && end >= now;
-      if (dateFilter === 'pasadas') return end < now;
-      return true;
-    })();
+    const campaignStart = new Date(c.startDate);
+    const campaignEnd = new Date(c.endDate);
+    const filterStart = startDateFilter ? new Date(startDateFilter) : null;
+    const filterEnd = endDateFilter ? new Date(endDateFilter) : null;
+
+    const matchesDate =
+      (!filterStart || campaignEnd >= filterStart) &&
+      (!filterEnd || campaignStart <= filterEnd);
 
     return matchesName && matchesCategory && matchesStatus && matchesDate;
   });
@@ -46,22 +47,22 @@ export const FundraisingCampaignsTemplates = () => {
 
     const campañasMesActual = campaigns.filter(c => {
       const fecha = new Date(c.startDate);
-      return fecha.getMonth() === mesActual && fecha.getFullYear() === añoActual;
-    });
+      return fecha.getMonth() === mesActual && fecha.getFullYear() === añoActual
+    })
 
     const recaudadoMes = campañasMesActual.reduce((acc, c) => acc + (c.amountRaised || 0), 0);
     const activas = campaigns.filter(c => c.status === 'Activa').length;
     const proximasFinalizar = campaigns.filter(c => {
       const diasRestantes = (new Date(c.endDate) - new Date()) / (1000 * 60 * 60 * 24);
       return diasRestantes <= 7 && diasRestantes > 0;
-    }).length;
+    }).length
 
     return {
       recaudadoMes,
       activas,
       proximasFinalizar,
-    };
-  }, [campaigns]);
+    }
+  }, [campaigns])
 
   const actualizarEstado = async (id, nuevoEstado) => {
     try {
@@ -75,11 +76,11 @@ export const FundraisingCampaignsTemplates = () => {
     } catch (error) {
       console.error('Error al cambiar estado:', error);
     }
-  };
+  }
 
   useEffect(() => {
     getCampaigns();
-  }, []);
+  }, [])
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen font-sans w-[80vw]">
@@ -118,8 +119,8 @@ export const FundraisingCampaignsTemplates = () => {
           >
             <option value="">Categoría</option>
             <option value="Emergencia">Emergencia</option>
-            <option value="Educación">Educación</option>
-            <option value="Salud">Salud</option>
+            <option value="Importante">Importante</option>
+            <option value="Dispensable">Dispensable</option>
           </select>
           <select
             className="p-2 border rounded w-full md:w-auto"
@@ -131,16 +132,18 @@ export const FundraisingCampaignsTemplates = () => {
             <option value="Pausada">Pausada</option>
             <option value="Finalizada">Finalizada</option>
           </select>
-          <select
+          <input
+            type="date"
             className="p-2 border rounded w-full md:w-auto"
-            value={dateFilter}
-            onChange={(e) => setDateFilter(e.target.value)}
-          >
-            <option value="">Fechas</option>
-            <option value="futuras">Futuras</option>
-            <option value="actuales">En curso</option>
-            <option value="pasadas">Finalizadas</option>
-          </select>
+            value={startDateFilter}
+            onChange={(e) => setStartDateFilter(e.target.value)}
+          />
+          <input
+            type="date"
+            className="p-2 border rounded w-full md:w-auto"
+            value={endDateFilter}
+            onChange={(e) => setEndDateFilter(e.target.value)}
+          />
         </div>
       </div>
 
