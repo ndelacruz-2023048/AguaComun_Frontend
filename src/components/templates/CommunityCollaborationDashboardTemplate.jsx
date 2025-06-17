@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Icon } from '@iconify/react';
+import { useSocket } from '../../hooks/useSocket';
 
 export const CommunityCollaborationDashboardTemplate = () => {
   // Datos de ejemplo para la tabla principal
   const [selectedActivity, setSelectedActivity] = useState(0);
+  const [communityCollaboration,setCommunityCollaboration] = useState()
+  const socket = useSocket()
+
   const activities = [
     {
       activity: 'Riego de la parcela principal',
@@ -42,6 +46,15 @@ export const CommunityCollaborationDashboardTemplate = () => {
   ];
 
   const activity = activities[selectedActivity];
+  useEffect(()=>{
+      socket.emit("get-list-community-collaboration","need-data")
+      socket.on("list-community-collaboration",(data)=>{
+        setCommunityCollaboration(data)
+      })
+  },[])
+
+  console.log(communityCollaboration);
+  
 
   return (
     <div className="p-8 bg-[#f8fafc] min-h-screen">
