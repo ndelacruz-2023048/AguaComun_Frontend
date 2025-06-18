@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import { UserAuth } from '../../context/AuthContext';
-import { NavLink } from 'react-router';
+import { NavLink, useNavigate } from 'react-router';
 
 export const FundraisingCampaignsTemplate = () => {
+
+  const handleClick = (id) => {
+    navigate('/campaigns/detail', { state: { campaignId: id } })
+  }
+
   const [campaigns, setcampaigns] = useState([])
 
   const getCampaigns = async() =>{
@@ -19,8 +24,10 @@ export const FundraisingCampaignsTemplate = () => {
     getCampaigns()
   },[])
 
+  const navigate = useNavigate()
+
   return (
-    <div className="min-h-screen px-6 py-10 text-gray-800">
+    <div className="flex w-[100%] min-h-screen px-6 py-10 text-gray-800">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl font-bold mb-1 text-[#338826]">Campañas de recaudación</h1>
         <p className="text-sm mb-8 text-[#338826]">
@@ -30,11 +37,11 @@ export const FundraisingCampaignsTemplate = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
           <div className="bg-[#fffddf] p-5 rounded shadow ">
             <p className="text-sm text-gray-500">Total recaudado</p>
-            <p className="text-2xl font-bold">$25,000</p>
+            <p className="text-2xl font-bold">${campaigns.reduce((acc, c) => acc + (c.amountRaised || 0), 0).toLocaleString()}</p>
           </div>
           <div className="bg-[#fffddf] p-5 rounded shadow">
             <p className="text-sm text-gray-500">Campañas activas</p>
-            <p className="text-2xl font-bold">12</p>
+            <p className="text-2xl font-bold">{campaigns.filter(c=>c.status==='Activa').length}</p>
           </div>
         </div>
 
@@ -61,7 +68,7 @@ export const FundraisingCampaignsTemplate = () => {
                     <div className="h-2 w-full bg-gray-200 rounded-full flex">
                       <div
                         className="h-2 bg-[#d7ad2c] rounded-full"
-                        style={{ width: `${c.progress}%`}}
+                        style={{ width: `${(c.amountRaised / c.goalAmount) * 100}%`}}
                       />
                     </div>
                       {c.progress}
@@ -71,9 +78,14 @@ export const FundraisingCampaignsTemplate = () => {
                       {c.category}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-blue-600 hover:underline cursor-pointer">
-                    <button className='flex justify-center' to={`/campaigns/detail`}>a</button>
-                  </td>
+                  <td
+                      className="px-4 py-3 text-blue-600 hover:underline cursor-pointer"
+                      onClick={() => handleClick(c._id)}
+                    >
+                      <div className="flex justify-center">
+                        {c.status === 'Activa' ? 'Donar' : 'Ver más'}
+                      </div>
+                    </td>
                   <td className="px-4 py-3">
                     <span
                       className={`text-xs font-semibold flex justify-center ${
