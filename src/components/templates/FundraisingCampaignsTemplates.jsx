@@ -1,21 +1,24 @@
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { useNavigate } from 'react-router';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { NavLink } from 'react-router';
 
 export const FundraisingCampaignsTemplates = () => {
   const [campaigns, setcampaigns] = useState([])
-  const [search, setSearch] = useState("");
-  const [categoryFilter, setCategoryFilter] = useState("");
-  const [statusFilter, setStatusFilter] = useState("");
-  const navigate = useNavigate();
+  const [search, setSearch] = useState("")
+  const [categoryFilter, setCategoryFilter] = useState("")
+  const [statusFilter, setStatusFilter] = useState("")
+  const [dateFilter, setDateFilter] = useState("")
+  const [startDateFilter, setStartDateFilter] = useState("")
+  const [endDateFilter, setEndDateFilter] = useState("")
+  const navigate = useNavigate()
 
-  const getCampaigns = async() =>{
-    try{
-      const res = await fetch('http://localhost:3662/v1/aguacomun/campaign')
-      const data = await res.json()
-      setcampaigns(data)
-    }catch(e){
+  const getCampaigns = async () => {
+    try {
+      const res = await fetch('http://localhost:3662/v1/aguacomun/campaign');
+      const data = await res.json();
+      setcampaigns(data);
+    } catch (e) {
       console.error('Error al obtener campañas', e)
     }
   }
@@ -24,29 +27,60 @@ export const FundraisingCampaignsTemplates = () => {
     const matchesName = c.name.toLowerCase().includes(search.toLowerCase());
     const matchesCategory = categoryFilter ? c.category === categoryFilter : true;
     const matchesStatus = statusFilter ? c.status === statusFilter : true;
-    return matchesName && matchesCategory && matchesStatus;
+
+    const campaignStart = new Date(c.startDate);
+    const campaignEnd = new Date(c.endDate);
+    const filterStart = startDateFilter ? new Date(startDateFilter) : null;
+    const filterEnd = endDateFilter ? new Date(endDateFilter) : null;
+
+    const matchesDate =
+      (!filterStart || campaignEnd >= filterStart) &&
+      (!filterEnd || campaignStart <= filterEnd);
+
+    return matchesName && matchesCategory && matchesStatus && matchesDate;
   });
 
+  const resumen = useMemo(() => {
+    const hoy = new Date();
+    const mesActual = hoy.getMonth();
+    const añoActual = hoy.getFullYear();
 
-  
+    const campañasMesActual = campaigns.filter(c => {
+      const fecha = new Date(c.startDate);
+      return fecha.getMonth() === mesActual && fecha.getFullYear() === añoActual
+    })
 
-  useEffect(()=>{
-    getCampaigns()
-  },[])
-  
-const actualizarEstado = async (id, nuevoEstado) => {
-  try {
-    await fetch(`http://localhost:3662/v1/aguacomun/campaign/${id}/status`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ status: nuevoEstado }),
-    });
-    getCampaigns()
-    console.log('Si funciona el boton')
-  } catch (error) {
-    console.error('Error al cambiar estado:', error);
+    const recaudadoMes = campañasMesActual.reduce((acc, c) => acc + (c.amountRaised || 0), 0);
+    const activas = campaigns.filter(c => c.status === 'Activa').length;
+    const proximasFinalizar = campaigns.filter(c => {
+      const diasRestantes = (new Date(c.endDate) - new Date()) / (1000 * 60 * 60 * 24);
+      return diasRestantes <= 7 && diasRestantes > 0;
+    }).length
+
+    return {
+      recaudadoMes,
+      activas,
+      proximasFinalizar,
+    }
+  }, [campaigns])
+
+  const actualizarEstado = async (id, nuevoEstado) => {
+    try {
+      await fetch(`http://localhost:3662/v1/aguacomun/campaign/${id}/status`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: nuevoEstado }),
+      });
+      getCampaigns();
+      console.log('Cambio de estado exitoso');
+    } catch (error) {
+      console.error('Error al cambiar estado:', error);
+    }
   }
-};
+
+  useEffect(() => {
+    getCampaigns();
+  }, [])
 
   return (
     <div className="p-8 bg-gray-100 min-h-screen font-sans w-[80vw]">
@@ -61,11 +95,11 @@ const actualizarEstado = async (id, nuevoEstado) => {
         </button>
       </div>
 
-      {/* Resumen */}
+      {/* Resumen dinámico */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <Resumen titulo="Recaudado Mensual" valor="$12,500" />
-        <Resumen titulo="Campañas Activas" valor="15" />
-        <Resumen titulo="Campañas Próximas a Finalizar" valor="3" />
+        <Resumen titulo="Recaudado Mensual" valor={`$${resumen.recaudadoMes.toLocaleString()}`} />
+        <Resumen titulo="Campañas Activas" valor={resumen.activas} />
+        <Resumen titulo="Próximas a Finalizar" valor={resumen.proximasFinalizar} />
       </div>
 
       {/* Filtros */}
@@ -78,14 +112,15 @@ const actualizarEstado = async (id, nuevoEstado) => {
           onChange={(e) => setSearch(e.target.value)}
         />
         <div className="flex flex-wrap gap-4">
-          <select className="p-2 border rounded w-full md:w-auto"
-          value={categoryFilter}
-          onChange={(e)=>setCategoryFilter(e.target.value)}
+          <select
+            className="p-2 border rounded w-full md:w-auto"
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
           >
             <option value="">Categoría</option>
             <option value="Emergencia">Emergencia</option>
-            <option value="Educación">Educación</option>
-            <option value="Salud">Salud</option>
+            <option value="Importante">Importante</option>
+            <option value="Dispensable">Dispensable</option>
           </select>
           <select
             className="p-2 border rounded w-full md:w-auto"
@@ -97,9 +132,18 @@ const actualizarEstado = async (id, nuevoEstado) => {
             <option value="Pausada">Pausada</option>
             <option value="Finalizada">Finalizada</option>
           </select>
-          <select className="p-2 border rounded w-full md:w-auto">
-            <option>Fechas</option>
-          </select>
+          <input
+            type="date"
+            className="p-2 border rounded w-full md:w-auto"
+            value={startDateFilter}
+            onChange={(e) => setStartDateFilter(e.target.value)}
+          />
+          <input
+            type="date"
+            className="p-2 border rounded w-full md:w-auto"
+            value={endDateFilter}
+            onChange={(e) => setEndDateFilter(e.target.value)}
+          />
         </div>
       </div>
 
@@ -121,21 +165,21 @@ const actualizarEstado = async (id, nuevoEstado) => {
             {filteredCampaigns.map((c, idx) => (
               <tr key={idx} className="border-t">
                 <td className="p-4">{c.name}</td>
-                  <td className="p-4 text-blue-600">{c.category}</td>
-                  <td className="p-4">
-                    {new Date(c.startDate).toLocaleDateString()} - {new Date(c.endDate).toLocaleDateString()}
-                  </td>
-                  <td className="p-4">
-                    ${c.amountRaised} / ${c.goalAmount}
-                  </td>
-                  <td className="p-4 w-40">
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div
-                        className="bg-blue-500 h-2 rounded-full"
-                        style={{ width: `${(c.amountRaised / c.goalAmount) * 100}%` }}
-                      ></div>
-                    </div>
-                  </td>
+                <td className="p-4 text-blue-600">{c.category}</td>
+                <td className="p-4">
+                  {new Date(c.startDate).toLocaleDateString()} - {new Date(c.endDate).toLocaleDateString()}
+                </td>
+                <td className="p-4">
+                  ${c.amountRaised} / ${c.goalAmount}
+                </td>
+                <td className="p-4 w-40">
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-blue-500 h-2 rounded-full"
+                      style={{ width: `${(c.amountRaised / c.goalAmount) * 100}%` }}
+                    ></div>
+                  </div>
+                </td>
                 <td className="p-4">
                   <span
                     className={`px-2 py-1 rounded text-white text-xs ${
@@ -159,7 +203,7 @@ const actualizarEstado = async (id, nuevoEstado) => {
                   </div>
 
                   <button
-                    disabled={c.estado === 'Finalizada'}
+                    disabled={c.status === 'Finalizada'}
                     onClick={() => actualizarEstado(c._id, 'Finalizada')}
                     className="flex items-center gap-1 text-gray-700 disabled:opacity-40"
                   >
@@ -168,7 +212,7 @@ const actualizarEstado = async (id, nuevoEstado) => {
                   </button>
 
                   <button
-                    disabled={c.estado === 'Pausada'}
+                    disabled={c.status === 'Pausada'}
                     onClick={() => actualizarEstado(c._id, 'Pausada')}
                     className="flex items-center gap-1 text-yellow-600 disabled:opacity-40"
                   >
@@ -177,7 +221,7 @@ const actualizarEstado = async (id, nuevoEstado) => {
                   </button>
 
                   <button
-                    disabled={c.estado === 'Activa'}
+                    disabled={c.status === 'Activa'}
                     onClick={() => actualizarEstado(c._id, 'Activa')}
                     className="flex items-center gap-1 text-green-600 disabled:opacity-40"
                   >
@@ -204,9 +248,9 @@ const actualizarEstado = async (id, nuevoEstado) => {
 
 function Resumen({ titulo, valor }) {
   return (
-    <div>
-      FundraisingCampaignsTemplates
-      {/* You can add more components or content here as needed */}
+    <div className="bg-white p-4 rounded shadow text-center">
+      <p className="text-gray-500 text-sm">{titulo}</p>
+      <p className="text-xl font-semibold">{valor}</p>
     </div>
   );
 }
