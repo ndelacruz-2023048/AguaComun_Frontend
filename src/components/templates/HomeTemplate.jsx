@@ -26,7 +26,7 @@ export const HomeTemplate = memo(() => {
   },[])
 
   return (
-    <div className="flex flex-col min-h-screen w-full bg-gray-50 px-4 sm:px-6 lg:px-8 py-5">
+    <div className="flex flex-col h-full w-full bg-gray-50 px-4 sm:px-6 lg:px-8 py-5">
       <h1 className="text-3xl md:text-4xl lg:text-[40px] font-bold mb-6">Welcome, {`${name} ${surname}`}</h1>
 
       <div className="flex gap-4 mt-8 ">

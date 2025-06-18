@@ -29,7 +29,7 @@ export const WatterTemplate = () => {
     },[socket])
     const [isModalOpen, setIsModalOpen] = useState(false)
     return (
-        <div className='w-full h-full'>
+        <div className='w-full'>
             <div className='flex flex-col gap-2 w-full h-full ml-50 mt-10 '>
                 <div>
                     <h1 className='text-[#338826] text-2xl font-bold'>Report a Water Issue</h1>

@@ -18,7 +18,7 @@ export const ManagerCommunityTemplate = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen w-6/7 bg-[#F7FAFC] px-4 sm:px-6 lg:px-8 py-5">
+    <div className="flex flex-col w-6/7 bg-[#F7FAFC] px-4 sm:px-6 lg:px-8 py-5">
       <h1 className="text-3xl md:text-4xl lg:text-[40px] font-bold mb-6 md:mb-8 lg:mb-5 text-[#338826]">Manage Communities</h1>
       <div className="relative w-full lg:w-2/3 mb-10 md:mb-8 lg:mb-8">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

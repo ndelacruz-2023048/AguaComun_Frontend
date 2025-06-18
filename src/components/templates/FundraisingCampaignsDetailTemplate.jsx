@@ -34,7 +34,7 @@ export const FundraisingCampaignsDetailTemplate = () => {
   const progress = Math.min((campaign.amountRaised / campaign.goalAmount) * 100, 100).toFixed(0)
 
   return (
-    <div className="min-h-screen bg-white text-gray-800 px-6 py-10">
+    <div className="h-full bg-white text-gray-800 px-6 py-10">
       <section className="max-w-3xl mx-auto">
         <h2 className="text-3xl font-bold text-green-700 mb-2">
           {campaign.name}

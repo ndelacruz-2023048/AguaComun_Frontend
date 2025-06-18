@@ -4,7 +4,7 @@ import { Icon } from '@iconify/react/dist/iconify.js'
 
 export const SidebarAdmin = () => {
   return (
-    <section className="w-1/7  bg-gray-100 p-4">
+    <section className="w-1/7 bg-gray-50 p-4">
       {LinksArraySidebarAdmin.map(({ label, icon, to }) => (
         <div key={to} className="mb-2">
           <NavLink 

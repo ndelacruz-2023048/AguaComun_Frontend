@@ -41,7 +41,7 @@ export const HistorialTemplate = () => {
   ];
 
   return (
-    <div className="min-h-screen p-8 justify-center">
+    <div className="p-8 justify-center">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl font-bold text-[#589e4f] mb-2">
           Historial de Aportes en Efectivo

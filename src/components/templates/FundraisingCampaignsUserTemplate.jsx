@@ -26,7 +26,7 @@ export const FundraisingCampaignsTemplate = () => {
   const navigate = useNavigate()
 
   return (
-    <div className="flex w-[100%] min-h-screen px-6 py-10 text-gray-800">
+    <div className="flex w-[100%] px-6 py-10 text-gray-800">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl font-bold mb-1 text-[#338826]">Campañas de recaudación</h1>
         <p className="text-sm mb-8 text-[#338826]">

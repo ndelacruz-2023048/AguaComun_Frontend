@@ -71,9 +71,9 @@ export const RegisterTemplate = () => {
   }
   return (
     <div style={{ backgroundImage: `url(${Logo})` }} className='bg-cover bg-center bg-no-repeat h-screen w-screen flex'>
-      <div className='flex flex-col bg-white p-5 w-[25%] rounded-xl right-[20%] top-35 absolute'>
+      <div className='flex flex-col bg-white p-5 w-[25%] rounded-xl xl:right-[15%] 2xl:right-[10%] 2xl:top-45 xl:top-35 absolute'>
         <h1 className='text-[#919d4f]/90 text-6xl font-ConcertOne mb-4 text-center'>Register</h1>
-        <div className='space-y-6 p-6 rounded-lg shadow-lg w-[335px]'>
+        <div className='space-y-6 p-6 rounded-lg shadow-lg w-[335px] 2xl:w-[430px] '>
           <div className="flex items-center gap-4">
             <StepIndicator
               currentStep={currentIndex + 1}

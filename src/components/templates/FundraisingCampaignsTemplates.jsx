@@ -83,7 +83,7 @@ export const FundraisingCampaignsTemplates = () => {
   }, [])
 
   return (
-    <div className="p-8 bg-gray-100 min-h-screen font-sans w-[80vw]">
+    <div className="p-8 bg-gray-100 font-sans w-full">
       {/* Título y botón */}
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-2xl font-bold">Gestión de Campañas de Recaudación</h1>

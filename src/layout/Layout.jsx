@@ -41,13 +41,13 @@ export const Layout = () => {
     }
 
     return (
-        <div>
-            <header className='flex justify-between items-center text-black py-4 px-8 md:px-15 bg-white drop-shadow-md'>
+        <div className='w-full h-full absolute bg-gray-50'>
+            <header className='flex justify-between items-center text-black py-4 px-18 md:px-15 bg-white drop-shadow-md'>
                 <div className='flex items-center gap-4'>
                     <img src={logo} alt="LogoAguaComun" className='w-10 h-10 rounded-full hover:scale-105 transition-all'/>
                     <h1 className='font-bold text-2xl'>AguaComún</h1>
                 </div>
-                <div className='flex gap-6 items-center'>
+                <div className='flex gap-8 items-center'>
                     <div className='flex gap-6 '>
                         <NavLink to={'/'}>
                             <span className='text-lg'>Home</span>
@@ -84,10 +84,10 @@ export const Layout = () => {
                         )}
                         {isMenuOpen && (
                             <div
-                                className=" absolute left-450 mt-2 w-48 bg-gray-100 rounded-md shadow-lg z-10 origin-top-right"
+                                className=" absolute 2xl:left-452.5 xl:left-356.5 mt-2 w-48 bg-gray-100 rounded-md shadow-lg z-10 origin-top-right"
                                 style={{ transform: 'translateX(-100%)' }}
                             >
-                                <div className='absolute left-44 top-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-gray-100'/>
+                                <div className='absolute left-45.5 top-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-gray-100'/>
                                 <NavLink to="/profile" className="px-4 py-2 flex gap-2 hover:bg-gray-200">
                                     <Icon icon="iconamoon:profile-fill" width="20" height="20" />
                                     Profile
@@ -109,8 +109,8 @@ export const Layout = () => {
                     </div>
                 </div>
             </header>
-            <main>
-                <div className='flex flex-col md:flex-row'>
+            <main className='w-full'>
+                <div className='flex flex-col md:flex-row '>
                     {descodeUserState?.type === "ADMIN" && (
                         <SidebarAdmin/>
                     )}
