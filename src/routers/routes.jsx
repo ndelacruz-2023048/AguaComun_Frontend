@@ -54,7 +54,6 @@ const router = createBrowserRouter(
                     path: '/campaigns',
                     element: <FundraisingCampaignsPage/>
                 },
-                ,
                 {
                     path: '/campaigns/detail',
                     element: <FundraisingCampaignsDetailPage/>
@@ -111,8 +110,10 @@ const router = createBrowserRouter(
                 <RegisterPage/>
             </ProtectedRoutes>
         },
-        
-        
+        {
+            path: '/*',
+            element: <div>404 not found</div>
+        }
     ]
 )
 

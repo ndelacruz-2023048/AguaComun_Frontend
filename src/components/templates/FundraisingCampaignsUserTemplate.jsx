@@ -1,58 +1,32 @@
-import React from 'react'
-import { UserAuth } from '../../context/AuthContext';
-import { NavLink } from 'react-router';
+import React, { useEffect, useState }from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 export const FundraisingCampaignsTemplate = () => {
-const campaigns = [
-    {
-      name: 'Renovación del parque infantil',
-      goal: 5000,
-      raised: 3500,
-      progress: 70,
-      category: 'Comunidad',
-      action: 'Ver más',
-      status: 'Finalizado',
-    },
-    {
-      name: 'Apoyo a familias necesitadas',
-      goal: 10000,
-      raised: 8000,
-      progress: 80,
-      category: 'Social',
-      action: 'Donar',
-      status: 'Activo',
-    },
-    {
-      name: 'Equipamiento para el centro comunitario',
-      goal: 7500,
-      raised: 4500,
-      progress: 60,
-      category: 'Comunidad',
-      action: 'Ver más',
-      status: 'Finalizado',
-    },
-    {
-      name: 'Becas para estudiantes locales',
-      goal: 12000,
-      raised: 9000,
-      progress: 75,
-      category: 'Educación',
-      action: 'Donar',
-      status: 'Activo',
-    },
-    {
-      name: 'Mejora de la biblioteca pública',
-      goal: 4000,
-      raised: 4000,
-      progress: 67,
-      category: 'Comunidad',
-      action: 'Ver más',
-      status: 'Finalizado',
-    },
-  ];
+
+  const handleClick = (id) => {
+    navigate('/campaigns/detail', { state: { campaignId: id } })
+  }
+
+  const [campaigns, setcampaigns] = useState([])
+
+  const getCampaigns = async() =>{
+    try{
+      const res = await fetch('http://localhost:3662/v1/aguacomun/campaign')
+      const data = await res.json()
+      setcampaigns(data)
+    }catch(e){
+      console.error('Error al obtener campañas', e)
+    }
+  }
+
+  useEffect(()=>{
+    getCampaigns()
+  },[])
+
+  const navigate = useNavigate()
 
   return (
-    <div className="min-h-screen px-6 py-10 text-gray-800">
+    <div className="flex w-[100%] min-h-screen px-6 py-10 text-gray-800">
       <div className="max-w-6xl mx-auto">
         <h1 className="text-3xl font-bold mb-1 text-[#338826]">Campañas de recaudación</h1>
         <p className="text-sm mb-8 text-[#338826]">
@@ -60,23 +34,23 @@ const campaigns = [
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-          <div className="bg-[#fffddf] p-5 rounded shadow ">
+          <div className="bg-[#fffddf] p-5 rounded shadow">
             <p className="text-sm text-gray-500">Total recaudado</p>
-            <p className="text-2xl font-bold">$25,000</p>
+            <p className="text-2xl font-bold">${campaigns.reduce((acc, c) => acc + (c.amountRaised || 0), 0).toLocaleString()}</p>
           </div>
           <div className="bg-[#fffddf] p-5 rounded shadow">
             <p className="text-sm text-gray-500">Campañas activas</p>
-            <p className="text-2xl font-bold">12</p>
+            <p className="text-2xl font-bold">{campaigns.filter(c=>c.status==='Activa').length}</p>
           </div>
         </div>
 
         <div className="overflow-x-auto bg-white rounded-xl shadow border-[0.5px] border-[#e4e4e4]">
           <table className="min-w-full text-sm text-left">
-            <thead className=" text-[#589e4f]">
+            <thead className="text-[#589e4f]">
               <tr>
                 <th className="px-4 py-3">Proyecto</th>
-                <th className="px-4 py-3">Objetivo</th>
                 <th className="px-4 py-3">Recaudado</th>
+                <th className="px-4 py-3">Objetivo</th>
                 <th className="px-4 py-3">Progreso</th>
                 <th className="px-4 py-3">Categoría</th>
                 <th className="px-4 py-3">Acción</th>
@@ -87,13 +61,13 @@ const campaigns = [
               {campaigns.map((c, i) => (
                 <tr key={i} className="border-[0.5px] border-[#e4e4e4] border-x-[0px] hover:bg-gray-50">
                   <td className="px-4 py-3 text-[#a48647]">{c.name}</td>
-                  <td className="px-4 py-3 text-[#4f8096]">${c.goal.toLocaleString()}</td>
-                  <td className="px-4 py-3 text-[#4f8096]">${c.raised.toLocaleString()}</td>
+                  <td className="px-4 py-3 text-[#4f8096]">${c.amountRaised}</td>
+                  <td className="px-4 py-3 text-[#4f8096]">${c.goalAmount}</td>
                   <td className="px-4 py-6 w-48">
                     <div className="h-2 w-full bg-gray-200 rounded-full flex">
                       <div
                         className="h-2 bg-[#d7ad2c] rounded-full"
-                        style={{ width: `${c.progress}%`}}
+                        style={{ width: `${(c.amountRaised / c.goalAmount) * 100}%`}}
                       />
                     </div>
                       {c.progress}
@@ -103,11 +77,14 @@ const campaigns = [
                       {c.category}
                     </span>
                   </td>
-                  <td className="px-4 py-3 text-blue-600 hover:underline cursor-pointer">
-                    <NavLink className='flex justify-center' to={`/campaigns/detail`}>
-                      {c.action}
-                    </NavLink>
-                  </td>
+                  <td
+                      className="px-4 py-3 text-blue-600 hover:underline cursor-pointer"
+                      onClick={() => handleClick(c._id)}
+                    >
+                      <div className="flex justify-center">
+                        {c.status === 'Activa' ? 'Donar' : 'Ver más'}
+                      </div>
+                    </td>
                   <td className="px-4 py-3">
                     <span
                       className={`text-xs font-semibold flex justify-center ${
@@ -125,4 +102,4 @@ const campaigns = [
       </div>
     </div>
   );
-}
+};

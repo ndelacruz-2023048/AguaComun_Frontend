@@ -14,12 +14,12 @@ export default function FormularioCampana({ modo = "crear" }) {
     endDate: "",
     description: "",
     imageUrl: ""
-  });
+  })
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-  };
+  }
 
   useEffect(() => {
     if (modo === "editar" && id) {
@@ -31,10 +31,17 @@ export default function FormularioCampana({ modo = "crear" }) {
         })
         .catch((err) => console.error("Error al obtener campaña:", err));
     }
-  }, [modo, id]);
+  }, [modo, id])
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const { name, category, status, goalAmount, startDate, endDate, description, imageUrl } = formData;
+
+    if (!name || !category || !goalAmount || !startDate || !endDate || !description || !imageUrl) {
+      alert("Todos los campos son obligatorios");
+      return;
+    }
 
     const url =
       modo === "editar"
@@ -44,16 +51,23 @@ export default function FormularioCampana({ modo = "crear" }) {
     const method = modo === "editar" ? "PUT" : "POST";
 
     try {
-      await fetch(url, {
+      const res = await fetch(url, {
         method,
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
+
+      if (!res.ok) {
+        throw new Error("Error al guardar la campaña");
+      }
+
       navigate("/campaigns");
     } catch (err) {
       console.error("Error al guardar campaña:", err);
+      alert("Hubo un error al guardar la campaña.");
     }
   };
+
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl mx-auto w-[100vw]">
@@ -73,13 +87,17 @@ export default function FormularioCampana({ modo = "crear" }) {
             value={formData.name}
             onChange={handleChange}
           />
-          <input
+          <select
             className="input"
             placeholder="Categoría"
             name="category"
             value={formData.category}
             onChange={handleChange}
-          />
+            >
+            <option value="Emergencia">Emergencia</option>
+            <option value="Importante">Importante</option>
+            <option value="Dispensable">Dispensable</option>
+          </select>
           <select
             className="input"
             name="status"

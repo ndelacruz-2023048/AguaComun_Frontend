@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Logo from '../../assets/AguaComunLogin.webp'
 import { defineStepper } from '@stepperize/react';
 import { useForm, FormProvider } from 'react-hook-form';
 import { PhoneField } from '../molecules/PhoneField';
 import { useRegister } from '../../hooks/useRegister';
 import { useNavigate } from 'react-router';
+import { guatemalaData } from '../../GuatemalaData/GTData';
 
 const { useStepper, utils } = defineStepper(
   {
@@ -239,7 +240,19 @@ const PersonalComponent = ({methods}) => {
 };
 
 const AddresAndContactComponent = ({ methods }) => {
-  const { register, formState: { errors } } = methods;
+  const { register, watch, setValue, formState: { errors } } = methods;
+  const department = watch('department')
+
+  const [municipalityList, setMunicipalityList] = useState([]);
+
+  const handleDepartmentChange = (e) => {
+    const selectedDept = e.target.value
+    setValue('department', selectedDept)
+    if (selectedDept) {
+      setMunicipalityList(guatemalaData.municipalitiesByDepartment[selectedDept] || []);
+      setValue('municipality', '')
+    }
+  }
 
   return (
     <FormProvider {...methods}>
@@ -250,67 +263,72 @@ const AddresAndContactComponent = ({ methods }) => {
         {/* Otros campos */}
         <div className="grid grid-cols-2 gap-2">
           <div className="grid gap-2">
-            <label htmlFor="department" className="text-sm font-medium text-start">
-              Departamento
-            </label>
-            <input
-              id="department"
-              {...register('department', { 
-                required: {
-                  value: true,
-                  message: 'El Departamento es requerido',
-                } 
-              })}
-              placeholder="Sacatepéquez"
-              className="w-full border rounded p-2"
-            />
-            {errors.department && (
-              <span className="text-red-500 text-xs">{errors.department.message}</span>
-            )}
-          </div>
+          <label htmlFor="department">Departamento</label>
+          <select
+            id="department"
+            {...register('department', { 
+              required: {
+                value: true,
+                message: 'El Departamento es obligatorio'
+              } 
+            })}
+            onChange={handleDepartmentChange}
+            className="w-full border rounded p-2"
+          >
+            <option value="">Selecciona un departamento</option>
+            {guatemalaData.departments.map((dept) => (
+              <option key={dept} value={dept}>{dept}</option>
+            ))}
+          </select>
+
+          {errors.department && <span className="text-red-500 text-xs">{errors.department.message}</span>}
+        </div>
 
           <div className="grid gap-2">
-            <label htmlFor="municipality" className="text-sm font-medium text-start">
-              Municipio
-            </label>
-            <input
+            <label htmlFor="municipality">Municipio</label>
+            <select
               id="municipality"
               {...register('municipality', { 
                 required: {
                   value: true,
-                  message: 'El Municipio es requerido',
-                }
+                  message: 'El Municipio es obligatorio'
+                } 
               })}
-              placeholder="San Lucas"
+              disabled={!department}
               className="w-full border rounded p-2"
-            />
-            {errors.municipality && (
-              <span className="text-red-500 text-xs">{errors.municipality.message}</span>
-            )}
+            >
+              <option value="">Selecciona un municipio</option>
+              {municipalityList.map((muni) => (
+                <option key={muni} value={muni}>{muni}</option>
+              ))}
+            </select>
+            {errors.municipality && <span className="text-red-500 text-xs">{errors.municipality.message}</span>}
           </div>
         </div>
-
+        
         <div className="grid gap-2">
-          <label htmlFor="zone" className="text-sm font-medium text-start">
-            Zona
-          </label>
-          <input
+          <label htmlFor="zone">Zona</label>
+          <select
             id="zone"
-            {...register('zone', {
+            {...register('zone', { 
               required: {
                 value: true,
-                message: 'La Zona es requerida',
-              }
+                message: 'La Zona es obligatorio'
+              } 
             })}
-            placeholder="Zona 2"
             className="w-full border rounded p-2"
-          />
+          >
+            <option value="">Selecciona una zona</option>
+            {guatemalaData.zones.map((z) => (
+              <option key={z} value={z}>{z}</option>
+            ))}
+          </select>
           {errors.zone && <span className="text-red-500 text-xs">{errors.zone.message}</span>}
         </div>
       </div>
     </FormProvider>
   );
-};
+}
 
 const CredentialsComponent = ({methods}) => {
   const { register, formState: { errors } } = methods;
