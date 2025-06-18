@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { PaymentModal } from '../modal/PaymentModal'
+import { useSocket } from '../../hooks/useSocket'
 
 export const FundraisingCampaignsDetailTemplate = () => {
+  const socket = useSocket()
   const { state } = useLocation()
   const navigate = useNavigate()
   const campaignId = state?.campaignId
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [campaign, setCampaign] = useState(null)
+  const [donors, setDonors] = useState([])
 
   useEffect(() => {
     if (!campaignId) {
@@ -16,6 +19,7 @@ export const FundraisingCampaignsDetailTemplate = () => {
       return
     }
 
+    // Petición inicial HTTP
     const fetchCampaign = async () => {
       try {
         const res = await fetch(`http://localhost:3662/v1/aguacomun/campaign/${campaignId}`)
@@ -27,6 +31,18 @@ export const FundraisingCampaignsDetailTemplate = () => {
     }
 
     fetchCampaign()
+
+    // Escuchar pagos en tiempo real
+    socket.emit('get-payments-campaign', campaignId)
+
+    socket.on('list-campaign-payments', (payments) => {
+      setDonors(payments)
+    })
+
+    return () => {
+      socket.off('list-campaign-payments')
+    }
+    
   }, [campaignId, navigate])
 
   if (!campaign) return <p>Loading...</p>
@@ -44,7 +60,7 @@ export const FundraisingCampaignsDetailTemplate = () => {
         <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
           <div className="bg-green-600 h-4 rounded-full" style={{ width: `${progress}%` }}></div>
         </div>
-        <p className="text-sm text-gray-600 mb-6">75% funded · 3,000 / 5,000 Q</p>
+        <p className="text-sm text-gray-600 mb-6">{progress}% funded · ${campaign.amountRaised}/${campaign.goalAmount}</p>
 
         <div className="mb-6">
           <h3 className="font-semibold text-lg">Project Details</h3>
@@ -85,20 +101,15 @@ export const FundraisingCampaignsDetailTemplate = () => {
         <div className="mb-8">
           <h3 className="font-semibold text-lg mb-2">Donor List</h3>
           <ul className="text-sm text-gray-700">
-            {campaign.donors?.length > 0 ? (
-              campaign.donors.map((donor, index) => (
+            {donors.length > 0 ? (
+              donors.map((donor, index) => (
                 <li key={index} className="flex justify-between py-2">
-                  <span>{donor.name || 'Anonymous'}</span>
+                  <span>{donor.user?.name || 'Anónimo'}</span>
                   <span>{donor.amount} Q</span>
                 </li>
               ))
             ) : (
-              <>
-                <li className="flex justify-between py-2"><span>Elena Morales</span><span>500 Q</span></li>
-                <li className="flex justify-between py-2"><span>Carlos Lopez</span><span>200 Q</span></li>
-                <li className="flex justify-between py-2"><span>Sofia Ramirez</span><span>1000 Q</span></li>
-                <li className="flex justify-between py-2"><span>Anonymous</span><span>1300 Q</span></li>
-              </>
+              <p className="text-sm text-gray-500">Aún no hay aportes.</p>
             )}
           </ul>
         </div>
