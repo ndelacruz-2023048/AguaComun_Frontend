@@ -111,7 +111,7 @@ export const Layout = () => {
             </header>
             <main className='w-full'>
                 <div className='flex flex-col md:flex-row '>
-                    {descodeUserState?.type === "ADMIN" && (
+                    {(descodeUserState?.type === "ADMIN" || descodeUserState?.type === "COORDINADOR") && (
                         <SidebarAdmin/>
                     )}
                     <Outlet/>
