@@ -75,7 +75,7 @@ export const CommunityCollaborationModal = () => {
       activityName:data?.name,
       description:data?.description,
       startDate:fechaInicio,
-      endDate:fechaFin,
+      endDate:fechaFin, 
       startTime:HoraInicio,
       endTime:HoraFin,
       address:data?.direction,
@@ -93,7 +93,7 @@ export const CommunityCollaborationModal = () => {
 
   return (
     <div className='fixed top-0 left-0 h-screen w-screen flex justify-center items-center z-1000 backdrop-blur-md'>
-      <div className="space-y-6 p-6 border border-[#338826] rounded-lg w-[40%]  h-[50%] z-1000 bg-white">
+      <div className="space-y-6 p-6 border border-[#338826] rounded-lg w-[55%] h-[70%] z-1000 bg-white">
         <div className="flex justify-between">
           <h2 className="text-lg font-medium text-[#338826]">New Collaboration Activity</h2>
           <div className="flex items-center gap-2">
