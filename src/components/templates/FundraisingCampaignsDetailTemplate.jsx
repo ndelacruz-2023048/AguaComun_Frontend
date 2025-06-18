@@ -44,9 +44,7 @@ export const FundraisingCampaignsDetailTemplate = () => {
         <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
           <div className="bg-green-600 h-4 rounded-full" style={{ width: `${progress}%` }}></div>
         </div>
-        <p className="text-sm text-gray-600 mb-6">
-          {progress}% funded Â· {campaign.amountRaised} / {campaign.goalAmount} Q
-        </p>
+        <p className="text-sm text-gray-600 mb-6">75% funded · 3,000 / 5,000 Q</p>
 
         <div className="mb-6">
           <h3 className="font-semibold text-lg">Project Details</h3>
@@ -77,7 +75,12 @@ export const FundraisingCampaignsDetailTemplate = () => {
           </button>
         </div>
 
-        {isModalOpen && <PaymentModal onClose={() => setIsModalOpen(false)} />}
+        {isModalOpen && (
+          <PaymentModal
+            campaignId={campaignId}
+            onClose={() => setIsModalOpen(false)}
+          />
+        )}
 
         <div className="mb-8">
           <h3 className="font-semibold text-lg mb-2">Donor List</h3>

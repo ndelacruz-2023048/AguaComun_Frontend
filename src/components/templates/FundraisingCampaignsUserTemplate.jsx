@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { UserAuth } from '../../context/AuthContext';
-import { NavLink, useNavigate } from 'react-router';
+import React, { useEffect, useState }from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 export const FundraisingCampaignsTemplate = () => {
 
@@ -35,7 +34,7 @@ export const FundraisingCampaignsTemplate = () => {
         </p>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-8">
-          <div className="bg-[#fffddf] p-5 rounded shadow ">
+          <div className="bg-[#fffddf] p-5 rounded shadow">
             <p className="text-sm text-gray-500">Total recaudado</p>
             <p className="text-2xl font-bold">${campaigns.reduce((acc, c) => acc + (c.amountRaised || 0), 0).toLocaleString()}</p>
           </div>
@@ -47,7 +46,7 @@ export const FundraisingCampaignsTemplate = () => {
 
         <div className="overflow-x-auto bg-white rounded-xl shadow border-[0.5px] border-[#e4e4e4]">
           <table className="min-w-full text-sm text-left">
-            <thead className=" text-[#589e4f]">
+            <thead className="text-[#589e4f]">
               <tr>
                 <th className="px-4 py-3">Proyecto</th>
                 <th className="px-4 py-3">Recaudado</th>
@@ -103,4 +102,4 @@ export const FundraisingCampaignsTemplate = () => {
       </div>
     </div>
   );
-}
+};
