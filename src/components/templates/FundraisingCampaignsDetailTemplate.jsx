@@ -1,6 +1,10 @@
 import React from 'react'
+import { useNavigate } from 'react-router';
 
 export const FundraisingCampaignsDetailTemplate = () => {
+
+  const navigate = useNavigate()
+
   return (
     <div className="min-h-screen bg-white text-gray-800 px-6 py-10">
       <section className="max-w-3xl mx-auto">
@@ -37,7 +41,7 @@ export const FundraisingCampaignsDetailTemplate = () => {
         </div>
 
         <div className="mb-8 flex justify-end">
-          <button className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-4xl left-[30%]">
+          <button onClick={()=>{navigate('/cashpayment')}} className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-4xl left-[30%]">
             Donate
           </button>
         </div>
