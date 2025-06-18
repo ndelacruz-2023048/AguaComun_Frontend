@@ -77,7 +77,12 @@ export const FundraisingCampaignsDetailTemplate = () => {
           </button>
         </div>
 
-        {isModalOpen && <PaymentModal onClose={() => setIsModalOpen(false)} />}
+        {isModalOpen && (
+          <PaymentModal
+            campaignId={campaignId}
+            onClose={() => setIsModalOpen(false)}
+          />
+        )}
 
         <div className="mb-8">
           <h3 className="font-semibold text-lg mb-2">Donor List</h3>

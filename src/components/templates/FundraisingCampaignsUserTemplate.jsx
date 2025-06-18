@@ -82,7 +82,6 @@ export const FundraisingCampaignsTemplate = () => {
                           style={{ width: `${progress}%` }}
                         />
                       </div>
-                      {progress}%
                     </td>
                     <td className="px-4 py-3">
                       <span className="bg-[#d7ad2c] text-[#ffffff] px-4 py-2 rounded-xl text-xs font-medium flex justify-center border-[#d7ad2c] border-[1px] hover:bg-gray-50 hover:text-[#d7ad2c]">

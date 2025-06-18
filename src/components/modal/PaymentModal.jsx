@@ -3,27 +3,44 @@ import { defineStepper } from '@stepperize/react'
 import { useForm, FormProvider } from 'react-hook-form'
 import { PaymentStep } from './PaymentSteps/PaymentStep'
 import { AddressStep } from './PaymentSteps/AddressStep'
+import axios from 'axios'
 
 const { useStepper } = defineStepper(
   { id: 'payment', title: 'Payment' },
   { id: 'address', title: 'Address' }
 )
 
-export const PaymentModal = ({ onClose }) => {
+export const PaymentModal = ({ campaignId, onClose }) => {
   const stepper = useStepper()
   const methods = useForm({ mode: 'onChange' })
   const { handleSubmit, reset } = methods
 
-  // Resetear stepper y formulario al abrir el modal
   useEffect(() => {
-    stepper.reset()   // Vuelve al primer paso
-    reset()           // Limpia el formulario
+    stepper.reset()
+    reset()
   }, [])
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     if (stepper.isLast) {
-      console.log('Datos enviados:', data)
-      onClose()
+      const payload = {
+        ...data,
+        campaign: campaignId
+      }
+
+      try {
+        const res = await axios.post(
+          'http://localhost:3662/v1/aguacomun/payment/payment',
+          payload,
+          { withCredentials: true } 
+        )
+
+        console.log('Pago guardado:', res.data)
+        alert('¡Donación registrada con éxito!')
+        onClose()
+      } catch (err) {
+        console.error('Error al guardar el pago:', err)
+        alert('Error al enviar el pago.')
+      }
     } else {
       stepper.next()
     }
@@ -49,7 +66,7 @@ export const PaymentModal = ({ onClose }) => {
                 type="button"
                 onClick={stepper.prev}
                 disabled={stepper.isFirst}
-                className="bg-[#d7ad2c] text-white px-4 py-2 rounded-[20px] hover:bg-[#bb9525] "
+                className="bg-[#d7ad2c] text-white px-4 py-2 rounded-[20px] hover:bg-[#bb9525]"
               >
                 Atrás
               </button>

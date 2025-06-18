@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useFormContext } from 'react-hook-form'
 
 export const PaymentStep = () => {
@@ -9,22 +9,15 @@ export const PaymentStep = () => {
     formState: { errors },
   } = useFormContext()
 
-  const selectedMethod = watch('paymentMethod')
-
-  // Registrar manualmente el campo de método de pago con validación
-  useEffect(() => {
-    register('paymentMethod', {
-      required: 'El método de pago es obligatorio',
-    })
-  }, [register])
+  const selectedMethod = watch('paymethod')
 
   const selectMethod = (method) => {
-    setValue('paymentMethod', method, { shouldValidate: true })
+    setValue('paymethod', method, { shouldValidate: true })
   }
 
   return (
     <div className="space-y-4">
-      {/* Monto de donación */}
+
       <div>
         <label className="block mb-1 text-sm font-medium">Donation Amount</label>
         <input
@@ -46,38 +39,44 @@ export const PaymentStep = () => {
         )}
       </div>
 
-      {/* Método de pago */}
       <div>
         <label className="block mb-1 text-sm font-medium">Payment Method</label>
         <div className="flex gap-2">
           <button
             type="button"
-            onClick={() => selectMethod('efectivo')}
+            onClick={() => selectMethod('Efectivo')}
             className={`px-4 py-1 border rounded-md ${
-              selectedMethod === 'efectivo' ? 'bg-green-200' : ''
+              selectedMethod === 'Efectivo' ? 'bg-green-200' : ''
             }`}
           >
             Efectivo
           </button>
           <button
             type="button"
-            onClick={() => selectMethod('cheque')}
+            onClick={() => selectMethod('Cheque')}
             className={`px-4 py-1 border rounded-md ${
-              selectedMethod === 'cheque' ? 'bg-green-200' : ''
+              selectedMethod === 'Cheque' ? 'bg-green-200' : ''
             }`}
           >
             Cheque
           </button>
         </div>
-        {errors.paymentMethod && (
+        
+        <input
+          type="hidden"
+          {...register('paymethod', {
+            required: 'El método de pago es obligatorio',
+          })}
+        />
+        {errors.paymethod && (
           <p className="text-red-500 text-sm mt-1">
-            {errors.paymentMethod.message}
+            {errors.paymethod.message}
           </p>
         )}
       </div>
 
-      {/* Campo adicional si es cheque */}
-      {selectedMethod === 'cheque' && (
+
+      {selectedMethod === 'Cheque' && (
         <div>
           <label className="block mb-1 text-sm font-medium">Número de cheque</label>
           <input
@@ -98,7 +97,6 @@ export const PaymentStep = () => {
         </div>
       )}
 
-      {/* Donación recurrente */}
       <div className="flex items-center gap-2">
         <input type="checkbox" id="recurring" {...register('recurring')} />
         <label htmlFor="recurring" className="text-sm">
