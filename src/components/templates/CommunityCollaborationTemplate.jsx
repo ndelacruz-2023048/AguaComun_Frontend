@@ -4,9 +4,13 @@ import { CardCommunityCollaboration } from '../organismos/CommunityCollaboration
 import { useCommunityCollaboration } from '../../stores/communityCollaborationStore'
 import { CommunityCollaborationModal } from '../modal/CommunityCollaboration/CommunityCollaborationModal'
 import { useSocket } from '../../hooks/useSocket'
+import { UserAuth } from '../../context/AuthContext'
+import { jwtDecode } from 'jwt-decode'
 
 export const CommunityCollaborationTemplate = () => {
     const socket = useSocket()
+    const {user} = UserAuth()
+    const [typeUser,setTypeUser] = useState()
     const {isModalCommunityCollaborationOpen,setIsModalCommunityCollaborationOpen} = useCommunityCollaboration()
     const handleClickButtonCreateActivity = () => {
         setIsModalCommunityCollaborationOpen()
@@ -26,13 +30,25 @@ export const CommunityCollaborationTemplate = () => {
         socket.emit("new-user","Nuevo usuario conectado");
     
         // 🧹 Limpiar al desmontar
+        try {
+            const decodedToken = jwtDecode(user);
+            console.log(decodedToken);
+            
+            setTypeUser(decodedToken?.type)
+            if(!typeUser) return 
+            socket.emit("get-list-activity-collaboration",decodedToken.uid)
+        } catch (error) {
+            console.log(error);
+            
+        }
+
         return () => {
           socket.off("list-activity-collaboration", handleList);
           socket.off("connect");
         };
       }, [socket]);
         
-
+      console.log(typeUser);
   return (
     <div className='flex justify-center w-full'>
         {isModalCommunityCollaborationOpen && <CommunityCollaborationModal/>}
@@ -42,9 +58,13 @@ export const CommunityCollaborationTemplate = () => {
                     <h1 className='text-[#338826] font-bold text-3xl'>Community Collaboration</h1>
                     <p className='text-[#338826] text-[16px]'>Explore and sign up for community activities</p>
                 </div>
-                <div>
-                    <button onClick={handleClickButtonCreateActivity} className='bg-[#D7AD2C] text-white p-[5px_25px] rounded-2xl'>Crear Actividad</button>
-                </div>
+                {
+                    (typeUser === "ADMIN" || typeUser === "COORDINADOR") && (
+                        <div>
+                            <button onClick={handleClickButtonCreateActivity} className='bg-[#D7AD2C] text-white p-[5px_25px] rounded-2xl'>Crear Actividad</button>
+                        </div>
+                    )
+                }
             </div>
             <div>
                 <div className='flex bg-[#EBF0F2] relative rounded-2xl'>
@@ -52,7 +72,7 @@ export const CommunityCollaborationTemplate = () => {
                     <Icon icon="circum:search" className='absolute top-[20%] left-[1%] text-[#5C7D8A] text-2xl'/>
                 </div>
             </div>
-            <div className='flex gap-2'>
+            <div className='hidden gap-2 '>
                 <button className='flex items-center justify-center gap-2 border-1 border-[#D7AD2C] rounded-2xl p-[3px_20px]'> <p className='text-[#D7AD2C]'>Type</p> <Icon icon="simple-line-icons:arrow-down" className='text-[10px] text-[#D7AD2C]'/></button>
                 <button className='flex items-center justify-center gap-2 border-1 border-[#D7AD2C] rounded-2xl p-[3px_20px]'> <p className='text-[#D7AD2C]'>Date</p> <Icon icon="simple-line-icons:arrow-down" className='text-[10px] text-[#D7AD2C]'/></button>
                 <button className='flex items-center justify-center gap-2 border-1 border-[#D7AD2C] rounded-2xl p-[3px_20px]'> <p className='text-[#D7AD2C]'>Status</p> <Icon icon="simple-line-icons:arrow-down" className='text-[10px] text-[#D7AD2C]'/></button>

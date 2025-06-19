@@ -21,10 +21,10 @@ export const HomeTemplate = memo(() => {
     socket.emit("evento-servidor","Hola desde el cliente");
   },[])
 
-   const handleCardClick = (title) => {
-    if (title === 'Community Water') {
-      navigate('/community')
-    }
+   const handleCardClick = (link) => {
+   
+      navigate(link)
+    
   }
 
   return (
@@ -34,13 +34,12 @@ export const HomeTemplate = memo(() => {
       <div className="flex gap-4 mt-8 ">
         {[
           { title: 'Community Water', icon: 'ph:lightbulb', link: '/community' },
-          { title: 'Tutorials', icon: 'ph:book-open' },
           { title: 'Submit Reports', icon: 'ph:note-pencil', link: '/watter' },
-          { title: 'Funding', icon: 'ph:money', link: '/cashpayment' },
-          { title: 'Water Sharing', icon: 'ph:drop' }
+          { title: 'Funding', icon: 'ph:money', link: '/campaigns/user' },
+          { title: 'Activity', icon: 'ph:calendar-check', link: '/community-collaboration' },
         ].map((item) => (
           <CardItem key={item.title} title={item.title} icon={item.icon} 
-            onClick={() => handleCardClick(item.title)}
+            onClick={() => handleCardClick(item.link)}
           />
         ))}
       </div>

@@ -4,9 +4,23 @@ import { LinksArraySidebarAdmin } from '../../utils/dataEstatica';
 import { Icon } from '@iconify/react';
 import { Tooltip as ReactTooltip } from 'react-tooltip'; // Asegúrate de tenerlo instalado
 import { motion, AnimatePresence } from 'framer-motion';
+import { UserAuth } from '../../context/AuthContext';
+import { jwtDecode } from 'jwt-decode';
 
 export const SidebarAdmin = () => {
     const [isOpen, setIsOpen] = useState(false);
+    const { user } = UserAuth();
+    let type = '';
+    if (user) {
+        try {
+            const decodedToken = jwtDecode(user);
+            type = decodedToken?.rol || decodedToken?.type || '';
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    // Filtrar los links según el type del usuario
+    const filteredLinks = LinksArraySidebarAdmin.filter(link => link.type.includes(type));
 
     return (
         <>
@@ -53,7 +67,7 @@ export const SidebarAdmin = () => {
                 </div>
 
                 {/* Opciones del menú con animaciones */}
-                {LinksArraySidebarAdmin.map(({ label, icon, to }, index) => (
+                {filteredLinks.map(({ label, icon, to }, index) => (
                     <motion.div
                         key={to}
                         initial={{ opacity: 0, x: -20 }}

@@ -54,10 +54,6 @@ export const Layout = () => {
                             <span className='text-lg'>Home</span>
                         </NavLink>
 
-                        <NavLink to={'*'}>
-                            <span className='text-lg'>Projects</span>
-                        </NavLink>
-
                         <NavLink to={'/community'}>
                             <span className='text-lg'>Community</span>
                         </NavLink>
