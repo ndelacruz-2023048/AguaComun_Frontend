@@ -80,22 +80,23 @@ export const PaymentStep = () => {
         <div>
           <label className="block mb-1 text-sm font-medium">Número de cheque</label>
           <input
-            type="text"
+            type="number"
             placeholder="123456789"
             className={`w-full px-3 py-2 bg-green-50 border rounded-md ${
-              errors.chequeNumber ? 'border-red-500' : ''
+              errors.bankcheck ? 'border-red-500' : ''
             }`}
-            {...register('chequeNumber', {
+            {...register('bankcheck', {
               required: 'El número de cheque es obligatorio',
             })}
           />
-          {errors.chequeNumber && (
+          {errors.bankcheck && (
             <p className="text-red-500 text-sm mt-1">
-              {errors.chequeNumber.message}
+              {errors.bankcheck.message}
             </p>
           )}
         </div>
       )}
+
 
       <div className="flex items-center gap-2">
         <input type="checkbox" id="recurring" {...register('recurring')} />

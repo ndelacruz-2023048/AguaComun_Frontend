@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { PaymentModal } from '../modal/PaymentModal'
+import io from 'socket.io-client'
+
+const socket = io('http://localhost:3662') // Ya inicializado globalmente
 
 export const FundraisingCampaignsDetailTemplate = () => {
   const { state } = useLocation()
@@ -9,6 +12,27 @@ export const FundraisingCampaignsDetailTemplate = () => {
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [campaign, setCampaign] = useState(null)
+  const [donors, setDonors] = useState([])
+
+  const fetchCampaign = async () => {
+    try {
+      const res = await fetch(`http://localhost:3662/v1/aguacomun/campaign/${campaignId}`)
+      const data = await res.json()
+      setCampaign(data)
+    } catch (error) {
+      console.error('Error loading campaign:', error)
+    }
+  }
+
+  const fetchRecentDonors = async () => {
+    try {
+      const res = await fetch(`http://localhost:3662/v1/aguacomun/payment/recent/${campaignId}`)
+      const data = await res.json()
+      setDonors(data.donors)
+    } catch (error) {
+      console.error('Error loading recent donors:', error)
+    }
+  }
 
   useEffect(() => {
     if (!campaignId) {
@@ -16,17 +40,26 @@ export const FundraisingCampaignsDetailTemplate = () => {
       return
     }
 
-    const fetchCampaign = async () => {
-      try {
-        const res = await fetch(`http://localhost:3662/v1/aguacomun/campaign/${campaignId}`)
-        const data = await res.json()
-        setCampaign(data)
-      } catch (error) {
-        console.error('Error loading campaign:', error)
+    fetchCampaign()
+    fetchRecentDonors()
+
+    const handleNewPayment = (data) => {
+      if (data.campaignId === campaignId) {
+        setDonors(prev => {
+          const newDonors = [data.donor, ...prev]
+          return newDonors.slice(0, 4) // limitar a 4 como en el backend
+        })
+
+        // Refrescar campaña para actualizar amountRaised
+        fetchCampaign()
       }
     }
 
-    fetchCampaign()
+    socket.on('newPayment', handleNewPayment)
+
+    return () => {
+      socket.off('newPayment', handleNewPayment)
+    }
   }, [campaignId, navigate])
 
   if (!campaign) return <p>Loading...</p>
@@ -36,15 +69,15 @@ export const FundraisingCampaignsDetailTemplate = () => {
   return (
     <div className="min-h-screen bg-white text-gray-800 px-6 py-10">
       <section className="max-w-3xl mx-auto">
-        <h2 className="text-3xl font-bold text-green-700 mb-2">
-          {campaign.name}
-        </h2>
+        <h2 className="text-3xl font-bold text-green-700 mb-2">{campaign.name}</h2>
         <p className="text-sm text-gray-600 mb-6">Led by {campaign.coordinator || 'Community Leader'}</p>
 
         <div className="w-full bg-gray-200 rounded-full h-4 mb-4">
           <div className="bg-green-600 h-4 rounded-full" style={{ width: `${progress}%` }}></div>
         </div>
-        <p className="text-sm text-gray-600 mb-6">75% funded · 3,000 / 5,000 Q</p>
+        <p className="text-sm text-gray-600 mb-6">
+          {progress}% funded · {campaign.amountRaised} / {campaign.goalAmount} Q
+        </p>
 
         <div className="mb-6">
           <h3 className="font-semibold text-lg">Project Details</h3>
@@ -83,22 +116,20 @@ export const FundraisingCampaignsDetailTemplate = () => {
         )}
 
         <div className="mb-8">
-          <h3 className="font-semibold text-lg mb-2">Donor List</h3>
+          <h3 className="font-semibold text-lg mb-2">Recent Donations</h3>
           <ul className="text-sm text-gray-700">
-            {campaign.donors?.length > 0 ? (
-              campaign.donors.map((donor, index) => (
+            {donors.length > 0 ? (
+              donors.map((donor, index) => (
                 <li key={index} className="flex justify-between py-2">
-                  <span>{donor.name || 'Anonymous'}</span>
+                  <span>{donor.name}</span>
                   <span>{donor.amount} Q</span>
+                  <span className={`text-xs px-2 py-1 rounded-[15px] ${donor.status === 'Confirmado' ? 'bg-green-100 text-green-600' : 'bg-yellow-100 text-yellow-600'}`}>
+                    {donor.status}
+                  </span>
                 </li>
               ))
             ) : (
-              <>
-                <li className="flex justify-between py-2"><span>Elena Morales</span><span>500 Q</span></li>
-                <li className="flex justify-between py-2"><span>Carlos Lopez</span><span>200 Q</span></li>
-                <li className="flex justify-between py-2"><span>Sofia Ramirez</span><span>1000 Q</span></li>
-                <li className="flex justify-between py-2"><span>Anonymous</span><span>1300 Q</span></li>
-              </>
+              <li className="py-2 text-gray-500">No recent donations yet.</li>
             )}
           </ul>
         </div>
@@ -113,12 +144,13 @@ export const FundraisingCampaignsDetailTemplate = () => {
           </button>
         </div>
       </section>
+
       <button
-            onClick={()=>{navigate(`/campaigns/user`)}}
-            className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-4xl"
-          >
-            Back
-          </button>
+        onClick={() => navigate('/campaigns/user')}
+        className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-4xl"
+      >
+        Back
+      </button>
     </div>
   )
 }
