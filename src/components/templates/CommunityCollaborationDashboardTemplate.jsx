@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Icon } from '@iconify/react';
 import { useSocket } from '../../hooks/useSocket';
+import dayjs from 'dayjs';
+import { FieldTableTd } from '../molecules/CommunityCollaboration/FieldTableTd';
+import { FieldTableTd2 } from '../molecules/CommunityCollaboration/FieldTableTd2';
 
 export const CommunityCollaborationDashboardTemplate = () => {
   // Datos de ejemplo para la tabla principal
@@ -45,7 +48,7 @@ export const CommunityCollaborationDashboardTemplate = () => {
     },
   ];
 
-  const activity = activities[selectedActivity];
+  const activity = communityCollaboration?.[selectedActivity];
   useEffect(()=>{
       socket.emit("get-list-community-collaboration","need-data")
       socket.on("list-community-collaboration",(data)=>{
@@ -53,8 +56,7 @@ export const CommunityCollaborationDashboardTemplate = () => {
       })
   },[])
 
-  console.log(communityCollaboration);
-  
+  console.log("communityCollaboration",communityCollaboration);
 
   return (
     <div className="p-8 bg-[#f8fafc] min-h-screen">
@@ -99,21 +101,29 @@ export const CommunityCollaborationDashboardTemplate = () => {
               <th className="py-3 px-4 font-semibold">Comunidad</th>
               <th className="py-3 px-4 font-semibold">Fecha</th>
               <th className="py-3 px-4 font-semibold">Total Turnos</th>
-              <th className="py-3 px-4 font-semibold">Turnos sin asignar/vencidos</th>
+              <th className="py-3 px-4 font-semibold">asignados</th>
+              <th className="py-3 px-4 font-semibold">sin asignar</th>
             </tr>
           </thead>
           <tbody>
-            {activities.map((a, idx) => (
+            {communityCollaboration?.map((a, idx) => (
               <tr
-                key={a.activity}
-                className={`cursor-pointer transition-colors ${selectedActivity === idx ? 'bg-[#f4f7fa]' : 'hover:bg-[#f4f7fa]'}`}
+                key={a._id}
+                className={`cursor-pointer transition-colors  items-center  ${selectedActivity === idx ? 'bg-[#f4f7fa]' : 'hover:bg-[#f4f7fa]'}`}
                 onClick={() => setSelectedActivity(idx)}
               >
-                <td className="py-3 px-4 font-medium text-gray-800 border-b border-gray-100">{a.activity}</td>
-                <td className="py-3 px-4 text-[#338826] underline border-b border-gray-100"><a href={a.communityLink}>{a.community}</a></td>
-                <td className="py-3 px-4 border-b border-gray-100">{a.date}</td>
-                <td className="py-3 px-4 border-b border-gray-100">{a.totalTurns}</td>
-                <td className="py-3 px-4 border-b border-gray-100">{a.unassigned}/{a.expired}</td>
+                <td className="py-3 px-4 font-medium text-gray-800 border-b border-gray-100">{a.activityName}</td>
+                <td className="py-3 px-4 text-[#338826] underline border-b border-gray-100"><a href={a.activityName}>{a.community.name}</a></td>
+                <td className="py-3 px-4 border-b border-gray-100">{dayjs(a.endDate).format("DD/MM/YYYY")}</td>
+                <td className="py-3 px-4 border-b border-gray-100">{a.turns.length}</td>
+                <td>
+                  <FieldTableTd data={a.turns}/>
+                </td>
+                <td>
+                  <FieldTableTd2 data={a.turns}/>
+                </td>
+                
+                {/* <td className="py-3 px-4 border-b border-gray-100">{a.activityName}/{a.expired}</td> */}
               </tr>
             ))}
           </tbody>
@@ -122,7 +132,7 @@ export const CommunityCollaborationDashboardTemplate = () => {
 
       {/* Detalles de la actividad seleccionada */}
       <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-0">
-        <h2 className="text-lg md:text-xl font-bold text-gray-800 px-6 pt-6 pb-2">Detalles de la Actividad: {activity.activity}</h2>
+        <h2 className="text-lg md:text-xl font-bold text-gray-800 px-6 pt-6 pb-2">Detalles de la Actividad: {activity?.activityName}</h2>
         <table className="w-full text-left">
           <thead>
             <tr className="text-gray-500 text-sm border-b border-gray-200">
@@ -133,30 +143,29 @@ export const CommunityCollaborationDashboardTemplate = () => {
             </tr>
           </thead>
           <tbody>
-            {activity.details.length > 0 ? (
-              activity.details.map((d, i) => (
+          {activity?.turns.length > 0 ? (
+              activity?.turns.map((d, i) => (
                 <tr key={i} className="border-b border-gray-100 last:border-b-0">
-                  <td className="py-3 px-6 text-[#338826] underline cursor-pointer">{d.date}</td>
+                  <td className="py-3 px-6 text-[#338826] underline cursor-pointer">{dayjs(d.dateAssigned).format("DD/MM/YYYY")}</td>
                   <td className="py-3 px-6">
-                    {d.status === 'Pendiente' && (
-                      <span className="bg-yellow-50 text-yellow-800 px-4 py-1 rounded-full text-xs font-semibold">Pendiente</span>
+                    {d.status === "occupied" && (
+                      <span className="border-[#338826] border-1 text-[#338826] px-4 py-1 rounded-full text-xs font-semibold">Ocupado</span>
                     )}
-                    {d.status === 'Completado' && (
-                      <span className="bg-green-50 text-green-800 px-4 py-1 rounded-full text-xs font-semibold">Completado</span>
-                    )}
-                    {d.status === 'Vencido' && (
-                      <span className="bg-red-50 text-red-800 px-4 py-1 rounded-full text-xs font-semibold">Vencido</span>
+                    {d.status === "pending" && (
+                    <span className="border-[#D7AD2C] border-1 text-[#D7AD2C] px-4 py-1 rounded-full text-xs font-semibold">Pendiente</span>
                     )}
                   </td>
-                  <td className="py-3 px-6">{d.person || '-'}</td>
+                  <td className="py-3 px-6">{d?.assignedTo?.name || '-'}</td>
+                  
                   <td className="py-3 px-6">
-                    {d.action === 'Asignar' && (
+                    {d?.assignedTo=== null && (
                       <button className="text-[#338826] underline font-medium hover:text-[#25661a]">Asignar</button>
                     )}
-                    {d.action === 'Editar' && (
+                    {d?.assignedTo && (
                       <button className="text-blue-600 underline font-medium hover:text-blue-800">Editar</button>
                     )}
                   </td>
+                  
                 </tr>
               ))
             ) : (
