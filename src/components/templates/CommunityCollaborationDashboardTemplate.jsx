@@ -4,12 +4,15 @@ import { useSocket } from '../../hooks/useSocket';
 import dayjs from 'dayjs';
 import { FieldTableTd } from '../molecules/CommunityCollaboration/FieldTableTd';
 import { FieldTableTd2 } from '../molecules/CommunityCollaboration/FieldTableTd2';
+import { UserAuth } from '../../context/AuthContext';
+import { jwtDecode } from 'jwt-decode';
 
 export const CommunityCollaborationDashboardTemplate = () => {
   // Datos de ejemplo para la tabla principal
   const [selectedActivity, setSelectedActivity] = useState(0);
   const [communityCollaboration,setCommunityCollaboration] = useState()
   const socket = useSocket()
+  const {user} = UserAuth()
 
   const activities = [
     {
@@ -50,10 +53,16 @@ export const CommunityCollaborationDashboardTemplate = () => {
 
   const activity = communityCollaboration?.[selectedActivity];
   useEffect(()=>{
-      socket.emit("get-list-community-collaboration","need-data")
+    try {
+      const decodedToken = jwtDecode(user);
+      socket.emit("get-list-community-collaboration",decodedToken.uid)
       socket.on("list-community-collaboration",(data)=>{
         setCommunityCollaboration(data)
       })
+    } catch (error) {
+      console.log(error);
+      
+    }
   },[])
 
   console.log("communityCollaboration",communityCollaboration);
