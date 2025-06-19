@@ -20,7 +20,7 @@ export const DeleteCampaignPage = () => {
     <div className="min-h-screen flex w-[100vw] items-center justify-center bg-[#fffaf9]">
       <div className="text-center">
         <h2 className="text-xl font-semibold mb-2">
-          ¿Estás seguro de que quieres eliminar esta campaña?
+          ¿Estás seguro de que quieres eliminar esta campaña? Esta acción puede llevar a consecuencias legales.
         </h2>
         <p className="text-gray-600 mb-6">Esta acción no se puede deshacer.</p>
         <div className="flex justify-center gap-4">

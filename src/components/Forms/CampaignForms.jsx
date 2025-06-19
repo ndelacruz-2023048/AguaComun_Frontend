@@ -7,20 +7,26 @@ export default function FormularioCampana({ modo = "crear" }) {
 
   const [formData, setFormData] = useState({
     name: "",
-    category: "",
+    category: "Emergencia",
     status: "Activa",
     goalAmount: "",
     startDate: "",
     endDate: "",
     description: "",
     imageUrl: ""
-  })
+  });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  }
+  const [todasCampanas, setTodasCampanas] = useState([]);
 
+  // Obtener campañas para validación de nombre único
+  useEffect(() => {
+    fetch("http://localhost:3662/v1/aguacomun/campaign")
+      .then((res) => res.json())
+      .then((data) => setTodasCampanas(data))
+      .catch((err) => console.error("Error al obtener campañas:", err));
+  }, []);
+
+  // Si modo es "editar", cargar datos
   useEffect(() => {
     if (modo === "editar" && id) {
       fetch(`http://localhost:3662/v1/aguacomun/campaign/${id}`)
@@ -31,15 +37,48 @@ export default function FormularioCampana({ modo = "crear" }) {
         })
         .catch((err) => console.error("Error al obtener campaña:", err));
     }
-  }, [modo, id])
+  }, [modo, id]);
+
+  
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const { name, category, status, goalAmount, startDate, endDate, description, imageUrl } = formData;
 
+    // Validación campos vacíos
     if (!name || !category || !goalAmount || !startDate || !endDate || !description || !imageUrl) {
       alert("Todos los campos son obligatorios");
+      return;
+    }
+
+    // Validación de fechas
+    const hoy = new Date();
+    const fechaInicio = new Date(startDate);
+    const fechaFin = new Date(endDate);
+    hoy.setHours(0, 0, 0, 0);
+
+    if (fechaInicio < hoy || fechaFin < hoy) {
+      alert("No se pueden seleccionar fechas anteriores a la fecha actual");
+      return;
+    }
+
+    if (fechaFin < fechaInicio) {
+      alert("La fecha de finalización no puede ser anterior a la de inicio");
+      return;
+    }
+
+    // Validación de nombre único (excepto si estás editando esta misma campaña)
+    const nombreExiste = todasCampanas.some(camp =>
+      camp.name.trim().toLowerCase() === name.trim().toLowerCase() &&
+      camp._id !== id // evita conflicto al editar
+    );
+
+    if (nombreExiste) {
+      alert("Ya existe una campaña con ese nombre");
       return;
     }
 
@@ -68,7 +107,6 @@ export default function FormularioCampana({ modo = "crear" }) {
     }
   };
 
-
   return (
     <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl mx-auto w-[100vw]">
       {/* Título */}
@@ -89,11 +127,10 @@ export default function FormularioCampana({ modo = "crear" }) {
           />
           <select
             className="input"
-            placeholder="Categoría"
             name="category"
             value={formData.category}
             onChange={handleChange}
-            >
+          >
             <option value="Emergencia">Emergencia</option>
             <option value="Importante">Importante</option>
             <option value="Dispensable">Dispensable</option>
@@ -195,11 +232,6 @@ export default function FormularioCampana({ modo = "crear" }) {
         >
           Cancelar
         </button>
-        {modo === "editar" && (
-          <button type="button" className="text-red-600 hover:underline">
-            Eliminar
-          </button>
-        )}
       </div>
     </form>
   );
