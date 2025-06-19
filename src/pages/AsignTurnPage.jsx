@@ -8,7 +8,7 @@ export const AsignTurnPage = () => {
 
   const socket = useSocket()
 
-  const {getTurnByActivityCollaboration,idCommunityCollaboration,setTurnByActivityCollaboration} = useCommunityCollaboration()
+  const {getTurnByActivityCollaboration,turnByActivityCollaboration,idCommunityCollaboration,setTurnByActivityCollaboration} = useCommunityCollaboration()
 
   useEffect(()=>{
     if (!idCommunityCollaboration) return
@@ -23,9 +23,6 @@ export const AsignTurnPage = () => {
       socket.off("list-turns")
     }
   },[idCommunityCollaboration])
-
-
-
   return (
     <AsignTurnTemplate/>
   )
