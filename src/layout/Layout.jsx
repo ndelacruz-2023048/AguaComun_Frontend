@@ -87,7 +87,7 @@ export const Layout = () => {
                                 className=" absolute 2xl:left-452.5 xl:left-356.5 mt-2 w-48 bg-gray-100 rounded-md shadow-lg z-10 origin-top-right"
                                 style={{ transform: 'translateX(-100%)' }}
                             >
-                                <div className='absolute left-45.5 top-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-gray-100'/>
+                                <div className='absolute left-45.5 top-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-gray-100 -z-10'/>
                                 <NavLink to="/profile" className="px-4 py-2 flex gap-2 hover:bg-gray-200">
                                     <Icon icon="iconamoon:profile-fill" width="20" height="20" />
                                     Profile

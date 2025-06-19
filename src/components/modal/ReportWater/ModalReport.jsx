@@ -250,7 +250,8 @@ const AttachmentsComponent = ({ methods }) => {
     const { register, formState: { errors } } = methods;
 
     const handleImageUpload = (imageUrl) => {
-        methods.setValue('uploadPhoto', imageUrl);
+        const currentImages = methods.getValues('uploadPhoto') || [];
+        methods.setValue('uploadPhoto', [...currentImages, imageUrl]);
     }
 
     return (
@@ -260,6 +261,20 @@ const AttachmentsComponent = ({ methods }) => {
                     Upload Photo
                 </label>
                 <FileUploadForm onImageUpload={handleImageUpload}/>
+            </div>
+
+            <div className="mt-4">
+                <h4 className="text-sm font-semibold text-gray-700">Imágenes subidas:</h4>
+                <div className="grid grid-cols-3 gap-2 mt-2">
+                    {methods.watch('uploadPhoto')?.map((url, index) => (
+                        <img
+                            key={index}
+                            src={url}
+                            alt={`uploaded-${index}`}
+                            className="w-full h-24 object-cover rounded-md"
+                        />
+                    ))}
+                </div>
             </div>
 
             <div className="grid gap-2">
@@ -328,11 +343,26 @@ const ConfirmationComponent = ({ methods }) => {
             <h3 className="font-bold text-lg">Confirm Your Report:</h3>
             <div><strong>Issue Title:</strong> {data.issueTitle || '-'}</div>
             <div><strong>Description:</strong> {data.description || '-'}</div>
-            <div><strong>Image:</strong> {data.uploadPhoto || '-'}</div>
-            <div><strong>Time:</strong> {data.time || '-'}</div>
+            <div>
+                <strong>Images:</strong>
+                {Array.isArray(data.uploadPhoto) && data.uploadPhoto.length > 0 ? (
+                    <div className="grid grid-cols-3 gap-2 mt-2">
+                        {data.uploadPhoto.map((url, index) => (
+                            <img
+                                key={index}
+                                src={url}
+                                alt={`confirm-${index}`}
+                                className="w-full h-24 object-cover rounded-md"
+                            />
+                        ))}
+                    </div>
+                ) : (
+                    '-'
+                )}
+            </div>
             <div><strong>Community:</strong> {data.community || '-'}</div>
             <div><strong>Urgency Level:</strong> {data.urgencyLevel || '-'}</div>
-            <div><strong>Suggested Solutions:</strong> {data.suggestedSolutions || '-'}</div>
+            <div><strong>Suggested Solutions:</strong> {data.suggestedSolutions || 'none'}</div>
         </div>
     );
 };

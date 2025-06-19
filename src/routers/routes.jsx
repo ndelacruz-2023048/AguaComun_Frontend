@@ -20,6 +20,7 @@ import { FundraisingCampaignsDetailPage } from "../pages/FundraisingCampaignsDet
 import { FundraisingCampaignsUserPage } from "../pages/FundraisingCampaignsUserPage.jsx"
 import { AsignTurnPage } from "../pages/AsignTurnPage.jsx"
 import { CommunityCollaborationDashboardPage } from "../pages/CommunityCollaborationDashboardPage.jsx"
+import { WatterReportViewPage } from "../pages/WatterReportViewPage.jsx"
 
 const router = createBrowserRouter(
     [
@@ -41,6 +42,10 @@ const router = createBrowserRouter(
                 {
                     path: '/watter',
                     element: <WatterPage/>
+                },
+                {
+                    path: '/watter/:id',
+                    element: <WatterReportViewPage/>
                 },
                 {
                     path: '/community/manager',
