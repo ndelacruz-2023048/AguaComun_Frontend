@@ -12,7 +12,7 @@ import { DeleteCampaignPage } from "../pages/DeleteCampaignPage"
 import { CommunityCollaborationPage } from "../pages/CommunityCollaborationPage"
 import { ManageCommunityPage as C } from "../pages/ManageCommunitiesPage"
 import { ManagerUsersPage as M } from "../pages/ManagerUsersPage"
-
+import { ProfilePage } from "../pages/ProfilePage"
 import {CashPayment} from "../components/templates/CashPayment"
 import { WatterPage } from "../pages/WatterPage"
 import { HistorialPage } from "../pages/HistorialTransactionsPage.jsx"
@@ -88,7 +88,12 @@ const router = createBrowserRouter(
                 {
                     path: '/campaigns/user',
                     element: <FundraisingCampaignsUserPage/>
+                },
+                {
+                    path: '/profile',
+                    element: <ProfilePage/>
                 }
+
             ]
         },
         {
