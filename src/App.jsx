@@ -2,6 +2,7 @@ import MyRouter from "./routers/routes"
 import { AuthContextProvider } from './context/AuthContext'
 import { socketConnection as socket } from './socket/socket'; 
 import { useEffect } from "react";
+import { Tooltip } from 'react-tooltip';
 
 function App() {
   useEffect(() => {
@@ -21,6 +22,7 @@ function App() {
   }, []);
   return (
     <AuthContextProvider>
+      <Tooltip id="defaultTooltip" />
       <MyRouter />
     </AuthContextProvider>
   )

@@ -2,8 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Icon } from '@iconify/react';
 import useManagerCommunityStore from '../../hooks/useManagerCommunity';
 import { socketConnection } from '../../socket/socket';
+import { useLogout } from '../../hooks/useLogout';
 
 export const ManagerUsersTemplate = () => {
+    const { logout } = useLogout()
+    
+        const handleLogoutClick  = ()=> {
+            logout()
+        }
     const { selectedCommunity, managers, fetchManagersByCommunity } = useManagerCommunityStore();
     const [searchAddress, setSearchAddress] = useState('');
 
@@ -43,6 +49,7 @@ export const ManagerUsersTemplate = () => {
             newRole = 'CLIENT';
         } else if (user.rol === 'CLIENT' || user.rol === 'client') {
             newRole = 'COORDINADOR';
+            handleLogoutClick()
         } else {
             // Si es ADMIN, no permitir cambio
             return;

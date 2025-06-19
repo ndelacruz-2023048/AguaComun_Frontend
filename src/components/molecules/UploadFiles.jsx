@@ -8,28 +8,36 @@ const FileUploadForm = ({ onImageUpload }) => {
     const [loading, setLoading] = useState(false);
 
     const uploadImage = async (e) => {
-        const files = e.target.files;
-        const data = new FormData();
-        data.append('file', files[0]);
-        data.append('upload_preset', preset_name);
-        setLoading(true);
-        try {
-            const response = await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`, {
+    const files = e.target.files;
+    if (!files.length) return;
+
+    setLoading(true);
+
+    try {
+        for (const file of Array.from(files)) {
+            const data = new FormData();
+            data.append('file', file);
+            data.append('upload_preset', preset_name);
+
+            const response = await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/image/upload`,  {
                 method: 'POST',
-                body: data
+                body: data,
             });
-            const file = await response.json();
-            const imageUrl = file.secure_url;
-            console.log(file.secure_url);
-            onImageUpload(imageUrl)
-            setLoading(false);
-            toast.success('Imagen subida con exito');
-        } catch (e) {
-            setLoading(false);
-            toast.error('Error al subir la imagen');
-            console.error(e);
+
+            const fileData = await response.json();
+            const imageUrl = fileData.secure_url;
+
+            onImageUpload(imageUrl); // Notifica al padre con cada URL
         }
+
+        setLoading(false);
+        toast.success('Imagen(es) subida(s) con éxito');
+    } catch (e) {
+        setLoading(false);
+        toast.error('Error al subir la(s) imagen(es)');
+        console.error(e);
     }
+};
 
     return (
         <div className="w-full h-fit flex items-center justify-center bg-content1">
@@ -52,8 +60,11 @@ const FileUploadForm = ({ onImageUpload }) => {
                     id="file" 
                     className="hidden"
                     onChange={uploadImage} 
+                    multiple
+                    accept="image/*"
                 />
                 </label>
+
             </div>
         </div>
     );

@@ -4,6 +4,7 @@ import ModalReport from '../modal/ReportWater/ModalReport'
 import { useSocket } from '../../hooks/useSocket'
 import { useReports } from '../../hooks/useReports'
 import { toast } from 'sonner'
+import { NavLink } from 'react-router'
 
 export const WatterTemplate = () => {
     const { reports: initReports, isLoading, error } = useReports()
@@ -60,6 +61,9 @@ export const WatterTemplate = () => {
                                         <span className='text-[#61788A]'>{report.description}</span>
                                         <span className='text-[#61788A]'>{[report.reportedBy?.name, report.reportedBy?.surname]}</span>
                                     </div>
+                                        <NavLink to={`/watter/${report._id}`}>
+                                            <Icon icon="ri:arrow-right-s-line" className='w-8 h-8 mt-2' />
+                                        </NavLink>
                                     <div className='w-2 h-2 mt-5 bg-green-500 rounded-full'></div>
                                 </div>
                             ))

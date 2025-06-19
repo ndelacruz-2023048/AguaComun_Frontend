@@ -1,38 +1,48 @@
 import {useState, useEffect} from 'react'
-import { getReportsRequest } from '../routers/services/Api'
+import { getReportByIdRequest, getReportsRequest } from '../routers/services/Api'
 import { toast } from 'sonner'
 
-export const useReports = () => {
-    const [reports, setReports] = useState([])
+export const useReports = (id) => {
+    const [reports, setReports] = useState(id ? null : [])
     const [isLoading, setIsLoading] = useState(false)
-    const [error, setError] = useState(false)
+    const [error, setError] = useState(null)
 
     const getReports = async() => {
-        setIsLoading(true)
-        const response = await getReportsRequest()
-        setIsLoading(false)
-
-        if(response.error){
-            setError(true)
-            if(response?.e?.response?.data?.errors){
-                let arrayErrors = response?.e?.response?.data?.errors
-                for(const error of arrayErrors){
-                    return toast.error(error.msg)
-                }
+        setIsLoading(true);
+        setError(null);
+        try {
+            let response;
+            if (id) {
+                response = await getReportByIdRequest(id);
+                setReports(response?.data?.report || null);
+            } else {
+                response = await getReportsRequest();
+                setReports(response?.data?.reports || []);
             }
-            return toast.error(
-                response?.e?.response?.data?.msg ||
-                response?.e?.data?.msg ||
-                'Error al intentar obtener los datos'
-            )
+        } catch (err) {
+            setError(err);
+            const errorMessage =
+                err?.response?.data?.msg ||
+                err?.data?.msg ||
+                'Error al obtener los datos';
+
+            if (err?.response?.data?.errors?.length > 0) {
+                err.response.data.errors.forEach((error) =>
+                    toast.error(error.msg)
+                );
+            } else {
+                toast.error(errorMessage);
+            }
+        } finally {
+            setIsLoading(false);
         }
-        setError(false)
-        setReports(response?.data?.reports || [])
     }
+
+    
 
     useEffect(() => {
         getReports()
-    }, [])
+    }, [id])
 
     return {
         isLoading,
