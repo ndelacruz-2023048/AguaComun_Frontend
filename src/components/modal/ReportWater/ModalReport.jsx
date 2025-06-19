@@ -8,6 +8,7 @@ import { Separator } from '../../molecules/Separator';
 import { useCommunity } from '../../../hooks/useCommunity'
 import { useReport } from '../../../hooks/useReport'
 import { useSocket } from '../../../hooks/useSocket'
+import { motion, AnimatePresence } from 'framer-motion';
 
 const { useStepper, steps, utils } = defineStepper(
     {
@@ -16,7 +17,7 @@ const { useStepper, steps, utils } = defineStepper(
         description: 'Ingresa la información básica del reporte',
     },
     {
-        id: 'attachments',
+        id: 'tachments',
         title: 'Datos del problema',
         description: 'Ingresa los datos del problema',
     },
@@ -66,112 +67,156 @@ const ModalReport = ({ isOpen, onClose }) => {
     }
 
     return (
-        <div className="fixed inset-0 backdrop-blur-xl bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg shadow-lg p-7 w-[700px] relative">
-                <div className='flex flex-col gap-4'>
-                    <div className="flex justify-between">
-                        <h2 className="text-lg font-medium">Create New Water Report</h2>
-                        <div className="flex items-center gap-2">
-                            <span className="text-sm text-muted-foreground">
-                                Paso {currentIndex + 1} de {steps.length}
-                            </span>
-                            <div />
+        <AnimatePresence>
+            <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 1 }}
+                transition={{ type: "spring", damping: 20, stiffness: 300 }}
+                className="fixed inset-0 backdrop-blur-xl bg-opacity-50 flex items-center justify-center z-50">
+                <div className="bg-white rounded-lg shadow-lg p-7 w-[700px] relative">
+                    <div className='flex flex-col gap-4'>
+                        <div className="flex justify-between">
+                            <h2 className="text-lg font-medium">Create New Water Report</h2>
+                            <div className="flex items-center gap-2">
+                                <span className="text-sm text-muted-foreground">
+                                    Paso {currentIndex + 1} de {steps.length}
+                                </span>
+                                <div />
+                            </div>
                         </div>
+                        <button onClick={onClose} className="absolute top-7 right-1 text-gray-500 hover:text-gray-800 text-xl font-bold">
+                            <Icon icon="line-md:close-small" width="24" height="24" />
+                        </button>
                     </div>
-                    <button onClick={onClose} className="absolute top-7 right-1 text-gray-500 hover:text-gray-800 text-xl font-bold">
-                        <Icon icon="line-md:close-small" width="24" height="24" />
-                    </button>
-                </div>
-                <nav aria-label="Checkout Steps" className="group my-4">
-                    <ol
-                        className="flex items-center justify-between gap-2"
-                        aria-orientation="horizontal"
-                    >
-                    {stepper.all.map((step, index, array) => (
-                        <React.Fragment key={step.id}>
-                        <li className="flex items-center gap-4 flex-shrink-0">
+                    <nav aria-label="Checkout Steps" className="group my-4">
+                        <ol
+                            className="flex items-center justify-between gap-2"
+                            aria-orientation="horizontal"
+                        >
+                        {stepper.all.map((step, index, array) => (
+                            <React.Fragment key={step.id}>
+                            <li className="flex items-center gap-4 flex-shrink-0">
+                                <button
+                                    type="button"
+                                    aria-current={
+                                        stepper.current.id === step.id ? 'step' : undefined
+                                    }
+                                    aria-posinset={index + 1}
+                                    aria-setsize={steps.length}
+                                    aria-selected={stepper.current.id === step.id}
+                                    className={`flex size-10 items-center justify-center rounded-full ${
+                                        index < currentIndex
+                                        ? 'bg-green-500'
+                                        : index === currentIndex
+                                        ? 'bg-green-500'
+                                        : 'bg-green-200'
+                                    }`}
+                                    onClick={() => stepper.goTo(step.id)}
+                                >
+                                    {index + 1}
+                                </button>
+                                <span className="text-sm font-medium">{step.title}</span>
+                            </li>
+                            {index < array.length - 1 && (
+                                <Separator
+                                className={`flex-1 ${
+                                    index < currentIndex ? 'bg-primary' : 'bg-muted'
+                                }`}
+                                />
+                            )}
+                            </React.Fragment>
+                        ))}
+                        </ol>
+                    </nav>
+                    <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" id='FormRegister'>
+                        <AnimatePresence mode="wait">
+                            {stepper.switch({
+                                basic: () => (
+                                <motion.div
+                                    key="basic"
+                                    initial={{ x: 300, opacity: 0 }}
+                                    animate={{ x: 0, opacity: 1 }}
+                                    exit={{ x: -300, opacity: 0 }}
+                                    transition={{ type: "tween" }}
+                                    className="space-y-6"
+                                >
+                                    <BasicInfoComponent methods={methods} />
+                                </motion.div>
+                                ),
+                                tachments: () => (
+                                <motion.div
+                                    key="attachments"
+                                    initial={{ x: 300, opacity: 0 }}
+                                    animate={{ x: 0, opacity: 1 }}
+                                    exit={{ x: -300, opacity: 0 }}
+                                    transition={{ type: "tween" }}
+                                    className="space-y-6"
+                                >
+                                    <AttachmentsComponent methods={methods} />
+                                </motion.div>
+                                ),
+                                complete: () => (
+                                <motion.div
+                                    key="complete"
+                                    initial={{ x: 300, opacity: 0 }}
+                                    animate={{ x: 0, opacity: 1 }}
+                                    exit={{ x: -300, opacity: 0 }}
+                                    transition={{ type: "tween" }}
+                                    className="space-y-6"
+                                >
+                                    <ConfirmationComponent methods={methods} />
+                                </motion.div>
+                                )
+                            })}
+                        </AnimatePresence>
+                        <div className="space-y-4">
+                        {!stepper.isLast ? (
+                            <div className="flex justify-end gap-4">
                             <button
                                 type="button"
-                                aria-current={
-                                    stepper.current.id === step.id ? 'step' : undefined
-                                }
-                                aria-posinset={index + 1}
-                                aria-setsize={steps.length}
-                                aria-selected={stepper.current.id === step.id}
-                                className={`flex size-10 items-center justify-center rounded-full ${
-                                    index < currentIndex
-                                    ? 'bg-green-500'
-                                    : index === currentIndex
-                                    ? 'bg-green-500'
-                                    : 'bg-green-200'
-                                }`}
-                                onClick={() => stepper.goTo(step.id)}
+                                onClick={stepper.prev}
+                                disabled={stepper.isFirst}
+                                className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition-colors"
                             >
-                                {index + 1}
+                                Back
                             </button>
-                            <span className="text-sm font-medium">{step.title}</span>
-                        </li>
-                        {index < array.length - 1 && (
-                            <Separator
-                            className={`flex-1 ${
-                                index < currentIndex ? 'bg-primary' : 'bg-muted'
-                            }`}
-                            />
-                        )}
-                        </React.Fragment>
-                    ))}
-                    </ol>
-                </nav>
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6" id='FormRegister'>
-                    {stepper.switch({
-                        basic: () => <BasicInfoComponent methods={methods} />,
-                        attachments: () => <AttachmentsComponent methods={methods} />,
-                        complete: () => <ConfirmationComponent methods={methods} />,
-                    })}
-                    <div className="space-y-4">
-                    {!stepper.isLast ? (
-                        <div className="flex justify-end gap-4">
-                        <button
-                            type="button"
-                            onClick={stepper.prev}
-                            disabled={stepper.isFirst}
-                            className="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition-colors"
-                        >
-                            Back
-                        </button>
-                        <button
-                            type="submit"
-                            className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors"
-                        >
-                            Next
-                        </button>
-                        </div>
-                    ) : (
-                        <div className="space-y-3">
-                        <button
-                            type="submit"
-                            form='FormRegister'
-                            className="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
-                        >
-                            Enviar Registro
-                        </button>
+                            <button
+                                type="submit"
+                                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition-colors"
+                            >
+                                Next
+                            </button>
+                            </div>
+                        ) : (
+                            <div className="space-y-3">
+                            <button
+                                type="submit"
+                                form='FormRegister'
+                                className="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition-colors"
+                            >
+                                Enviar Registro
+                            </button>
 
-                        <button
-                            type="button"
-                            onClick={() => {
-                            methods.reset(); // Limpia los datos del formulario
-                            stepper.reset(); // Vuelve al primer paso
-                            }}
-                            className="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
-                        >
-                            Cancelar y Reiniciar
-                        </button>
+                            <motion.button
+                                whileHover={{ scale: 1.02 }}
+                                whileTap={{ scale: 0.98 }}
+                                type="button"
+                                onClick={() => {
+                                    stepper.reset()
+                                    methods.reset()
+                                }}
+                                className="w-full bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition-colors"
+                            >
+                                Cancelar y Reiniciar
+                            </motion.button>
+                            </div>
+                        )}
                         </div>
-                    )}
-                    </div>
-                </form>
-            </div>
-        </div>
+                    </form>
+                </div>
+            </motion.div>
+        </AnimatePresence>
     )
 }
 

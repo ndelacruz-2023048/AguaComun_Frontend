@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react'
-import { NavLink, Outlet } from 'react-router'
-import logo from '../assets/LogoAguaComun.svg'
-import { Icon } from '@iconify/react'
-import { SidebarAdmin } from '../components/sidebar/sidebarAdmin'
-import { UserAuth } from '../context/AuthContext'
-import { jwtDecode } from 'jwt-decode';
-import { GenerateInitialsAvatar } from '../utils/Avatar'
-import { useLogout } from '../hooks/useLogout'
+import React, { useEffect, useState } from 'react' 
+import { NavLink, Outlet } from 'react-router-dom' 
+import logo from '../assets/LogoAguaComun.svg' 
+import { Icon } from '@iconify/react' 
+import { SidebarAdmin } from '../components/sidebar/sidebarAdmin' 
+import { UserAuth } from '../context/AuthContext' 
+import { jwtDecode } from 'jwt-decode' 
+import { GenerateInitialsAvatar } from '../utils/Avatar' 
+import { useLogout } from '../hooks/useLogout' 
+import { motion, AnimatePresence } from 'framer-motion' 
 
 export const Layout = () => {
-    const { user } = UserAuth();
+    const { user } = UserAuth() 
         const [descodeUserState, setdescodeUserState] = useState()
         useEffect(() => {
             const decodeUser = jwtDecode(user)
@@ -19,19 +20,19 @@ export const Layout = () => {
     let name, surname, profile = ''
     if(user) {
         try {
-        const decodedToken = jwtDecode(user);
-            name = decodedToken?.name || '';
-            surname = decodedToken?.surname || '';
-            profile = decodedToken?.profile || '';
+        const decodedToken = jwtDecode(user) 
+            name = decodedToken?.name || '' 
+            surname = decodedToken?.surname || '' 
+            profile = decodedToken?.profile || '' 
         } catch (e) {
-            console.error(e);
+            console.error(e) 
         }
     }
 
     const [isMenuOpen, setIsMenuOpen] = useState(false)
 
     const toggleMenu = () => {
-        setIsMenuOpen(!isMenuOpen);
+        setIsMenuOpen(!isMenuOpen) 
     }
 
     const { logout } = useLogout()
@@ -82,6 +83,7 @@ export const Layout = () => {
                         ) : (
                             <GenerateInitialsAvatar name={name} surname={surname} />
                         )}
+
                         {isMenuOpen && (
                             <div
                                 className=" absolute 2xl:left-452.5 xl:left-356.5 mt-2 w-48 bg-gray-100 rounded-md shadow-lg z-10 origin-top-right"
@@ -109,6 +111,8 @@ export const Layout = () => {
                     </div>
                 </div>
             </header>
+
+            {/* Contenido principal con animación */}
             <main className='w-full'>
                 <div className='flex flex-col md:flex-row '>
                     {(descodeUserState?.type === "ADMIN" || descodeUserState?.type === "COORDINADOR") && (
@@ -118,5 +122,5 @@ export const Layout = () => {
                 </div>
             </main>
         </div>
-    )
-}
+    ) 
+} 
