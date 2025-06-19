@@ -64,6 +64,7 @@ export const ProfileTemplate = () => {
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mt-2">{name} {surname}</h2>
             <span className="text-green-700 font-medium ">{type}</span>
+            <h3 className="block text-sm">Usuario ID: {userId}</h3>
             {/* Comunidad principal */}
             {community && (
                 <div className="mt-2 text-blue-700 text-lg font-medium flex items-center gap-2">
