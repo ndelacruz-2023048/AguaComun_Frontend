@@ -1,16 +1,41 @@
 import React, { useEffect, useState } from 'react';
 import { Icon } from '@iconify/react';
 import { useSocket } from '../../hooks/useSocket';
+import dayjs from 'dayjs';
+import 'dayjs/locale/es' // Para español
+dayjs.locale('es')
 
 export const HistorialTemplate = () => {
   const [open, setOpen] = useState(false);  
+  const [ordenFechaAscendente, setOrdenFechaAscendente] = useState(true);
   const [payments, setPayments] = useState([]);
+  const [busqueda, setBusqueda] = useState('');
+
+  const ordenarPorFecha = () => {
+  const copia = [...payments]; // no mutamos el original
+
+  const ordenados = copia.sort((a, b) => {
+    const fechaA = new Date(a.manualDate);
+    const fechaB = new Date(b.manualDate);
+
+    return ordenFechaAscendente
+      ? fechaB - fechaA // Ascendente
+      : fechaA - fechaB; // Descendente
+  });
+
+  setPayments(ordenados);
+  setOrdenFechaAscendente(!ordenFechaAscendente);
+};
 
   const socket = useSocket();
 
+  const handleConfirm = (paymentId) => {
+  socket.emit('confirm-payment', paymentId); // Enviar ID al backend
+  };
+
   useEffect(() => {
     // Emitir evento para solicitar pagos
-    socket.emit('get-payments-campaign');
+    socket.emit('get-payments-campaign',);
 
     // Escuchar pagos recibidos
     socket.on('list-campaign-payments', (data) => {
@@ -23,8 +48,18 @@ export const HistorialTemplate = () => {
   }, [socket]);
 
   // Separar confirmados y pendientes
-  const confirmados = payments.filter(p => p.status === 'Confirmado');
-  const pendientes = payments.filter(p => p.status === 'Pendiente');
+
+    const pagosFiltrados = payments.filter((p) => {
+    const nombre = p.user?.name ? p.user.name.toLowerCase() : 'anónimo';
+    const identificacion = p.user?.identificacion?.toLowerCase() || ''; // Si tienes este campo
+    const texto = busqueda.toLowerCase();
+
+    return nombre.includes(texto) || identificacion.includes(texto);
+    });
+
+  const confirmados = pagosFiltrados.filter(p => p.status === 'Confirmado');
+  const pendientes = pagosFiltrados.filter(p => p.status === 'Pendiente');
+  
 
   return (
     <div className="p-8 justify-center">
@@ -45,34 +80,26 @@ export const HistorialTemplate = () => {
           />
           <input
             type="text"
-            placeholder="Buscar por nombre o identificación del aportante"
+            placeholder="Buscar por nombre"
             className="text-[#0051ff] bg-[#dbe3f5] w-full pl-10 p-3 rounded-lg focus:outline-none focus:ring focus:border-[#155dfc]"
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
           />
         </div>
 
         <div className="flex gap-4 mb-6">
-          <button
-            onClick={() => setOpen(!open)}
-            className="bg-[#a48647] px-4 py-2 rounded-3xl text-sm text-white flex items-center"
-          >
-            Estado
-            <Icon
-              icon="mdi:chevron-down"
-              className={`ml-2 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
-              width="18"
-              height="18"
-            />
-          </button>
           <button 
-            onClick={() => setOpen(!open)}
+            onClick={ordenarPorFecha}
             className="bg-[#a48647] px-4 py-2 rounded-3xl text-sm text-white flex items-center">
-              Fecha
+              {ordenFechaAscendente
+                ? 'Fecha (Más antiguo a más reciente)'
+                : 'Fecha (Más reciente a más antiguo)'}
               <Icon
-              icon="mdi:chevron-down"
-              className={`ml-2 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}
-              width="18"
-              height="18"
-            />
+                icon="mdi:chevron-down"
+                className={`ml-2 transition-transform duration-200 ${ordenFechaAscendente ? '' : 'rotate-180'}`}
+                width="18"
+                height="18"
+              />
           </button>
         </div>
 
@@ -94,10 +121,12 @@ export const HistorialTemplate = () => {
                 <tr key={index} className="border-[0.5px] border-[#e4e4e4] hover:bg-gray-50">
                   <td className="p-4 text-[#a48647]">{ap.user?.name || 'Anónimo'}</td>
                   <td className="p-4 text-[#0051ff]">{ap.amount} Q</td>
-                  <td className="p-4 text-[#0051ff]">{ap.location || 'Sin punto'}</td>
-                  <td className="p-4 text-[#0051ff]">{ap.date || 'Sin fecha'}</td>
+                  <td className="p-4 text-[#0051ff]">{ap.address || 'Sin punto'}</td>
+                  <td className="p-4 text-[#0051ff]">
+                    {ap.manualDate ? dayjs(ap.manualDate).format('D [de] MMMM [de] YYYY') : 'Sin fecha'}
+                  </td>
                   <td className="p-4">
-                    <span className="bg-[#75bf3b] text-[#ffffff] px-6 py-1.5 rounded-full text-xs flex justify-center border-[#75bf3b] border-[1px] hover:bg-gray-50 hover:text-[#75bf3b]">
+                    <span className="bg-[#75bf3b] text-[#ffffff] px-6 py-1.5 rounded-full text-xs flex justify-center border-[#75bf3b] border-[1px]">
                       Confirmado
                     </span>
                   </td>
@@ -125,11 +154,15 @@ export const HistorialTemplate = () => {
                 <tr key={index} className="border-[0.5px] border-[#e4e4e4] hover:bg-gray-50">
                   <td className="p-4 text-[#a48647]">{ap.user?.name || 'Anónimo'}</td>
                   <td className="p-4 text-[#0051ff]">{ap.amount} Q</td>
-                  <td className="p-4 text-[#0051ff]">{ap.location || 'Sin punto'}</td>
-                  <td className="p-4 text-[#0051ff]">{ap.date || 'Sin fecha'}</td>
+                  <td className="p-4 text-[#0051ff]">{ap.address || 'Sin punto'}</td>
+                  <td className="p-4 text-[#0051ff]">
+                    {ap.manualDate ? dayjs(ap.manualDate).format('D [de] MMMM [de] YYYY') : 'Sin fecha'}
+                  </td>
                   <td className="p-4">
                     <span className="bg-[#d7ad2c] text-[#ffffff] px-6 py-1.5 rounded-full text-xs flex justify-center border-[#d7ad2c] border-[1px] hover:bg-gray-50 hover:text-[#d7ad2c]">
-                      Pendiente
+                      <button onClick={() => handleConfirm(ap._id)}>
+                        Por confirmar
+                      </button>
                     </span>
                   </td>
                 </tr>
