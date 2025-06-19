@@ -29,8 +29,14 @@ export const HistorialTemplate = () => {
 
   const socket = useSocket();
 
-  const handleConfirm = (paymentId) => {
-  socket.emit('confirm-payment', paymentId); // Enviar ID al backend
+  const handleConfirm = async(paymentId) => {
+    const response = await fetch(`http://localhost:3662/v1/aguacomun/payment/confirm/${paymentId}`,{
+      method:"PUT",
+      headers: {
+        "Content-Type": "application/json" // Le dice al servidor que el cuerpo es JSON
+      }
+    })
+    socket.emit('confirm-payment', paymentId); // Enviar ID al backend
   };
 
   useEffect(() => {
