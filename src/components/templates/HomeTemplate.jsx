@@ -1,24 +1,18 @@
 import { memo, use, useEffect } from 'react';
 import { Icon } from "@iconify/react";
 import { useSocket } from '../../hooks/useSocket';
-import { jwtDecode } from 'jwt-decode'
 import { UserAuth } from '../../context/AuthContext'
+import { Link } from 'react-router-dom';
 
 export const HomeTemplate = memo(() => {
 
   const { user } = UserAuth();
   const socket = useSocket()
 
-  let name, surname = ''
+  let name = '', surname = '';
   if(user) {
-    try {
-      const decodedToken = jwtDecode(user);
-      name = decodedToken?.name || '';
-      surname = decodedToken?.surname || '';
-    } catch (e) {
-      console.error(e);
-      
-    }
+    name = user.name || '';
+    surname = user.surname || '';
   }
 
   useEffect(()=>{
@@ -31,22 +25,25 @@ export const HomeTemplate = memo(() => {
 
       <div className="flex gap-4 mt-8 ">
         {[
-          { title: 'Community Water', icon: 'ph:lightbulb' },
+          { title: 'Community Water', icon: 'ph:lightbulb', link: '/community' },
           { title: 'Tutorials', icon: 'ph:book-open' },
-          { title: 'Submit Reports', icon: 'ph:note-pencil' },
-          { title: 'Funding', icon: 'ph:money' },
+          { title: 'Submit Reports', icon: 'ph:note-pencil', link: '/watter' },
+          { title: 'Funding', icon: 'ph:money', link: '/cashpayment' },
           { title: 'Water Sharing', icon: 'ph:drop' }
         ].map((item) => (
-          <CardItem key={item.title} title={item.title} icon={item.icon} />
+          <CardItem key={item.title} title={item.title} icon={item.icon} link={item.link} />
         ))}
       </div>
     </div>
   );
 });
 
-const CardItem = memo(({ title, icon }) => (
-  <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow hover:shadow-md w-[200px] box-border border-1 border-[#A48647] transition-shadow">
-    <Icon icon={icon} width="40" height="40" className="text-[#A48647] mb-2" />
-    <h3 className="text-lg font-medium text-center">{title}</h3>
-  </div>
-));
+const CardItem = memo(({ title, icon, link }) => {
+  const content = (
+    <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow hover:shadow-md w-[200px] box-border border-1 border-[#A48647] transition-shadow cursor-pointer">
+      <Icon icon={icon} width="40" height="40" className="text-[#A48647] mb-2" />
+      <h3 className="text-lg font-medium text-center">{title}</h3>
+    </div>
+  );
+  return link ? <Link to={link} style={{ textDecoration: 'none' }}>{content}</Link> : content;
+});
