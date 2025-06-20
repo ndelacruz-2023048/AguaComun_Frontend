@@ -38,6 +38,7 @@ export const useLogin = () => {
         setError(false);
         const token = Cookies.get('access_token');
         setAuthUser(token); // Actualiza el contexto
+        console.log('Token guardado:', token);
         const userName = response.data.loggedUser.name;
         toast.success(`Bienvenido ${userName}`);
 
