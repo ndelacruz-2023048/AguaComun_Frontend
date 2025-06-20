@@ -26,7 +26,7 @@ const router = createBrowserRouter(
     [
         {
             path: '/',
-            element: <ProtectedRoutes accesBy="authenticated">
+            element: <ProtectedRoutes accesBy="non-authenticate">
                 <Layout />
             </ProtectedRoutes> ,
             errorElement: <div>Error</div>,
