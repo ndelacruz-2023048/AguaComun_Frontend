@@ -2,24 +2,24 @@ import { Navigate } from "react-router"
 import { UserAuth } from "../context/AuthContext";
 
 export const ProtectedRoutes =({children,accesBy})=>{
-    const { user, loading } = UserAuth(); // Obtén 'loading' del contexto
+    const { user, isAuthenticated, loading } = UserAuth();
+    
+    console.log('ProtectedRoutes - Estado actual:', { user, isAuthenticated, loading })
 
     if (loading) {
-        // Muestra el mismo indicador de carga que en AuthContext
-        // return <div>Cargando...</div>; // O un componente de carga consistente
+        return <div>Cargando...</div>; // Muestra algo mientras se valida
     }
 
     if (accesBy === "non-authenticated") {
-        if (!user) {
+        if (!isAuthenticated) {
             return children;
         } else {
             return <Navigate to="/" />;
         }
     } else if (accesBy === "authenticated") {
-        if (user) {
+        if (isAuthenticated) {
             return children;
         }
     }
     return <Navigate to="/login"/>
-
 }
