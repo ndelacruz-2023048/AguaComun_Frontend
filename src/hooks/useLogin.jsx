@@ -6,12 +6,12 @@ import Cookies from 'js-cookie';
 import {toast} from 'sonner'
 
 export const useLogin = () => {
+    const { setAuthUser, refreshAuthContext } = UserAuth(); // 👈 Usa refreshAuthContext
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(false);
     const navigate = useNavigate();
 
     const login = async (data) => {
-        const { setAuthUser, refreshAuthContext } = UserAuth(); // 👈 Usa refreshAuthContext
         setIsLoading(true);
         const user = {
             userLogin: data?.userLogin,
