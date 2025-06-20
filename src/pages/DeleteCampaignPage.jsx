@@ -6,7 +6,7 @@ export const DeleteCampaignPage = () => {
 
   const handleDelete = async () => {
     try {
-      await fetch(`http://localhost:3662/v1/aguacomun/campaign/${id}`, {
+      await fetch(`https://aguacomunbackend-production.up.railway.app/v1/aguacomun/campaign/${id}`, {
         method: "DELETE",
       });
       console.log("Campaña eliminada");

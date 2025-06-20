@@ -10,7 +10,7 @@ export const useReportUser = (userId) => {
     if (!userId) return;
     setIsLoading(true);
     setError(false);
-    axios.get(`http://localhost:3662/v1/aguacomun/user/reports/${userId}`, { withCredentials: true })
+    axios.get(`https://aguacomunbackend-production.up.railway.app/v1/aguacomun/user/reports/${userId}`, { withCredentials: true })
       .then(res => {
         setReports(res.data.reports || []);
       })

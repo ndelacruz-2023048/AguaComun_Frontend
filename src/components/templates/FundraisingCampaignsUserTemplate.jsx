@@ -11,7 +11,7 @@ export const FundraisingCampaignsTemplate = () => {
 
   const getCampaigns = async() =>{
     try{
-      const res = await fetch('http://localhost:3662/v1/aguacomun/campaign')
+      const res = await fetch('https://aguacomunbackend-production.up.railway.app/v1/aguacomun/campaign')
       const data = await res.json()
       setcampaigns(data)
     }catch(e){

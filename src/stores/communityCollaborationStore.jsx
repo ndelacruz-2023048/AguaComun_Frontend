@@ -8,7 +8,7 @@ export const useCommunityCollaboration = create((set,get)=>({
         set({isModalCommunityCollaborationOpen:isModalCommunityCollaborationOpen ? false : true})
     },
     createActivityCollaboration:async(p)=>{
-        const response = await fetch("http://localhost:3662/v1/aguacomun/communityCollaboration",{
+        const response = await fetch("https://aguacomunbackend-production.up.railway.app/v1/aguacomun/communityCollaboration",{
             method:"POST",
             headers: {
                 "Content-Type": "application/json" // Le dice al servidor que el cuerpo es JSON
@@ -29,7 +29,7 @@ export const useCommunityCollaboration = create((set,get)=>({
         set({turnByActivityCollaboration:p})
     },
     getTurnByActivityCollaboration:async(p)=>{
-        const response = await fetch(`http://localhost:3662/v1/aguacomun/communityTurn/${p}`)
+        const response = await fetch(`https://aguacomunbackend-production.up.railway.app/v1/aguacomun/communityTurn/${p}`)
         const responseJSON = await response.json()
         set({turnByActivityCollaboration:responseJSON})
         return {

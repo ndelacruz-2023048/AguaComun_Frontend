@@ -29,7 +29,7 @@ export const PaymentModal = ({ campaignId, onClose }) => {
 
       try {
         const res = await axios.post(
-          'http://localhost:3662/v1/aguacomun/payment/payment',
+          'https://aguacomunbackend-production.up.railway.app/v1/aguacomun/payment/payment',
           payload,
           { withCredentials: true } 
         )

@@ -10,7 +10,7 @@ export const useUserCommunities = (userId) => {
     setIsLoading(true);
     setError(false);
     try {
-      const response = await axios.get(`http://localhost:3662/v1/aguacomun/user/communities/${userId}`,
+      const response = await axios.get(`https://aguacomunbackend-production.up.railway.app/v1/aguacomun/user/communities/${userId}`,
         { withCredentials: true }
       );
       setCommunities(response.data.communities || []);

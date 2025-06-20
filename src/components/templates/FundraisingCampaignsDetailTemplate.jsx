@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { PaymentModal } from '../modal/PaymentModal'
 import io from 'socket.io-client'
 
-const socket = io('http://localhost:3662') // Ya inicializado globalmente
+const socket = io('https://aguacomunbackend-production.up.railway.app') // Ya inicializado globalmente
 
 export const FundraisingCampaignsDetailTemplate = () => {
   const { state } = useLocation()
@@ -16,7 +16,7 @@ export const FundraisingCampaignsDetailTemplate = () => {
 
   const fetchCampaign = async () => {
     try {
-      const res = await fetch(`http://localhost:3662/v1/aguacomun/campaign/${campaignId}`)
+      const res = await fetch(`https://aguacomunbackend-production.up.railway.app/v1/aguacomun/campaign/${campaignId}`)
       const data = await res.json()
       setCampaign(data)
     } catch (error) {
@@ -26,7 +26,7 @@ export const FundraisingCampaignsDetailTemplate = () => {
 
   const fetchRecentDonors = async () => {
     try {
-      const res = await fetch(`http://localhost:3662/v1/aguacomun/payment/recent/${campaignId}`)
+      const res = await fetch(`https://aguacomunbackend-production.up.railway.app/v1/aguacomun/payment/recent/${campaignId}`)
       const data = await res.json()
       setDonors(data.donors)
     } catch (error) {

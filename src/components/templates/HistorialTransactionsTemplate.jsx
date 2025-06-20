@@ -30,7 +30,7 @@ export const HistorialTemplate = () => {
   const socket = useSocket();
 
   const handleConfirm = async(paymentId) => {
-    const response = await fetch(`http://localhost:3662/v1/aguacomun/payment/confirm/${paymentId}`,{
+    const response = await fetch(`https://aguacomunbackend-production.up.railway.app/v1/aguacomun/payment/confirm/${paymentId}`,{
       method:"PUT",
       headers: {
         "Content-Type": "application/json" // Le dice al servidor que el cuerpo es JSON

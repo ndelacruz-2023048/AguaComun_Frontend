@@ -1,5 +1,5 @@
 import { io } from "socket.io-client";
 
-const URL = "http://localhost:3662";
+const URL = "https://aguacomunbackend-production.up.railway.app";
 
 export const socketConnection = io(URL,{autoConnect:false})

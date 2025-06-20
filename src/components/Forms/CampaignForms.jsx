@@ -20,7 +20,7 @@ export default function FormularioCampana({ modo = "crear" }) {
 
   // Obtener campañas para validación de nombre único
   useEffect(() => {
-    fetch("http://localhost:3662/v1/aguacomun/campaign")
+    fetch("https://aguacomunbackend-production.up.railway.app/v1/aguacomun/campaign")
       .then((res) => res.json())
       .then((data) => setTodasCampanas(data))
       .catch((err) => console.error("Error al obtener campañas:", err));
@@ -29,7 +29,7 @@ export default function FormularioCampana({ modo = "crear" }) {
   // Si modo es "editar", cargar datos
   useEffect(() => {
     if (modo === "editar" && id) {
-      fetch(`http://localhost:3662/v1/aguacomun/campaign/${id}`)
+      fetch(`https://aguacomunbackend-production.up.railway.app/v1/aguacomun/campaign/${id}`)
         .then((res) => res.json())
         .then((data) => {
           data.goalAmount = data.goalAmount?.toString() || "";
@@ -84,8 +84,8 @@ export default function FormularioCampana({ modo = "crear" }) {
 
     const url =
       modo === "editar"
-        ? `http://localhost:3662/v1/aguacomun/campaign/${id}`
-        : "http://localhost:3662/v1/aguacomun/campaign";
+        ? `https://aguacomunbackend-production.up.railway.app/v1/aguacomun/campaign/${id}`
+        : "https://aguacomunbackend-production.up.railway.app/v1/aguacomun/campaign";
 
     const method = modo === "editar" ? "PUT" : "POST";
 

@@ -2,7 +2,7 @@ import axios from "axios"
 
 const apiClient = axios.create(
     {
-        baseURL: 'http://localhost:3662/v1/aguacomun',
+        baseURL: 'https://aguacomunbackend-production.up.railway.app/v1/aguacomun',
         withCredentials: true,
         timeout: 2000
     }

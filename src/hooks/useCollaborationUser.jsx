@@ -10,7 +10,7 @@ export const useCollaborationUser = (userId) => {
     if (!userId) return;
     setIsLoading(true);
     setError(false);
-    axios.get(`http://localhost:3662/v1/aguacomun/user/collaborations/${userId}`, { withCredentials: true })
+    axios.get(`https://aguacomunbackend-production.up.railway.app/v1/aguacomun/user/collaborations/${userId}`, { withCredentials: true })
       .then(res => {
         setCollaborations(res.data.collaborations || []);
       })

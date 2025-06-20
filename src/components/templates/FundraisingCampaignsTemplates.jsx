@@ -15,7 +15,7 @@ export const FundraisingCampaignsTemplates = () => {
 
   const getCampaigns = async () => {
     try {
-      const res = await fetch('http://localhost:3662/v1/aguacomun/campaign');
+      const res = await fetch('https://aguacomunbackend-production.up.railway.app/v1/aguacomun/campaign');
       const data = await res.json();
       setcampaigns(data);
     } catch (e) {
@@ -66,7 +66,7 @@ export const FundraisingCampaignsTemplates = () => {
 
   const actualizarEstado = async (id, nuevoEstado) => {
     try {
-      await fetch(`http://localhost:3662/v1/aguacomun/campaign/${id}/status`, {
+      await fetch(`https://aguacomunbackend-production.up.railway.app/v1/aguacomun/campaign/${id}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: nuevoEstado }),
