@@ -36,9 +36,12 @@ export const useLogin = () => {
         }
 
         setError(false);
-        const token = Cookies.get('access_token');
+        const token = Cookies.get('access_token', { secure: true, sameSite: 'Strict' });
+        if (!token) {
+            console.error('No se pudo obtener el token de acceso');
+            return;
+        }
         setAuthUser(token); // Actualiza el contexto
-        console.log('Token guardado:', token);
         const userName = response.data.loggedUser.name;
         toast.success(`Bienvenido ${userName}`);
 
