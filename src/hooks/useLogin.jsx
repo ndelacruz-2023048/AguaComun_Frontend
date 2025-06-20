@@ -8,10 +8,10 @@ import {toast} from 'sonner'
 export const useLogin = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(false);
-    const { setAuthUser, refreshAuthContext } = UserAuth(); // 👈 Usa refreshAuthContext
     const navigate = useNavigate();
 
     const login = async (data) => {
+        const { setAuthUser, refreshAuthContext } = UserAuth(); // 👈 Usa refreshAuthContext
         setIsLoading(true);
         const user = {
             userLogin: data?.userLogin,
