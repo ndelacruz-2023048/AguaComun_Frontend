@@ -24,24 +24,36 @@ export const AuthContextProvider = ({ children }) => {
     const clearAuthUser = () => {
         setUser(null);
         setIsAuthenticated(false);
-        Cookies.remove('access_token');
-        setLoading(false)
+        Cookies.remove('access_token', {
+            domain: window.location.hostname.includes('railway.app') ? '.railway.app' : undefined,
+            secure: true,
+            sameSite: 'none',
+            path: '/'
+        });
+        setLoading(false);
     };
 
     // Cargar sesión desde cookies al iniciar
-       useEffect(() => {
-       const token = Cookies.get('access_token');
-         console.log('Token desde cookies:', token);
-       if (token) {
-           setAuthUser (token);
-       }
-       setLoading(false);
-   }, []);
-   
+    useEffect(() => {
+        const token = Cookies.get('access_token', {
+            domain: window.location.hostname.includes('railway.app') ? '.railway.app' : undefined,
+            secure: true,
+            sameSite: 'none'
+        });
+        if (token) {
+            setAuthUser(token);
+        } else {
+            setLoading(false);
+        }
+    }, []);
 
-    // 👇 Nueva función para forzar la actualización del contexto
-    const refreshAuthContext = () => {
-        const token = Cookies.get('access_token');
+    // Función para actualizar el contexto de autenticación
+    const refreshAuthContext = async () => {
+        const token = Cookies.get('access_token', {
+            domain: window.location.hostname.includes('railway.app') ? '.railway.app' : undefined,
+            secure: true,
+            sameSite: 'none'
+        });
         if (token) {
             setUser(token);
             setIsAuthenticated(true);

@@ -36,19 +36,33 @@ export const useLogin = () => {
         }
 
         setError(false);
-        const token = Cookies.get('access_token', { secure: true, sameSite: 'Strict' });
+        // La cookie es establecida por el backend
+        const token = Cookies.get('access_token', {
+            domain: window.location.hostname.includes('railway.app') ? '.railway.app' : undefined,
+            secure: true,
+            sameSite: 'none'
+        });
+        
         if (!token) {
             console.error('No se pudo obtener el token de acceso');
+            toast.error('Error al obtener el token de acceso');
             return;
         }
-        setAuthUser(token); // Actualiza el contexto
+
+        setAuthUser(token);
         const userName = response.data.loggedUser.name;
         toast.success(`Bienvenido ${userName}`);
 
-        // 👇 Llama refreshAuthContext() para forzar la actualización
-        refreshAuthContext();
-        // Redirige al usuario a la página principal
-        navigate('/');
+        try {
+            // Actualiza el contexto de autenticación
+            await refreshAuthContext();
+            
+            // Redirige al usuario a la página principal
+            navigate('/');
+        } catch (error) {
+            console.error('Error al actualizar el contexto:', error);
+            toast.error('Error al actualizar la sesión');
+        }
     };
 
     return {
