@@ -6,9 +6,10 @@ export const ProtectedRoutes =({children,accesBy})=>{
     
     console.log('ProtectedRoutes - Estado actual:', { user, isAuthenticated, loading })
 
-    /*if (loading) {
-        return <div>Cargando...</div>; // Muestra algo mientras se valida
-    }*/
+    if (loading) {
+        // Muestra el mismo indicador de carga que en AuthContextAdd commentMore actions
+        // return <div>Cargando...</div>; // O un componente de carga consistente
+    }
 
     if (accesBy === "non-authenticated") {
         if (!isAuthenticated) {
