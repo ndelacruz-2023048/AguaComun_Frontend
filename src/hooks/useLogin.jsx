@@ -43,7 +43,6 @@ export const useLogin = () => {
 
         // 👇 Llama refreshAuthContext() para forzar la actualización
         refreshAuthContext();
-        console.log('Estado del contexto tras login:', UserAuth())
         // Redirige al usuario a la página principal
         navigate('/');
     };
