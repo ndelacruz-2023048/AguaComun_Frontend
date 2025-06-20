@@ -10,6 +10,7 @@ export const AuthContextProvider = ({ children }) => {
 
     // Función para actualizar el usuario y el estado de autenticación
     const setAuthUser = (userData) => {
+        console.log('usuario: ', userData)
         if (userData) {
             setUser(userData);
             setIsAuthenticated(true);
