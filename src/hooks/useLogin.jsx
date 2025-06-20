@@ -3,11 +3,13 @@ import { loginRequest } from "../routers/services/Api"
 import { UserAuth } from "../context/AuthContext"
 import { toast } from "sonner"
 import Cookies from 'js-cookie'
+import { useNavigate } from "react-router-dom" 
 
 export const useLogin = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [error, setError] = useState(false)
-    const { setAuthUser } = UserAuth();
+    const { setAuthUser } = UserAuth()
+    const navigate = useNavigate() 
 
     const login = async(data) => {
         setIsLoading(true)
@@ -37,6 +39,7 @@ export const useLogin = () => {
         setAuthUser(token)
         const userName = response.data.loggedUser.name
         toast.success(`Bienvenido ${userName}`)
+        navigate('/')
 
     }
     return {
