@@ -26,9 +26,9 @@ const router = createBrowserRouter(
     [
         {
             path: '/',
-            element: 
+            element: <ProtectedRoutes accesBy="non-authenticated">
                 <Layout />
- ,
+            </ProtectedRoutes> ,
             errorElement: <div>Error</div>,
             children: [
                 {
@@ -109,16 +109,16 @@ const router = createBrowserRouter(
         {
             path: '/login',
             element:
-            
+            <ProtectedRoutes accesBy="non-authenticated">
                 <LoginPage/>
-            
+            </ProtectedRoutes>
         },
         {
             path: '/register',
             element:
-            
+            <ProtectedRoutes accesBy="non-authenticated">
                 <RegisterPage/>
-            
+            </ProtectedRoutes>
         },
         {
             path: '/*',
