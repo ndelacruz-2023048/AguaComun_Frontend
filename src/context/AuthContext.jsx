@@ -8,35 +8,45 @@ export const AuthContextProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true)
 
+    // Función para actualizar el usuario y el estado de autenticación
     const setAuthUser = (userData) => {
-        setUser(userData);
-        setIsAuthenticated(true);
+        if (userData) {
+            setUser(userData);
+            setIsAuthenticated(true);
+        } else {
+            setUser(null);
+            setIsAuthenticated(false);
+        }
         setLoading(false)
     };
 
     const clearAuthUser = () => {
         setUser(null);
         setIsAuthenticated(false);
-        setLoading(false)
         Cookies.remove('access_token')
+        setLoading(false)
     };
 
+    // Cargar sesión desde cookies al iniciar
     useEffect(() => {
         const token = Cookies.get('access_token');
-        
+
         if (token) {
-            setAuthUser(token)
+            setUser(token);
+            setIsAuthenticated(true);
         }
-        setLoading(false)
+
+        setLoading(false); // Finaliza carga inicial
     }, []);
 
-    if (loading) {
-        // Puedes mostrar un indicador de carga aquí mientras se verifica la sesión
-        // return <div>Cargando...</div>; // O un componente de carga más sofisticado
-    }
-
     return (
-        <AuthContext.Provider value={{ user, isAuthenticated, setAuthUser, clearAuthUser }}>
+        <AuthContext.Provider value={{ 
+            user, 
+            isAuthenticated, 
+            loading,
+            setAuthUser, 
+            clearAuthUser 
+        }}>
             {children}
         </AuthContext.Provider>
     );
