@@ -30,14 +30,12 @@ export const AuthContextProvider = ({ children }) => {
     // Cargar sesión desde cookies al iniciar
     useEffect(() => {
         const token = Cookies.get('access_token');
-
-        if (token) {
+        if (token && !isAuthenticated) {Add commentMore actions
             setUser(token);
             setIsAuthenticated(true);
+            setLoading(false);
         }
-
-        setLoading(false); // Finaliza carga inicial
-    }, []);
+    }, [Cookies.get('access_token')])
 
     // 👇 Nueva función para forzar la actualización del contexto
     const refreshAuthContext = () => {
