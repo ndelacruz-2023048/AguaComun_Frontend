@@ -31,6 +31,7 @@ export const AuthContextProvider = ({ children }) => {
     // Cargar sesión desde cookies al iniciar
        useEffect(() => {
        const token = Cookies.get('access_token');
+         console.log('Token desde cookies:', token);
        if (token) {
            setAuthUser (token);
        }
