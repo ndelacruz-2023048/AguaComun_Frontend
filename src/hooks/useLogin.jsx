@@ -39,7 +39,7 @@ export const useLogin = () => {
         // La cookie es establecida por el backend
         const token = Cookies.get('access_token', {
             domain: window.location.hostname.includes('railway.app') ? '.railway.app' : undefined,
-            secure: true,
+            secure: import.meta.env.VITE_NODE,
             sameSite: 'none'
         });
         
