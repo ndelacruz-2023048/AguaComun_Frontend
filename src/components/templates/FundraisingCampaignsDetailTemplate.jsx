@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { PaymentModal } from '../modal/PaymentModal'
 import io from 'socket.io-client'
+const API_URL = import.meta.env.VITE_API_URL
 
-const socket = io('https://aguacomunbackend-production.up.railway.app') // Ya inicializado globalmente
+const socket = io(`${API_URL}`) // Ya inicializado globalmente
 
 export const FundraisingCampaignsDetailTemplate = () => {
   const { state } = useLocation()
@@ -16,7 +17,7 @@ export const FundraisingCampaignsDetailTemplate = () => {
 
   const fetchCampaign = async () => {
     try {
-      const res = await fetch(`https://aguacomunbackend-production.up.railway.app/v1/aguacomun/campaign/${campaignId}`)
+      const res = await fetch(`${API_URL}/v1/aguacomun/campaign/${campaignId}`)
       const data = await res.json()
       setCampaign(data)
     } catch (error) {
@@ -26,7 +27,7 @@ export const FundraisingCampaignsDetailTemplate = () => {
 
   const fetchRecentDonors = async () => {
     try {
-      const res = await fetch(`https://aguacomunbackend-production.up.railway.app/v1/aguacomun/payment/recent/${campaignId}`)
+      const res = await fetch(`${API_URL}/v1/aguacomun/payment/recent/${campaignId}`)
       const data = await res.json()
       setDonors(data.donors)
     } catch (error) {

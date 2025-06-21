@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+const API_URL = import.meta.env.VITE_API_URL
 
 export const useCollaborationUser = (userId) => {
   const [collaborations, setCollaborations] = useState([]);
@@ -10,7 +11,7 @@ export const useCollaborationUser = (userId) => {
     if (!userId) return;
     setIsLoading(true);
     setError(false);
-    axios.get(`https://aguacomunbackend-production.up.railway.app/v1/aguacomun/user/collaborations/${userId}`, { withCredentials: true })
+    axios.get(`${API_URL}/v1/aguacomun/user/collaborations/${userId}`, { withCredentials: true })
       .then(res => {
         setCollaborations(res.data.collaborations || []);
       })

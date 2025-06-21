@@ -1,4 +1,5 @@
 import { useNavigate, useParams } from "react-router";
+const API_URL = import.meta.env.VITE_API_URL
 
 export const DeleteCampaignPage = () => {
   const navigate = useNavigate();
@@ -6,7 +7,7 @@ export const DeleteCampaignPage = () => {
 
   const handleDelete = async () => {
     try {
-      await fetch(`https://aguacomunbackend-production.up.railway.app/v1/aguacomun/campaign/${id}`, {
+      await fetch(`${API_URL}/v1/aguacomun/campaign/${id}`, {
         method: "DELETE",
       });
       console.log("Campaña eliminada");

@@ -4,6 +4,7 @@ import { useForm, FormProvider } from 'react-hook-form'
 import { PaymentStep } from './PaymentSteps/PaymentStep'
 import { AddressStep } from './PaymentSteps/AddressStep'
 import axios from 'axios'
+const API_URL = import.meta.env.VITE_API_URL
 
 const { useStepper } = defineStepper(
   { id: 'payment', title: 'Payment' },
@@ -29,7 +30,7 @@ export const PaymentModal = ({ campaignId, onClose }) => {
 
       try {
         const res = await axios.post(
-          'https://aguacomunbackend-production.up.railway.app/v1/aguacomun/payment/payment',
+          `${API_URL}/v1/aguacomun/payment/payment`,
           payload,
           { withCredentials: true } 
         )

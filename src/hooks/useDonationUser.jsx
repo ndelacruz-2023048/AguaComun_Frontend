@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+const API_URL = import.meta.env.VITE_API_URL
 
 export const useDonationUser = (userId) => {
   const [contributions, setContributions] = useState([]);
@@ -10,7 +11,7 @@ export const useDonationUser = (userId) => {
     if (!userId) return;
     setIsLoading(true);
     setError(false);
-    axios.get(`https://aguacomunbackend-production.up.railway.app/v1/aguacomun/user/campaigns-contributed/${userId}`, { withCredentials: true })
+    axios.get(`${API_URL}/v1/aguacomun/user/campaigns-contributed/${userId}`, { withCredentials: true })
       .then(res => {
         setContributions(res.data.contributions || []);
       })

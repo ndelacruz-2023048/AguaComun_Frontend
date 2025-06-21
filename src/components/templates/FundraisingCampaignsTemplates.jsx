@@ -2,6 +2,7 @@ import { Icon } from '@iconify/react/dist/iconify.js';
 import { useNavigate } from 'react-router';
 import React, { useEffect, useState, useMemo } from 'react';
 import { NavLink } from 'react-router';
+const API_URL = import.meta.env.VITE_API_URL
 
 export const FundraisingCampaignsTemplates = () => {
   const [campaigns, setcampaigns] = useState([])
@@ -15,7 +16,7 @@ export const FundraisingCampaignsTemplates = () => {
 
   const getCampaigns = async () => {
     try {
-      const res = await fetch('https://aguacomunbackend-production.up.railway.app/v1/aguacomun/campaign');
+      const res = await fetch(`${API_URL}/v1/aguacomun/campaign`);
       const data = await res.json();
       setcampaigns(data);
     } catch (e) {
@@ -66,7 +67,7 @@ export const FundraisingCampaignsTemplates = () => {
 
   const actualizarEstado = async (id, nuevoEstado) => {
     try {
-      await fetch(`https://aguacomunbackend-production.up.railway.app/v1/aguacomun/campaign/${id}/status`, {
+      await fetch(`${API_URL}/v1/aguacomun/campaign/${id}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: nuevoEstado }),

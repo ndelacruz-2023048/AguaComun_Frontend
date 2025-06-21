@@ -2,6 +2,7 @@ import axios from 'axios';
 import { create } from 'zustand';
 import { useEffect } from 'react';
 import { socketConnection } from '../socket/socket';
+const API_URL = import.meta.env.VITE_API_URL
 
 const useManagerCommunityStore = create((set, get) => ({
     communities: [],
@@ -10,7 +11,7 @@ const useManagerCommunityStore = create((set, get) => ({
     setSelectedCommunity: (community) => set({ selectedCommunity: community }),
     fetchCommunities: async () => {
         try {
-            const response = await axios.get('https://aguacomunbackend-production.up.railway.app/v1/aguacomun/communityManager/view');
+            const response = await axios.get(`${API_URL}/v1/aguacomun/communityManager/view`);
             set({ communities: response.data.communities });
         } catch (error) {
             set({ communities: [] });
@@ -19,7 +20,7 @@ const useManagerCommunityStore = create((set, get) => ({
     fetchManagersByCommunity: async (communityId) => {
         try {
             const { selectedCommunity } = get();
-            const response = await axios.get('https://aguacomunbackend-production.up.railway.app/v1/aguacomun/user/view');
+            const response = await axios.get(`${API_URL}/v1/aguacomun/user/view`);
             // Filtra los usuarios por dirección (zona, municipio y departamento) que coincidan con la comunidad seleccionada
             let filtered = response.data.users;
             if (selectedCommunity && selectedCommunity.department && selectedCommunity.municipality && selectedCommunity.zone) {

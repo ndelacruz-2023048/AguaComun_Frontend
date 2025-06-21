@@ -4,6 +4,7 @@ import { useSocket } from '../../hooks/useSocket';
 import dayjs from 'dayjs';
 import 'dayjs/locale/es' // Para español
 dayjs.locale('es')
+const API_URL = import.meta.env.VITE_API_URL
 
 export const HistorialTemplate = () => {
   const [open, setOpen] = useState(false);  
@@ -30,7 +31,7 @@ export const HistorialTemplate = () => {
   const socket = useSocket();
 
   const handleConfirm = async(paymentId) => {
-    const response = await fetch(`https://aguacomunbackend-production.up.railway.app/v1/aguacomun/payment/confirm/${paymentId}`,{
+    const response = await fetch(`${API_URL}/v1/aguacomun/payment/confirm/${paymentId}`,{
       method:"PUT",
       headers: {
         "Content-Type": "application/json" // Le dice al servidor que el cuerpo es JSON
