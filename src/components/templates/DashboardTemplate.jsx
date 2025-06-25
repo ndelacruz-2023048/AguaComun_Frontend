@@ -1,5 +1,10 @@
 import React from 'react'
 import banner from '../../assets/banner.webp'
+import { Overview } from '../organismos/CommunityCollaboration/Dashboard/Overview'
+
+import { Graphic } from '../organismos/CommunityCollaboration/Dashboard/Graphic'
+import { NewUsers } from '../organismos/CommunityCollaboration/Dashboard/NewUsers'
+import { NewCommunities } from '../organismos/CommunityCollaboration/Dashboard/NewCommunities'
 export const DashboardTemplate = () => {
   return (
     <div className='flex flex-col flex-grow h-screen'>
@@ -12,8 +17,15 @@ export const DashboardTemplate = () => {
                 </button>
             </div>
         </div>
-        <div className='flex h-[75%]'>
-            d
+        <div className='flex h-[75%] gap-5'>
+          <div className='flex flex-col gap-4 w-[50%] h-[100%]'>
+            <Overview />
+            <NewUsers />
+          </div>
+          <div className='flex flex-col gap-4'>
+            <NewCommunities />
+            <Graphic />
+          </div>
         </div>
     </div>
   )
