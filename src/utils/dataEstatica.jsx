@@ -35,6 +35,12 @@ export const LinksArraySidebarAdmin = [
         to: "/community-collaboration/dashboard",
         type: ["ADMIN"]
     },
+    {
+        label: "Dashboard",
+        icon: "carbon:dashboard",
+        to: "/dashboard",
+        type: ["ADMIN"]
+    },
 ]
 
 export const LinksButtonsHome = [

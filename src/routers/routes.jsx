@@ -21,6 +21,7 @@ import { FundraisingCampaignsUserPage } from "../pages/FundraisingCampaignsUserP
 import { AsignTurnPage } from "../pages/AsignTurnPage.jsx"
 import { CommunityCollaborationDashboardPage } from "../pages/CommunityCollaborationDashboardPage.jsx"
 import { WatterReportViewPage } from "../pages/WatterReportViewPage.jsx"
+import { DashboardPage } from "../pages/DashboardPage.jsx"
 
 const router = createBrowserRouter(
     [
@@ -105,6 +106,13 @@ const router = createBrowserRouter(
                 }
 
             ]
+        },
+        {
+            path: '/dashboard',
+            element:
+            <ProtectedRoutes accesBy="authenticated">
+                <DashboardPage/>
+            </ProtectedRoutes>
         },
         {
             path: '/login',
