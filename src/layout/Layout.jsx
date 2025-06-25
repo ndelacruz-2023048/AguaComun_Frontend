@@ -42,8 +42,8 @@ export const Layout = () => {
     }
 
     return (
-        <div className='w-full h-full absolute bg-gray-50'>
-            <header className='flex justify-between items-center text-black py-4 px-18 md:px-15 bg-white drop-shadow-md'>
+        <div className='w-full h-full absolute bg-gray-50 flex flex-col'>
+            <header className='flex justify-between items-center text-black py-4 px-18 md:px-15 bg-white drop-shadow-md flex-shrink-0'>
                 <div className='flex items-center gap-4'>
                     <img src={logo} alt="LogoAguaComun" className='w-10 h-10 rounded-full hover:scale-105 transition-all'/>
                     <h1 className='font-bold text-2xl'>AguaComún</h1>
@@ -109,12 +109,14 @@ export const Layout = () => {
             </header>
 
             {/* Contenido principal con animación */}
-            <main className='w-full'>
-                <div className='flex flex-col md:flex-row '>
+            <main className='w-full flex-1 flex'>
+                <div className='flex flex-col md:flex-row w-full'>
                     {(descodeUserState?.type === "ADMIN" || descodeUserState?.type === "COORDINADOR") && (
                         <SidebarAdmin/>
                     )}
-                    <Outlet/>
+                    <div className='flex-1'>
+                        <Outlet/>
+                    </div>
                 </div>
             </main>
         </div>

@@ -31,12 +31,13 @@ export const SidebarAdmin = () => {
                 initial={false}
                 animate={{ width: isOpen ? '16rem' : '4.5rem' }}
                 transition={{ type: "spring", stiffness: 300, damping: 25 }}
-                className={`bg-gray-50 p-4 h-full flex flex-col rounded-r-xl ${
+                className={`bg-gray-50 p-4 flex flex-col rounded-r-xl ${
                     isOpen ? 'shadow-lg' : ''
                 }`}
+                style={{ height: '100%' }}
             >
                 {/* Botón para abrir/cerrar + título con animación */}
-                <div className="flex justify-between mb-4 items-center">
+                <div className="flex justify-between mb-4 items-center ">
                     <AnimatePresence mode="wait">
                         {isOpen && (
                             <motion.label

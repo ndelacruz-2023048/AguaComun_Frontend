@@ -4,6 +4,7 @@ import { useSocket } from '../../hooks/useSocket';
 import { UserAuth } from '../../context/AuthContext'
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router';
+import { ResumeAguaComun } from '../organismos/CommunityCollaboration/ResumeAguaComun';
 
 export const HomeTemplate = memo(() => {
 
@@ -28,20 +29,17 @@ export const HomeTemplate = memo(() => {
   }
 
   return (
-    <div className="flex flex-col h-full w-full bg-gray-50 px-4 sm:px-6 lg:px-8 py-5">
-      <h1 className="text-3xl md:text-4xl lg:text-[40px] font-bold mb-6">Welcome, {`${name} ${surname}`}</h1>
-
-      <div className="flex gap-4 mt-8 ">
-        {[
-          { title: 'Community Water', icon: 'ph:lightbulb', link: '/community' },
-          { title: 'Submit Reports', icon: 'ph:note-pencil', link: '/watter' },
-          { title: 'Funding', icon: 'ph:money', link: '/campaigns/user' },
-          { title: 'Activity', icon: 'ph:calendar-check', link: '/community-collaboration' },
-        ].map((item) => (
-          <CardItem key={item.title} title={item.title} icon={item.icon} 
-            onClick={() => handleCardClick(item.link)}
-          />
-        ))}
+    <div className="flex flex-row h-[100%] bg-amber-400 w-full px-4 sm:px-6 lg:px-8 py-5">
+      <div className='flex flex-col gap-4 w-[70%] h-full'>
+        <div className='flex flex-row h-[70%] '>
+          <ResumeAguaComun/>  
+        </div>
+        <div className='flex flex-col h-[30%]'>
+          <h1>Welcome, {`${name} ${surname}`}</h1>
+        </div>
+      </div>
+      <div className=' bg-red-500 h-full w-[30%]'>
+dffdfd
       </div>
     </div>
   );
