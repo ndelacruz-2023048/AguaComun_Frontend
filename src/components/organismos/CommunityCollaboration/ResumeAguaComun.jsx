@@ -13,8 +13,8 @@ export const ResumeAguaComun = () => {
   return (
     <div className="w-full mx-auto bg-white rounded-2xl shadow-lg flex flex-col p-6 gap-2 ">
         <div className="flex items-center gap-2">
-          <Icon icon="mdi:clipboard-text-outline" className="text-xl text-[#7b7b93]" />
-          <span className="font-semibold text-[#7b7b93] text-[30px]"> Resumen de Comunidad</span>
+          <Icon icon="mdi:clipboard-text-outline" className="text-xl text-[#000]" />
+          <span className="text-[#000] text-[30px] font-bold"> Resumen de Comunidad</span>
         </div>
         <div className='flex flex-row gap-2 grow'>
           <div className="flex flex-col gap-4 w-[70%] ">
@@ -42,8 +42,8 @@ export const ResumeAguaComun = () => {
               </div>
             </div>
             <div className="flex items-center gap-2 mt-2 h-[20%]">
-              <span className="text-2xl font-bold text-[#7b7b93]">On time completion rate:</span>
-              <span className="text-3xl font-bold text-[#18181b]">94%</span>
+              <span className="text-[20px] font-bold text-[#7b7b93]">On time completion rate:</span>
+              <span className="text-[30px] font-bold text-[#18181b]">94%</span>
               <span className="bg-[#6c47ff] text-white text-xs rounded-lg px-2 py-0.5 ml-2 flex items-center gap-1">
                 <Icon icon="mdi:arrow-up" className="text-xs" />2.3%
               </span>

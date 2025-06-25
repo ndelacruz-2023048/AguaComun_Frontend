@@ -5,6 +5,8 @@ import { UserAuth } from '../../context/AuthContext'
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router';
 import { ResumeAguaComun } from '../organismos/CommunityCollaboration/ResumeAguaComun';
+import FundraisingCampaingsCard from '../organismos/CommunityCollaboration/HomeDashboard/FundraisingCampaingsCard';
+import { CommunityCollaborationCalendar } from '../organismos/CommunityCollaboration/HomeDashboard/CommunityCollaborationCalendar';
 
 export const HomeTemplate = memo(() => {
 
@@ -29,17 +31,25 @@ export const HomeTemplate = memo(() => {
   }
 
   return (
-    <div className="flex flex-row h-[100%] bg-amber-400 w-full px-4 sm:px-6 lg:px-8 py-5">
+    <div className="flex flex-row h-[100%] w-full px-4 sm:px-6 lg:px-8 py-5 gap-4">
       <div className='flex flex-col gap-4 w-[70%] h-full'>
-        <div className='flex flex-row h-[70%] '>
+        <div className='flex flex-row h-[68%] '>
           <ResumeAguaComun/>  
         </div>
-        <div className='flex flex-col h-[30%]'>
-          <h1>Welcome, {`${name} ${surname}`}</h1>
+        <div className='flex flex-col h-[42%] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 gap-4  bg-white rounded-2xl shadow-lg'>
+          <div className='flex flex-row items-center gap-2 ml-8 '>
+             <Icon icon="tdesign:money" className='text-[#000] text-2xl' />
+             <h1 className='text-2xl font-bold'>Campañas de recaudación de fondos</h1>
+          </div>
+          <div className='flex flex-col gap-4 justify-center items-center'>
+            <FundraisingCampaingsCard/>
+            <FundraisingCampaingsCard/>
+            <FundraisingCampaingsCard/>
+          </div>
         </div>
       </div>
       <div className=' bg-red-500 h-full w-[30%]'>
-dffdfd
+        <CommunityCollaborationCalendar/>
       </div>
     </div>
   );
