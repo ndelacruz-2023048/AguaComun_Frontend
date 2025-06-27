@@ -33,10 +33,9 @@ export const HomeTemplate = memo(() => {
 
       <div className="flex gap-4 mt-8 ">
         {[
-          { title: 'Community Water', icon: 'ph:lightbulb', link: '/community' },
-          { title: 'Submit Reports', icon: 'ph:note-pencil', link: '/watter' },
-          { title: 'Funding', icon: 'ph:money', link: '/campaigns/user' },
-          { title: 'Activity', icon: 'ph:calendar-check', link: '/community-collaboration' },
+          { title: 'Reportes de agua', icon: 'ph:note-pencil', link: '/watter' },
+          { title: 'Recaudación de fondos', icon: 'ph:money', link: '/campaigns/user' },
+          { title: 'Colaboración', icon: 'ph:calendar-check', link: '/community-collaboration' },
         ].map((item) => (
           <CardItem key={item.title} title={item.title} icon={item.icon} 
             onClick={() => handleCardClick(item.link)}
