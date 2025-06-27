@@ -14,15 +14,15 @@ import { useSocket } from '../../../hooks/useSocket';
 const { useStepper, steps, utils } = defineStepper(
   {
     id: 'shipping',
-    title: 'Shipping',
-    description: 'Enter your shipping details',
+    title: 'Datos de la actividad',
+    description: 'Ingresa los datos de la actividad',
   },
   {
     id: 'payment',
-    title: 'Payment',
-    description: 'Enter your payment details',
+    title: 'Horas de la actividad',
+    description: 'Ingresa las horas de la actividad',
   },
-  { id: 'complete', title: 'Complete', description: 'Checkout complete' }
+  { id: 'complete', title: 'Datos finales', description: 'Completado' }
 );
 
 export const CommunityCollaborationModal = () => {
@@ -95,7 +95,7 @@ export const CommunityCollaborationModal = () => {
     <div className='fixed top-0 left-0 h-screen w-screen flex justify-center items-center z-1000 backdrop-blur-md'>
       <div className="space-y-6 p-6 border border-[#338826] rounded-lg w-[55%] h-[70%] z-1000 bg-white">
         <div className="flex justify-between">
-          <h2 className="text-lg font-medium text-[#338826]">New Collaboration Activity</h2>
+          <h2 className="text-lg font-medium text-[#338826]">Nueva actividad de colaboración</h2>
           <div className="flex items-center gap-2">
             <Icon icon="ic:round-close" className='text-[25px] text-[#338826]' onClick={handleClickCloseModal}/>
           </div>
@@ -147,12 +147,12 @@ export const CommunityCollaborationModal = () => {
                   Back
                 </button>
                 <button className='bg-[#338826] text-white px-4 py-2 rounded-md hover:bg-[#338826]/80' onClick={handleClickNextValidate}>
-                  {stepper.isLast ? 'Complete' : 'Next'}
+                  {stepper.isLast ? 'Completar' : 'Siguiente'}
                 </button>
               </div>
             ) : (
               <div className='flex justify-center'>
-                <button className='bg-[#ffffff] border-[#338826] border-1 text-[#338826] px-4 py-2 rounded-md hover:bg-[#e8ffe4]/80 w-[40%]' onClick={handleClickSaveValidate}>Save</button>            
+                <button className='bg-[#ffffff] border-[#338826] border-1 text-[#338826] px-4 py-2 rounded-md hover:bg-[#e8ffe4]/80 w-[40%]' onClick={handleClickSaveValidate}>Guardar</button>            
               </div>
             )}
           </div>
