@@ -43,67 +43,151 @@ export const Layout = () => {
 
     return (
         <div className='w-full h-full absolute bg-gray-50 flex flex-col'>
-            <header className='flex justify-between items-center text-black py-4 px-18 md:px-15 bg-white drop-shadow-md flex-shrink-0'>
-                <div className='flex items-center gap-4'>
-                    <img src={logo} alt="LogoAguaComun" className='w-10 h-10 rounded-full hover:scale-105 transition-all'/>
-                    <h1 className='font-bold text-2xl'>AguaComún</h1>
+            <header className='flex justify-between items-center text-gray-800 py-4 px-18 md:px-15 bg-gradient-to-r from-green-50 via-yellow-50 to-green-100 border-b border-green-200/50 shadow-lg backdrop-blur-sm flex-shrink-0'>
+                {/* Logo y título */}
+                <div className='flex items-center gap-4 group'>
+                    <div className='relative'>
+                        <img src={logo} alt="LogoAguaComun" className='w-10 h-10 rounded-full shadow-md group-hover:scale-110 transition-all duration-300 ease-out'/>
+                        <div className='absolute inset-0 bg-gradient-to-r from-green-400/20 to-yellow-400/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
+                    </div>
+                    <h1 className='font-bold text-2xl bg-gradient-to-r from-green-600 to-yellow-600 bg-clip-text text-transparent'>
+                        AguaComún
+                    </h1>
                 </div>
+
+                {/* Navegación y controles */}
                 <div className='flex gap-8 items-center'>
-                    <div className='flex gap-6 '>
-                        <NavLink to={'/'}>
-                            <span className='text-lg'>Home</span>
+                    {/* Enlaces de navegación */}
+                    <div className='flex gap-6'>
+                        <NavLink 
+                            to={'/'}
+                            className={({ isActive }) => 
+                                `relative px-4 py-2 rounded-lg font-medium transition-all duration-300 group ${
+                                    isActive 
+                                        ? 'text-green-600 bg-green-50 shadow-md' 
+                                        : 'text-gray-600 hover:text-green-600 hover:bg-green-50/50'
+                                }`
+                            }
+                        >
+                            <span className='relative z-10 text-lg'>Home</span>
+                            <div className='absolute inset-0 bg-gradient-to-r from-green-100 to-yellow-100 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
                         </NavLink>
 
-                        {/*<NavLink to={'/community'}>
-                            <span className='text-lg'>Community</span>
-                        </NavLink>*/}
-
-                        <NavLink to={'campaigns/user'}>
-                            <span className='text-lg'>Recaudación de fondos</span>
+                        <NavLink 
+                            to={'campaigns/user'}
+                            className={({ isActive }) => 
+                                `relative px-4 py-2 rounded-lg font-medium transition-all duration-300 group ${
+                                    isActive 
+                                        ? 'text-green-600 bg-green-50 shadow-md' 
+                                        : 'text-gray-600 hover:text-green-600 hover:bg-green-50/50'
+                                }`
+                            }
+                        >
+                            <span className='relative z-10 text-lg'>Recaudación de fondos</span>
+                            <div className='absolute inset-0 bg-gradient-to-r from-green-100 to-yellow-100 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
                         </NavLink>
 
-                        <NavLink to={'/community-collaboration'}>
-                            <span className='text-lg'>Colaboración</span>
+                        <NavLink 
+                            to={'campaigns/user'}
+                            className={({ isActive }) => 
+                                `relative px-4 py-2 rounded-lg font-medium transition-all duration-300 group ${
+                                    isActive 
+                                        ? 'text-green-600 bg-green-50 shadow-md' 
+                                        : 'text-gray-600 hover:text-green-600 hover:bg-green-50/50'
+                                }`
+                            }
+                        >
+                            <span className='relative z-10 text-lg'>Reportes de agua</span>
+                            <div className='absolute inset-0 bg-gradient-to-r from-green-100 to-yellow-100 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
+                        </NavLink>
+
+                        <NavLink 
+                            to={'/community-collaboration'}
+                            className={({ isActive }) => 
+                                `relative px-4 py-2 rounded-lg font-medium transition-all duration-300 group ${
+                                    isActive 
+                                        ? 'text-green-600 bg-green-50 shadow-md' 
+                                        : 'text-gray-600 hover:text-green-600 hover:bg-green-50/50'
+                                }`
+                            }
+                        >
+                            <span className='relative z-10 text-lg'>Colaboración</span>
+                            <div className='absolute inset-0 bg-gradient-to-r from-green-100 to-yellow-100 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
                         </NavLink>
                     </div>
-                    <div className='bg-zinc-300 rounded-full p-2 hover:bg-zinc-400 transition-all cursor-pointer'>
-                        <Icon icon="token:push" className='w-7 h-7'/>
-                    </div>
-                    <div onClick={toggleMenu} className='transition-all cursor-pointer'>
-                        {profile && profile.trim() !== '' ? (
-                            <img
-                                src={profile}
-                                alt="Foto de perfil"
-                                className="w-10 h-10 rounded-full object-cover"
-                            />
-                        ) : (
-                            <GenerateInitialsAvatar name={name} surname={surname} />
-                        )}
 
-                        {isMenuOpen && (
-                            <div
-                                className=" absolute 2xl:left-452.5 xl:left-356.5 mt-2 w-48 bg-gray-100 rounded-md shadow-lg z-10 origin-top-right"
-                                style={{ transform: 'translateX(-100%)' }}
-                            >
-                                <div className='absolute left-45.5 top-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-gray-100 -z-10'/>
-                                <NavLink to="/profile" className="px-4 py-2 flex gap-2 hover:bg-gray-200">
-                                    <Icon icon="iconamoon:profile-fill" width="20" height="20" />
-                                    Profile
-                                </NavLink>
-                                <NavLink to="/settings" className="flex gap-2 px-4 py-2 hover:bg-gray-200">
-                                    <Icon icon="solar:settings-bold" width="20" height="20" />
-                                    Settings
-                                </NavLink>
-                                <button
-                                    type="button"
-                                    className="flex gap-2 px-4 py-2 w-48 hover:bg-gray-200 cursor-pointer"
-                                    onClick={handleLogoutClick}
+                    {/* Notificaciones */}
+                    <div className='relative group'>
+                        <div className='bg-gradient-to-r from-green-100 to-yellow-100 rounded-full p-2 hover:from-green-200 hover:to-yellow-200 transition-all duration-300 cursor-pointer shadow-md hover:shadow-lg'>
+                            <Icon icon="token:push" className='w-7 h-7 text-green-600'/>
+                        </div>
+                        <div className='absolute -top-1 -right-1 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center'>
+                            <span className='text-xs text-white font-bold'>3</span>
+                        </div>
+                    </div>
+
+                    {/* Perfil de usuario */}
+                    <div className='relative'>
+                        <div 
+                            onClick={toggleMenu} 
+                            className='transition-all duration-300 cursor-pointer group'
+                        >
+                            {profile && profile.trim() !== '' ? (
+                                <div className='relative'>
+                                    <img
+                                        src={profile}
+                                        alt="Foto de perfil"
+                                        className="w-10 h-10 rounded-full object-cover shadow-md group-hover:shadow-lg transition-all duration-300 group-hover:scale-105"
+                                    />
+                                    <div className='absolute inset-0 bg-gradient-to-r from-green-400/20 to-yellow-400/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300'></div>
+                                </div>
+                            ) : (
+                                <div className='group-hover:scale-105 transition-all duration-300'>
+                                    <GenerateInitialsAvatar name={name} surname={surname} />
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Menú desplegable */}
+                        <AnimatePresence>
+                            {isMenuOpen && (
+                                <motion.div
+                                    initial={{ opacity: 0, y: -10, scale: 0.95 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                    exit={{ opacity: 0, y: -10, scale: 0.95 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="absolute 2xl:left-452.5 xl:left-356.5 mt-2 w-48 bg-white rounded-md shadow-lg z-10 origin-top-right border border-green-200/50"
+                                    style={{ transform: 'translateX(-100%)' }}
                                 >
-                                    <Icon icon="line-md:logout" width="20" height="20" />
-                                    Logout
-                                </button>
-                            </div>
-                        )}
+                                    <div className='absolute left-45.5 top-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-white border-l border-t border-green-200/50 -z-10'/>
+                                    
+                                    <NavLink 
+                                        to="/profile" 
+                                        className="px-4 py-2 flex gap-2 hover:bg-green-50 text-gray-700 hover:text-green-600 transition-all duration-200"
+                                    >
+                                        <Icon icon="iconamoon:profile-fill" width="20" height="20" />
+                                        <span>Profile</span>
+                                    </NavLink>
+                                    
+                                    <NavLink 
+                                        to="/settings" 
+                                        className="flex gap-2 px-4 py-2 hover:bg-green-50 text-gray-700 hover:text-green-600 transition-all duration-200"
+                                    >
+                                        <Icon icon="solar:settings-bold" width="20" height="20" />
+                                        <span>Settings</span>
+                                    </NavLink>
+                                    
+                                    <button
+                                        type="button"
+                                        className="flex gap-2 px-4 py-2 w-48 hover:bg-red-50 text-gray-700 hover:text-red-600 transition-all duration-200 cursor-pointer"
+                                        onClick={handleLogoutClick}
+                                    >
+                                        <Icon icon="line-md:logout" width="20" height="20" />
+                                        <span>Logout</span>
+                                    </button>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </div>
                 </div>
             </header>
