@@ -6,19 +6,19 @@ export const LinksArraySidebarAdmin = [
         type: ["ADMIN"]
     },
     {
-        label: "Community",
+        label: "Gestionar comunidades",
         icon: "material-symbols-light:event-note",
         to: "/community/manager",
         type: ["ADMIN"]
     },
     {
-        label: "Campaigns",
+        label: "Recaudación de fondos",
         icon: "mingcute:hotel-line",
         to: "/campaigns",
         type: ["ADMIN"]
     },
     {
-        label: 'Report a Water Issue',
+        label: 'Reportes de agua',
         icon: 'ion:water-outline',
         to: '/watter',
         type: ["ADMIN"]
@@ -30,7 +30,7 @@ export const LinksArraySidebarAdmin = [
         type: ["ADMIN", "COORDINADOR"]
     },
     {
-        label: "Collaboration and Turns",
+        label: "Colaboración",
         icon: "hugeicons:activity-04",
         to: "/community-collaboration/dashboard",
         type: ["ADMIN"]

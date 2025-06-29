@@ -54,16 +54,16 @@ export const Layout = () => {
                             <span className='text-lg'>Home</span>
                         </NavLink>
 
-                        <NavLink to={'/community'}>
+                        {/*<NavLink to={'/community'}>
                             <span className='text-lg'>Community</span>
-                        </NavLink>
+                        </NavLink>*/}
 
                         <NavLink to={'campaigns/user'}>
-                            <span className='text-lg'>Fundraising Campaings</span>
+                            <span className='text-lg'>Recaudación de fondos</span>
                         </NavLink>
 
                         <NavLink to={'/community-collaboration'}>
-                            <span className='text-lg'>Collaboration</span>
+                            <span className='text-lg'>Colaboración</span>
                         </NavLink>
                     </div>
                     <div className='bg-zinc-300 rounded-full p-2 hover:bg-zinc-400 transition-all cursor-pointer'>

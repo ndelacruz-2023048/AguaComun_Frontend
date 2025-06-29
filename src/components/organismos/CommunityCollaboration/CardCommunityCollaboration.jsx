@@ -19,7 +19,7 @@ export const CardCommunityCollaboration = ({title, description, image, buttonTex
             <h3 className='text-[#A48647] font-bold text-[18px]'>{title}</h3>
             <p className='text-[#A48647] text-[15px]'>{description}</p>
             
-              <button onClick={handleClickViewCommunityCollaboration} className='border-[#A48647] border-1 text-[#A48647] p-[5px_15px] text-[15px] rounded-2xl w-[15%]'>View</button>
+              <button onClick={handleClickViewCommunityCollaboration} className='border-[#A48647] border-1 text-[#A48647] p-[5px_15px] text-[15px] rounded-2xl w-[15%]'>Ver</button>
             
         </div>
         <div className='flex w-1/3'>

@@ -16,7 +16,7 @@ export const CommunityCollaborationForm2 = () => {
     <div className="grid gap-4">
       <div className="grid gap-2">
         <label htmlFor="card-number" className="text-sm font-medium text-start">
-          Range Date Collaboration
+          Rango de fecha de la actividad
         </label>
         <Controller
           name="rangeDateCollaboration"
@@ -36,13 +36,13 @@ export const CommunityCollaborationForm2 = () => {
             htmlFor="expiry-date"
             className="text-sm font-medium text-start"
           >
-            Range Hour Collaboration
+            Rango de hora de la actividad
           </label>
 
           <Controller
             name="rangeHourCollaboration"
             control={control}
-            rules={{required:"Range Hour Collaboration is required"}}
+            rules={{required:"El rango de hora de la actividad es requerido"}}
             render={({field, fieldState:{error}})=>(
               <div>
                 <TimePicker.RangePicker value={field.value} onChange={(date)=>field.onChange(date)}/>

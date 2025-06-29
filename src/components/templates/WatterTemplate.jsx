@@ -33,16 +33,16 @@ export const WatterTemplate = () => {
         <div className='w-full'>
             <div className='flex flex-col gap-2 w-full h-full ml-50 mt-10 '>
                 <div>
-                    <h1 className='text-[#338826] text-2xl font-bold'>Report a Water Issue</h1>
+                    <h1 className='text-[#338826] text-2xl font-bold'>Reportes de agua</h1>
                     <span className='text-[#61788A]'>
-                        Help us address water problems in your community. Your reports are crucial for effective water management.
+                        Reporta los problemas de agua en tu comunidad.
                     </span>
                 </div>
                 <div className='mt-8'>
-                    <button onClick={() => setIsModalOpen(true)} id='OpenReport' className='bg-[#75BF3B] rounded-full px-8 py-3 text-white font-semibold hover:bg-green-700'>Create New Report</button>
+                    <button onClick={() => setIsModalOpen(true)} id='OpenReport' className='bg-[#75BF3B] rounded-full px-8 py-3 text-white font-semibold hover:bg-green-700'>Crear nuevo reporte</button>
                 </div>
                 <div className='mt-8'>
-                    <h2 className='text-black font-bold text-xl'>Recent Reports</h2>
+                    <h2 className='text-black font-bold text-xl'>Reportes recientes</h2>
                     <div className='overflow-y-auto h-90'>
                         {isLoading ? (
                             <span>Loading...</span>

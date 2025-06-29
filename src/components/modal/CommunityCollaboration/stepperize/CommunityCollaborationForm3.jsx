@@ -26,16 +26,16 @@ export const CommunityCollaborationForm3 = () => {
   return (
     <div className='flex flex-col gap-4'>
       <div>
-        <p className='text-sm font-medium text-start'>Direction</p>
-        <textarea type="text" placeholder='Direction'  className='w-full focus:outline-none border-1 border-gray-300 rounded-md p-2' {...register('direction',{required:"Direction is required"})}/>
+        <p className='text-sm font-medium text-start'>Dirección</p>
+        <textarea type="text" placeholder='Dirección'  className='w-full focus:outline-none border-1 border-gray-300 rounded-md p-2' {...register('direction',{required:"La dirección es requerida"})}/>
         {errors.direction && <p className='text-red-500'>{errors.direction.message}</p>}
       </div>
       <div>
-        <p className='text-sm font-medium text-start'>Durantion Turn</p>
+        <p className='text-sm font-medium text-start'>Duración del turno</p>
         <Controller
             name="durationTurn"
             control={control}
-            rules={{required:"Duration Turn is required"}}
+            rules={{required:"La duración del turno es requerida"}}
             render={({field, fieldState:{error}})=>(
               <div>
                 <TimePicker value={field.value} onChange={(date)=>field.onChange(date)}/>
@@ -48,11 +48,11 @@ export const CommunityCollaborationForm3 = () => {
         <Controller
             name="communityId"
             control={control}
-            rules={{required:"Community is required"}}
+            rules={{required:"La comunidad es requerida"}}
             render={({field})=>(
             <Select
               style={{ width: '100%' }}
-              placeholder="Select a community"
+              placeholder="Selecciona una comunidad"
               options={listCommunityOptions}
                 /*
                 listCommunity

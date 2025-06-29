@@ -77,7 +77,7 @@ const ModalReport = ({ isOpen, onClose }) => {
                 <div className="bg-white rounded-lg shadow-lg p-7 w-[700px] relative">
                     <div className='flex flex-col gap-4'>
                         <div className="flex justify-between">
-                            <h2 className="text-lg font-medium">Create New Water Report</h2>
+                            <h2 className="text-lg font-medium">Crear nuevo reporte de agua</h2>
                             <div className="flex items-center gap-2">
                                 <span className="text-sm text-muted-foreground">
                                     Paso {currentIndex + 1} de {steps.length}
@@ -227,17 +227,17 @@ const BasicInfoComponent = ({ methods }) => {
         <div className="grid gap-4">
             <div className="grid gap-2">
                 <label htmlFor="issueTitle" className="text-sm font-medium text-start text-[#338826]">
-                    Issue Title
+                    Título del problema
                 </label>
                 <input
                     id="issueTitle"
                     {...register('issueTitle', { 
                         required: {
                             value: true,
-                            message: 'Issue Title is required' 
+                            message: 'El título del problema es requerido' 
                         }
                     })}
-                    placeholder="Briefly describe the issue"
+                    placeholder="Brevemente describe el problema"
                     className="w-full bg-[#E7F5E7] rounded-xl p-2"
                 />
                 {errors.issueTitle && (
@@ -247,17 +247,17 @@ const BasicInfoComponent = ({ methods }) => {
 
             <div className="grid gap-2">
                 <label htmlFor="issueCategory" className="text-sm font-medium text-start text-[#338826]">
-                    Issue Category
+                    Categoría del problema
                 </label>
                 <input
                     id="issueCategory"
                     {...register('issueCategory', { 
                         required: {
                             value: true,
-                            message: 'Issue Category is required' 
+                            message: 'La categoría del problema es requerida' 
                         }
                     })}
-                    placeholder="Briefly describe the issue"
+                    placeholder="Brevemente describe la categoría del problema"
                     className="w-full bg-[#E7F5E7] rounded-xl p-2"
                 />
                 {errors.issueCategory && (
@@ -267,17 +267,17 @@ const BasicInfoComponent = ({ methods }) => {
 
             <div className="grid gap-2">
                 <label htmlFor="description" className="text-sm font-medium text-start text-[#338826]">
-                    Description
+                    Descripción del problema
                 </label>
                 <textarea
                     id="description"
                     {...register('description', { 
                         required: {
                             value: true,
-                            message: 'Description is required' 
+                            message: 'La descripción del problema es requerida' 
                         }
                     })}
-                    placeholder="Provide a detailed description of the issue"
+                    placeholder="Proporciona una descripción detallada del problema"
                     className="w-full bg-[#E7F5E7] rounded-xl p-2"
                 />
                 {errors.description && (
@@ -303,7 +303,7 @@ const AttachmentsComponent = ({ methods }) => {
         <div className="grid gap-4">
             <div className="grid gap-3">
                 <label htmlFor="uploadPhoto" className="text-sm font-medium text-start text-[#338826]">
-                    Upload Photo
+                    Subir fotos
                 </label>
                 <FileUploadForm onImageUpload={handleImageUpload}/>
             </div>
@@ -324,7 +324,7 @@ const AttachmentsComponent = ({ methods }) => {
 
             <div className="grid gap-2">
                 <label htmlFor="community" className="text-sm font-medium text-start text-[#338826]">
-                    Community
+                    Comunidad
                 </label>
                 <select
                     id="community"
@@ -336,9 +336,9 @@ const AttachmentsComponent = ({ methods }) => {
                     })}
                     className="w-full bg-[#E7F5E7] rounded-xl p-2"
                 >
-                    <option value="">Select to Community</option>
+                    <option value="">Selecciona una comunidad</option>
                     { community.length===0  ? (
-                        <option value="">Non Community</option>
+                        <option value="">No hay comunidades</option>
                         
                     ) : (
                         community.map((comunity, index) => (
@@ -354,14 +354,14 @@ const AttachmentsComponent = ({ methods }) => {
 
             <div className="grid gap-2">
                 <label htmlFor="urgencyLevel" className="text-sm font-medium text-start text-[#338826]">
-                    Urgency Level
+                    Nivel de urgencia
                 </label>
                 <select
                     id="urgencyLevel"
                     {...register('urgencyLevel', { 
                         required: {
                             value: true,
-                            message: 'Urgency Level is required' 
+                            message: 'El nivel de urgencia es requerido' 
                         }
                     })}
                     className="w-full bg-[#E7F5E7] rounded-xl p-2"
@@ -385,11 +385,11 @@ const ConfirmationComponent = ({ methods }) => {
 
     return (
         <div className="space-y-4 text-left">
-            <h3 className="font-bold text-lg">Confirm Your Report:</h3>
-            <div><strong>Issue Title:</strong> {data.issueTitle || '-'}</div>
-            <div><strong>Description:</strong> {data.description || '-'}</div>
+            <h3 className="font-bold text-lg">Confirmar tu reporte:</h3>
+            <div><strong>Título del problema:</strong> {data.issueTitle || '-'}</div>
+            <div><strong>Descripción del problema:</strong> {data.description || '-'}</div>
             <div>
-                <strong>Images:</strong>
+                <strong>Imágenes:</strong>
                 {Array.isArray(data.uploadPhoto) && data.uploadPhoto.length > 0 ? (
                     <div className="grid grid-cols-3 gap-2 mt-2">
                         {data.uploadPhoto.map((url, index) => (
@@ -405,9 +405,9 @@ const ConfirmationComponent = ({ methods }) => {
                     '-'
                 )}
             </div>
-            <div><strong>Community:</strong> {data.community || '-'}</div>
-            <div><strong>Urgency Level:</strong> {data.urgencyLevel || '-'}</div>
-            <div><strong>Suggested Solutions:</strong> {data.suggestedSolutions || 'none'}</div>
+            <div><strong>Comunidad:</strong> {data.community || '-'}</div>
+            <div><strong>Nivel de urgencia:</strong> {data.urgencyLevel || '-'}</div>
+            <div><strong>Soluciones sugeridas:</strong> {data.suggestedSolutions || 'none'}</div>
         </div>
     );
 };
