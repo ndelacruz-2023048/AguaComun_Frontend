@@ -19,32 +19,33 @@ export const ResumeAguaComun = () => {
         <div className='flex flex-row gap-2 grow'>
           <div className="flex flex-col gap-4 w-[70%] ">
             <div className="flex flex-row gap-4 h-[80%]">
-              <div className="bg-black text-white rounded-xl flex flex-col items-center justify-center px-6 py-3 grow gap-2">
+              <div className="bg-[#338826] text-white rounded-xl flex flex-col items-center justify-center px-6 py-3 grow gap-2">
                 <div className='flex flex-row border-1 border-white rounded-full p-[10px_12px] justify-center items-center'>
-                   <Icon icon="mdi:folder-outline" className="text-3xl mb-1 " />
+                   <Icon icon="mdi:cash-multiple" className="text-3xl mb-1 " />
                 </div>
-                <span className="text-lg">Projects</span>
+                <span className="text-lg">Dinero recaudado</span>
                 <span className="text-4xl font-bold">23</span>
               </div>
-              <div className="bg-blue-500 text-white rounded-xl flex flex-col items-center justify-center px-6 py-3 grow gap-2">
+              <div className="bg-[#D7AD2C] text-white rounded-xl flex flex-col items-center justify-center px-6 py-3 grow gap-2">
                 <div className='flex flex-row border-1 border-white rounded-full p-[10px_12px] justify-center items-center'>
                    <Icon icon="mdi:account-multiple-outline" className="text-3xl mb-1 " />
                 </div>
-                <span className="text-lg">Assigned</span>
+                <span className="text-lg">Actividades</span>
                 <span className="text-4xl font-bold">72</span>
               </div>
-              <div className="bg-white border border-[#c9c9c9] text-[#7b7b93] rounded-xl flex flex-col items-center justify-center px-6 py-3 grow gap-2">
-                <div className='flex flex-row border-1 border-[#c9c9c9] rounded-full p-[10px_12px] justify-center items-center'>
-                   <Icon icon="mdi:check-circle-outline" className="text-4xl mb-1 " />
+              <div className="bg-white border border-[#338826] text-[#338826] rounded-xl flex flex-col items-center justify-center px-6 py-3 grow gap-2">
+                <div className='flex flex-row border-1 border-[#338826] rounded-full p-[10px_12px] justify-center items-center'>
+                   <Icon icon="mdi:water" className="text-4xl mb-1 text-[#338826]" />
+                   
                 </div>
-                <span className="text-lg">Completed</span>
-                <span className="text-4xl font-bold text-[#7b7b93]">40</span>
+                <span className="text-lg">Reportes</span>
+                <span className="text-4xl font-bold text-[#338826]">40</span>
               </div>
             </div>
             <div className="flex items-center gap-2 mt-2 h-[20%]">
-              <span className="text-[20px] font-bold text-[#7b7b93]">On time completion rate:</span>
+              <span className="text-[20px] font-bold text-[#7b7b93]">Tasa de nuevos usuarios ultimos 2 dias:</span>
               <span className="text-[30px] font-bold text-[#18181b]">94%</span>
-              <span className="bg-[#6c47ff] text-white text-xs rounded-lg px-2 py-0.5 ml-2 flex items-center gap-1">
+              <span className="bg-[#338826] text-white text-xs rounded-lg px-2 py-0.5 ml-2 flex items-center gap-1">
                 <Icon icon="mdi:arrow-up" className="text-xs" />2.3%
               </span>
             </div>
@@ -54,20 +55,20 @@ export const ResumeAguaComun = () => {
           {/* Sección derecha: Our team */}
           <div className="flex flex-col gap-4 h-full min-w-[180px] w-[30%]">
             <div className="flex items-center gap-2 mb-2">
-              <Icon icon="mdi:account-group-outline" className="text-4xl text-[#7b7b93]" />
-              <span className="font-semibold text-[#7b7b93] text-2xl">Comunidad</span>
+              <Icon icon="mdi:account-group-outline" className="text-4xl text-[#338826]" />
+              <span className="font-semibold text-[#338826] text-2xl">Comunidad</span>
             </div>
-            <span className="text-xs text-[#7b7b93] mb-1">Miembros</span>
-            <Avatar.Group maxCount={3} maxStyle={{ color: '#fff', backgroundColor: '#6c47ff' }}>
+            <span className="text-xs text-[#338826] mb-1">Miembros</span>
+            <Avatar.Group maxCount={3} maxStyle={{ color: '#fff', backgroundColor: '#338826' }}>
               {teamMembers.map((member, idx) => (
                 <Avatar key={idx} src={member.src} size={60} className='border-2 border-white' />
               ))}
             </Avatar.Group>
-            <div className="flex flex-col items-center mt-2 border-1 border-[#c9c9c9] rounded-2xl p-2">
-              <span className="text-xl font-bold text-[#7b7b93] mb-1">Hours</span>
+            <div className="flex flex-col items-center mt-2 border-1 border-[#338826] rounded-2xl p-2">
+              <span className="text-xl font-bold text-[#338826] mb-1">Reportes de problemas</span>
               <div className="flex items-center gap-2">
-                <span className="text-3xl font-bold text-[#18181b]">82</span>
-                <Progress type="circle" percent={85} width={36} strokeColor="#6c47ff" format={() => ''} />
+                <span className="text-3xl font-bold text-[#264a20]">82</span>
+                <Progress type="circle" percent={85} width={36} strokeColor="#338826" format={() => ''} />
               </div>
             </div>
           </div>

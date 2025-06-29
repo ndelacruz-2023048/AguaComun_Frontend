@@ -57,7 +57,7 @@ export const NewCommunities = () => {
         {displayCommunities.map((com, idx) => (
           <div
             key={com.name}
-            className="flex items-center bg-white rounded-lg shadow-sm p-3 hover:shadow-md transition border border-gray-100 w-[45%]"
+            className="flex items-center bg-white rounded-lg shadow-sm p-3 hover:shadow-md transition border border-gray-100 w-[48%]"
           >
             <div className={`w-10 h-10 flex items-center justify-center rounded-lg mr-3 ${com.color}`}>
               <Icon icon={com.icon} className={`w-5 h-5 ${com.iconColor}`} />
