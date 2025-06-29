@@ -22,7 +22,7 @@ export const DashboardTemplate = () => {
             <Overview />
             <NewUsers />
           </div>
-          <div className='flex flex-col gap-4'>
+          <div className='flex flex-col gap-4 w-[50%] h-[100%]'>
             <NewCommunities />
             <Graphic />
           </div>
