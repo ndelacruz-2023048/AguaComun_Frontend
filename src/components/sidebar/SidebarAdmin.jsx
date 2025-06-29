@@ -81,7 +81,7 @@ export const SidebarAdmin = () => {
                             className={({ isActive }) =>
                                 `group flex items-center p-2 rounded-lg transition-all duration-300 ease-in-out ${
                                     isActive
-                                        ? 'bg-green-400 text-white shadow-md'
+                                        ? 'bg-[#75BF3B] text-white shadow-md'
                                         : 'hover:bg-gray-200 hover:shadow-sm'
                                 }`
                             }
