@@ -156,10 +156,9 @@ export const Layout = () => {
                                     animate={{ opacity: 1, y: 0, scale: 1 }}
                                     exit={{ opacity: 0, y: -10, scale: 0.95 }}
                                     transition={{ duration: 0.2 }}
-                                    className="absolute 2xl:left-452.5 xl:left-356.5 mt-2 w-48 bg-white rounded-md shadow-lg z-10 origin-top-right border border-green-200/50"
-                                    style={{ transform: 'translateX(-100%)' }}
+                                    className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50 border border-green-200/50"
                                 >
-                                    <div className='absolute left-45.5 top-0 h-4 w-4 -translate-x-1/2 -translate-y-1/2 rotate-45 bg-white border-l border-t border-green-200/50 -z-10'/>
+                                    <div className='absolute -top-2 right-6 h-4 w-4 bg-white border-l border-t border-green-200/50 transform rotate-45'/>
                                     
                                     <NavLink 
                                         to="/profile" 
@@ -179,7 +178,7 @@ export const Layout = () => {
                                     
                                     <button
                                         type="button"
-                                        className="flex gap-2 px-4 py-2 w-48 hover:bg-red-50 text-gray-700 hover:text-red-600 transition-all duration-200 cursor-pointer"
+                                        className="flex gap-2 px-4 py-2 w-full hover:bg-red-50 text-gray-700 hover:text-red-600 transition-all duration-200 cursor-pointer"
                                         onClick={handleLogoutClick}
                                     >
                                         <Icon icon="line-md:logout" width="20" height="20" />
