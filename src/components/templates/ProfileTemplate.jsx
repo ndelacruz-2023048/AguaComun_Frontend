@@ -19,7 +19,6 @@ export const ProfileTemplate = () => {
             setCommunityCollaboration(data)
         })
     },[])
-     console.log(communityCollaboration)
     
     let userDecoded = null;
     let userId = null;
@@ -39,146 +38,197 @@ export const ProfileTemplate = () => {
             console.error(e);
         }
     }
+    
     const { communities, isLoading, error } = useUserCommunities(userId);
     const { contributions, isLoading: loadingCampaigns, error: errorCampaigns } = useDonationUser(userId);
     const { reports, isLoading: loadingReports, error: errorReports } = useReportUser(userId);
     const { collaborations, isLoading: loadingCollab, error: errorCollab } = useCollaborationUser(userId);
-    
-    console.log('User Communities:', communities);
-    
 
     return (
-        <div className="flex flex-col min-h-screen w-7/7 bg-[#F7FAFC] px-4 sm:px-6 lg:px-8 py-5">
-            <h1 className="md:text-4xl lg:text-[40px] ml-8 font-bold mb-6 md:mb-8 lg:mb-5 text-[#338826]"> Profile Detail</h1>
-            <div className="flex flex-col items-center border-amber-300 justify-center mt-12 mb-8">
-            <div className="w-[120px] h-[120px] flex items-center justify-center mb-3">
-                {profile && profile.trim() !== '' ? (
-                    <img
-                        src={profile}
-                        alt="Foto de perfil"
-                        className="w-10 h-10 rounded-full object-cover"
-                    />
-                ) : (
-                    <GenerateInitialsAvatarProfile name={name} surname={surname} />
-                )}
-            </div>
-            <h2 className="text-2xl font-bold text-gray-900 mt-2">{name} {surname}</h2>
-            <span className="text-green-700 font-medium ">{type}</span>
-            <h3 className="block text-sm">Usuario ID: {userId}</h3>
-            {/* Comunidad principal */}
-            {community && (
-                <div className="mt-2 text-blue-700 text-lg font-medium flex items-center gap-2">
-                    <span>Comunidad principal:</span>
-                    {community.image && (
-                        <img src={community.image} alt={community.name} className="w-8 h-8 rounded-full object-cover border-2 border-blue-200" />
+        <div className="min-h-screen bg-[#F7FAFC] px-2 sm:px-4 md:px-6 lg:px-8 py-5 w-full flex flex-col items-center">
+            {/* Header */}
+            <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-6 text-[#338826] px-2 sm:px-0 w-full text-center md:text-left md:ml-[220px]">
+                Profile Detail
+            </h1>
+            {/* Profile Section */}
+            <div className="flex flex-col items-center justify-center mt-4 mb-8 w-full">
+                <div className="w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 flex items-center justify-center mb-4">
+                    {profile && profile.trim() !== '' ? (
+                        <img
+                            src={profile}
+                            alt="Foto de perfil"
+                            className="w-full h-full rounded-full object-cover border-2 border-gray-200"
+                        />
+                    ) : (
+                        <GenerateInitialsAvatarProfile name={name} surname={surname} />
                     )}
-                    <span>{community.name}</span>
                 </div>
-            )}
+                <h2 className="text-lg sm:text-xl md:text-2xl font-bold text-gray-900 text-center">
+                    {name} {surname}
+                </h2>
+                <span className="text-green-700 font-medium text-xs sm:text-sm md:text-base mt-1">
+                    {type}
+                </span>
+                <h3 className="block text-xs sm:text-sm text-gray-500 mt-1">
+                    Usuario ID: {userId}
+                </h3>
+                {/* Main Community */}
+                {community && (
+                    <div className="mt-3 text-blue-700 text-xs sm:text-sm md:text-base font-medium flex items-center gap-2 flex-wrap justify-center">
+                        <span>Comunidad principal:</span>
+                        {community.image && (
+                            <img 
+                                src={community.image} 
+                                alt={community.name} 
+                                className="w-6 h-6 sm:w-8 sm:h-8 rounded-full object-cover border-2 border-blue-200" 
+                            />
+                        )}
+                        <span>{community.name}</span>
+                    </div>
+                )}
             </div>
-            <div className="p-5  w-[1200px] mx-auto">
-                <h2 className="text-2xl font-semibold mb-8">Contact Information</h2>
-                <hr className="border-gray-500 mb-8 "/>
-                <div className="flex rounded-lg w-full max-w-md">
-                    <p className="flex text-gray-700 mb-2">Email: <br />{email}</p>
-                    <p className="flex text-gray-700 p-7 mt-[-27px] mb-2">Mobile Phone: <br />{mobilePhone}</p>
+            {/* Contact Information */}
+            <div className="bg-white rounded-lg shadow-sm p-3 sm:p-4 md:p-6 mb-6 mx-auto w-full max-w-lg md:max-w-2xl lg:max-w-4xl">
+                <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-gray-800">
+                    Contact Information
+                </h2>
+                <hr className="border-gray-200 mb-4"/>
+                <div className="flex flex-col sm:flex-row gap-4 sm:gap-8">
+                    <div className="flex-1">
+                        <p className="text-gray-600 text-sm sm:text-base mb-1">Email:</p>
+                        <p className="text-gray-800 font-medium break-all">{email}</p>
+                    </div>
+                    <div className="flex-1">
+                        <p className="text-gray-600 text-sm sm:text-base mb-1">Mobile Phone:</p>
+                        <p className="text-gray-800 font-medium">{mobilePhone}</p>
+                    </div>
                 </div>
             </div>
-
-            {/* Comunidades donde es miembro */}
-            <div className="p-5 w-[1200px] mx-auto mt-4">
-                <h2 className="text-2xl font-semibold mb-4">Comunidades donde es {type}</h2>
-                {isLoading && <div className="text-blue-600 mt-2">Cargando comunidades...</div>}
-                {error && <div className="text-red-600 mt-2">Error al cargar comunidades</div>}
-                {communities.length > 0 && !isLoading && !error && (
-                    <ul className="flex flex-col gap-4">
-                        {communities.map((c, idx) => (
-                            <li key={c._id || idx} className="flex items-center gap-4 bg-white p-4 rounded-lg shadow border border-gray-200">
-                                <Icon icon="mdi:account-group" width="36" height="36" className="text-gray-500" />
-                                <div>
-                                    <div className="font-bold text-lg text-gray-900">{c.name}</div>
-                                    <div className="text-gray-600 text-sm">{c.description}</div>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
+            {/* Communities Section */}
+            <SectionContainer 
+                title={`Comunidades donde es ${type}`}
+                isLoading={isLoading}
+                error={error}
+                items={communities}
+                emptyMessage="No pertenece a ninguna comunidad adicional."
+                renderItem={(c) => (
+                    <div className="flex items-start gap-4">
+                        <Icon icon="mdi:account-group" width="24" height="24" className="text-gray-500 mt-1 flex-shrink-0" />
+                        <div>
+                            <div className="font-bold text-gray-900">{c.name}</div>
+                            <div className="text-gray-600 text-sm">{c.description}</div>
+                        </div>
+                    </div>
                 )}
-                {(!isLoading && !error && communities.length === 0) && (
-                    <div className="text-gray-600">No pertenece a ninguna comunidad adicional.</div>
+                className="max-w-lg md:max-w-2xl lg:max-w-4xl"
+            />
+            
+            {/* Campaigns Section */}
+            <SectionContainer 
+                title="Campañas en las que has aportado"
+                isLoading={loadingCampaigns}
+                error={errorCampaigns}
+                items={contributions}
+                emptyMessage="No has aportado a ninguna campaña."
+                renderItem={(c) => (
+                    <div className="flex items-start gap-4">
+                        <Icon icon="mdi:charity" width="24" height="24" className="text-green-600 mt-1 flex-shrink-0" />
+                        <div>
+                            <div className="font-bold text-green-800">{c.name}</div>
+                            <div className="text-gray-600 text-sm">{c.description}</div>
+                            <div className="text-gray-800 text-sm">Aportado: ${c.amount}</div>
+                        </div>
+                    </div>
                 )}
-            </div>
-
-            {/* Campañas en las que ha aportado */}
-            <div className="p-5 w-[1200px] mx-auto mt-4">
-                <h2 className="text-2xl font-semibold mb-4">Campañas en las que has aportado</h2>
-                {loadingCampaigns && <div className="text-blue-600 mt-2">Cargando campañas...</div>}
-                {errorCampaigns && <div className="text-red-600 mt-2">Error al cargar campañas</div>}
-                {contributions.length > 0 && !loadingCampaigns && !errorCampaigns && (
-                    <ul className="flex flex-col gap-4">
-                        {contributions.map((c, idx) => (
-                            <li key={idx} className="flex items-center gap-4 bg-white p-4 rounded-lg shadow border border-green-200">
-                                <Icon icon="mdi:charity" width="36" height="36" className="text-green-600" />
-                                <div>
-                                    <div className="font-bold text-lg text-green-800">{c.name}</div>
-                                    <div className="text-gray-600 text-sm">{c.description}</div>
-                                    <div className="text-gray-800 text-sm">Aportado: ${c.amount}</div>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
+                className="max-w-lg md:max-w-2xl lg:max-w-4xl"
+            />
+            
+            {/* Reports Section */}
+            <SectionContainer 
+                title="Reportes realizados"
+                isLoading={loadingReports}
+                error={errorReports}
+                items={reports}
+                emptyMessage="No has realizado ningún reporte."
+                renderItem={(r) => (
+                    <div className="flex items-start gap-4">
+                        <Icon icon="mdi:alert-circle-outline" width="24" height="24" className="text-red-600 mt-1 flex-shrink-0" />
+                        <div>
+                            <div className="font-bold text-red-800">{r.title || r.type || 'Reporte'}</div>
+                            <div className="text-gray-600 text-sm">{r.description}</div>
+                            <div className="text-gray-800 text-sm">Estado: {r.status || 'N/A'}</div>
+                        </div>
+                    </div>
                 )}
-                {(!loadingCampaigns && !errorCampaigns && contributions.length === 0) && (
-                    <div className="text-gray-600">No has aportado a ninguna campaña.</div>
+                className="max-w-lg md:max-w-2xl lg:max-w-4xl"
+            />
+            
+            {/* Collaborations Section */}
+            <SectionContainer 
+                title="Colaboraciones en actividades"
+                isLoading={loadingCollab}
+                error={errorCollab}
+                items={collaborations}
+                emptyMessage="No has colaborado en ninguna actividad."
+                renderItem={(a) => (
+                    <div className="flex items-start gap-4">
+                        <Icon icon="mdi:calendar-check" width="24" height="24" className="text-blue-600 mt-1 flex-shrink-0" />
+                        <div>
+                            <div className="font-bold text-blue-800">{a.activityName}</div>
+                            <div className="text-gray-600 text-sm">{a.description}</div>
+                            <div className="text-gray-800 text-sm">
+                                Fecha: {a.startDate ? new Date(a.startDate).toLocaleDateString() : 'N/A'} | 
+                                Estado: {a.status || 'N/A'}
+                            </div>
+                        </div>
+                    </div>
                 )}
-            </div>
-
-            {/* Reportes realizados */}
-            <div className="p-5 w-[1200px] mx-auto mt-4">
-                <h2 className="text-2xl font-semibold mb-4">Reportes realizados</h2>
-                {loadingReports && <div className="text-blue-600 mt-2">Cargando reportes...</div>}
-                {errorReports && <div className="text-red-600 mt-2">Error al cargar reportes</div>}
-                {reports.length > 0 && !loadingReports && !errorReports && (
-                    <ul className="flex flex-col gap-4">
-                        {reports.map((r, idx) => (
-                            <li key={r._id || idx} className="flex items-center gap-4 bg-white p-4 rounded-lg shadow border border-red-200">
-                                <Icon icon="mdi:alert-circle-outline" width="36" height="36" className="text-red-600" />
-                                <div>
-                                    <div className="font-bold text-lg text-red-800">{r.title || r.type || 'Reporte'}</div>
-                                    <div className="text-gray-600 text-sm">{r.description}</div>
-                                    <div className="text-gray-800 text-sm">Estado: {r.status || 'N/A'}</div>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                )}
-                {(!loadingReports && !errorReports && reports.length === 0) && (
-                    <div className="text-gray-600">No has realizado ningún reporte.</div>
-                )}
-            </div>
-
-            {/* Colaboraciones en actividades */}
-            <div className="p-5 w-[1200px] mx-auto mt-4">
-                <h2 className="text-2xl font-semibold mb-4">Colaboraciones en actividades</h2>
-                {loadingCollab && <div className="text-blue-600 mt-2">Cargando colaboraciones...</div>}
-                {errorCollab && <div className="text-red-600 mt-2">Error al cargar colaboraciones</div>}
-                {collaborations.length > 0 && !loadingCollab && !errorCollab && (
-                    <ul className="flex flex-col gap-4">
-                        {collaborations.map((a, idx) => (
-                            <li key={a._id || idx} className="flex items-center gap-4 bg-white p-4 rounded-lg shadow border border-blue-200">
-                                <Icon icon="mdi:calendar-check" width="36" height="36" className="text-blue-600" />
-                                <div>
-                                    <div className="font-bold text-lg text-blue-800">{a.activityName}</div>
-                                    <div className="text-gray-600 text-sm">{a.description}</div>
-                                    <div className="text-gray-800 text-sm">Fecha: {a.startDate ? new Date(a.startDate).toLocaleDateString() : 'N/A'} | Estado: {a.status || 'N/A'}</div>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-                )}
-                {(!loadingCollab && !errorCollab && collaborations.length === 0) && (
-                    <div className="text-gray-600">No has colaborado en ninguna actividad.</div>
-                )}
-            </div>
+                className="max-w-lg md:max-w-2xl lg:max-w-4xl"
+            />
         </div>
     );
 }
+
+// Reusable Section Component
+const SectionContainer = ({ title, isLoading, error, items, emptyMessage, renderItem, className }) => {
+    return (
+        <div className={`bg-white rounded-lg shadow-sm p-3 sm:p-4 md:p-6 mb-6 mx-auto w-full ${className || 'max-w-4xl'}`}>
+            <h2 className="text-xl sm:text-2xl font-semibold mb-4 text-gray-800">
+                {title}
+            </h2>
+            
+            {isLoading && (
+                <div className="text-blue-600 text-sm sm:text-base py-4 flex items-center gap-2">
+                    <Icon icon="mdi:loading" className="animate-spin" />
+                    Cargando...
+                </div>
+            )}
+            
+            {error && (
+                <div className="text-red-600 text-sm sm:text-base py-4 flex items-center gap-2">
+                    <Icon icon="mdi:alert-circle" />
+                    Error al cargar datos
+                </div>
+            )}
+            
+            {items.length > 0 && !isLoading && !error && (
+                <ul className="space-y-4">
+                    {items.map((item, idx) => (
+                        <li 
+                            key={item._id || idx} 
+                            className="p-3 sm:p-4 rounded-lg border border-gray-200 hover:bg-gray-50 transition-colors"
+                        >
+                            {renderItem(item)}
+                        </li>
+                    ))}
+                </ul>
+            )}
+            
+            {(!isLoading && !error && items.length === 0) && (
+                <div className="text-gray-500 text-sm sm:text-base py-4 text-center">
+                    {emptyMessage}
+                </div>
+            )}
+        </div>
+    );
+};
