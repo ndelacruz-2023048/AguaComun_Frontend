@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Progress } from 'antd';
 import { Icon } from '@iconify/react';
-import { io } from 'socket.io-client';
+import { useSocket } from '../../../../hooks/useSocket';
 
-const socket = io('http://localhost:3662');
+const socket = useSocket()
 
 const FundraisingCampaingsCard = () => {
   const [campaigns, setCampaigns] = useState([]);
