@@ -1,20 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Icon } from '@iconify/react';
-import { socketConnection } from '../../../../socket/socket'; // ajusta la ruta según tu proyecto
+import { useSocket } from '../../../../hooks/useSocket';
 
 export const NewCommunities = () => {
   const [communities, setCommunities] = useState([]);
+  const socket = useSocket(); // ✅ Corrección aquí
 
   useEffect(() => {
-
-    if (!socketConnection.connected) {
-      socketConnection.connect();
-    }
-
-
     const handleLatest = (data) => {
-       console.log("🎯 Datos recibidos:", data);
-       console.log("📦 Hola Hola:", data);
+      console.log("🎯 Datos recibidos:", data);
       const formatted = data.map((com) => ({
         name: com.name,
         available: com.members?.length || 0,
@@ -25,16 +19,13 @@ export const NewCommunities = () => {
       setCommunities(formatted);
     };
 
-    // Escuchar evento personalizado
-    socketConnection.on('latest-communities', handleLatest);
-
-    // Emitir petición de las más recientes
-    socketConnection.emit('get-latest-communities');
+    socket.on('community:latest', handleLatest); // ✅ Evento actualizado
+    socket.emit('community:get-latest');         // ✅ Evento actualizado
 
     return () => {
-      socketConnection.off('latest-communities', handleLatest);
+      socket.off('community:latest', handleLatest);
     };
-  }, []);
+  }, [socket]);
 
   return (
     <div className="bg-blue-50 rounded-lg p-6 w-full h-[50%]">
