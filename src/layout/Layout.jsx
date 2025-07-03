@@ -91,7 +91,7 @@ export const Layout = () => {
                         </NavLink>
 
                         <NavLink 
-                            to={'campaigns/user'}
+                            to={'watter'}
                             className={({ isActive }) => 
                                 `relative px-4 py-2 rounded-lg font-medium transition-all duration-300 group ${
                                     isActive 
