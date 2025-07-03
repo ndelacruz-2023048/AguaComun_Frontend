@@ -1,8 +1,16 @@
 import React from 'react';
 import { Icon } from '@iconify/react';
+import { useResume } from '../../../hooks/useResume';
 import { Avatar, Progress } from 'antd';
 
 export const ResumeAguaComun = () => {
+  const { resume } = useResume();
+
+  const dineroRecaudado = resume?.dineroRecaudado || '0.00'
+  const actividades = resume?.actividades || 0
+  const reportes = resume?.reportes || 0
+  const tasaNuevosUsuarios = resume?.tasaNuevosUsuarios || '0%'
+
   // Datos de ejemplo
   const teamMembers = [
     { name: 'Ana', src: 'https://randomuser.me/api/portraits/women/44.jpg' },
@@ -24,14 +32,15 @@ export const ResumeAguaComun = () => {
                    <Icon icon="mdi:cash-multiple" className="text-3xl mb-1 " />
                 </div>
                 <span className="text-lg">Dinero recaudado</span>
-                <span className="text-4xl font-bold">23</span>
+                <span className="text-lg">De que?</span>
+                <span className="text-4xl font-bold">Q {dineroRecaudado}.00</span>
               </div>
               <div className="bg-[#D7AD2C] text-white rounded-xl flex flex-col items-center justify-center px-6 py-3 grow gap-2">
                 <div className='flex flex-row border-1 border-white rounded-full p-[10px_12px] justify-center items-center'>
                    <Icon icon="mdi:account-multiple-outline" className="text-3xl mb-1 " />
                 </div>
                 <span className="text-lg">Actividades</span>
-                <span className="text-4xl font-bold">72</span>
+                <span className="text-4xl font-bold">{actividades}</span>
               </div>
               <div className="bg-white border border-[#338826] text-[#338826] rounded-xl flex flex-col items-center justify-center px-6 py-3 grow gap-2">
                 <div className='flex flex-row border-1 border-[#338826] rounded-full p-[10px_12px] justify-center items-center'>
@@ -39,15 +48,12 @@ export const ResumeAguaComun = () => {
                    
                 </div>
                 <span className="text-lg">Reportes</span>
-                <span className="text-4xl font-bold text-[#338826]">40</span>
+                <span className="text-4xl font-bold text-[#338826]">{reportes}</span>
               </div>
             </div>
             <div className="flex items-center gap-2 mt-2 h-[20%]">
               <span className="text-[20px] font-bold text-[#7b7b93]">Tasa de nuevos usuarios ultimos 2 dias:</span>
-              <span className="text-[30px] font-bold text-[#18181b]">94%</span>
-              <span className="bg-[#338826] text-white text-xs rounded-lg px-2 py-0.5 ml-2 flex items-center gap-1">
-                <Icon icon="mdi:arrow-up" className="text-xs" />2.3%
-              </span>
+              <span className="text-[30px] font-bold text-[#18181b]">{tasaNuevosUsuarios}</span>
             </div>
           </div>
           {/* Separador vertical */}
@@ -67,7 +73,7 @@ export const ResumeAguaComun = () => {
             <div className="flex flex-col items-center mt-2 border-1 border-[#338826] rounded-2xl p-2">
               <span className="text-xl font-bold text-[#338826] mb-1">Reportes de problemas</span>
               <div className="flex items-center gap-2">
-                <span className="text-3xl font-bold text-[#264a20]">82</span>
+                <span className="text-3xl font-bold text-[#264a20]">{reportes}</span>
                 <Progress type="circle" percent={85} width={36} strokeColor="#338826" format={() => ''} />
               </div>
             </div>

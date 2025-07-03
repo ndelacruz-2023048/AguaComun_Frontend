@@ -116,3 +116,15 @@ export const getCommunitysRequest = async()=> {
         }
     }
 }
+
+//RESUME
+export const getResumeRequest = async()=> {
+    try {
+        return await apiClient.get('/resume/list')
+    } catch (e) {
+        return {
+            error: true,
+            e
+        }
+    }
+}
