@@ -116,3 +116,15 @@ export const getCommunitysRequest = async()=> {
         }
     }
 }
+
+//GET RECENT USERS
+export const getRecentUsersRequest = async () => {
+  try {
+    return await apiClient.get('/user/recent')
+  } catch (e) {
+    return {
+      error: true,
+      e
+    }
+  }
+}
