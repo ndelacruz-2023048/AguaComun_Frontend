@@ -3,32 +3,31 @@ import { Progress } from 'antd';
 import { Icon } from '@iconify/react';
 import { useSocket } from '../../../../hooks/useSocket';
 
-const socket = useSocket()
-
 const FundraisingCampaingsCard = () => {
+  const socket = useSocket();
   const [campaigns, setCampaigns] = useState([]);
 
   useEffect(() => {
-    // Solicitar campañas al conectar
+    // Solicita campañas al conectar
     socket.emit('get-list-campaigns');
 
-    // Escuchar respuesta
+    // Escucha campañas en tiempo real
     socket.on('list-campaigns', (data) => {
       setCampaigns(data);
     });
 
-    // Limpieza
+    // Limpieza del listener cuando el componente se desmonta
     return () => {
       socket.off('list-campaigns');
     };
-  }, []);
+  }, [socket]); // Escuchar solo una vez al montar (y si cambia el socket)
 
   return (
     <div className="flex flex-col items-center gap-4 w-full">
       {campaigns
-        .slice() // Hacemos una copia para no mutar el estado
-        .sort((a, b) => a.amountRaised - b.amountRaised) // Orden ascendente por recaudación
-        .slice(0, 5) // Solo las primeras 5
+        .slice()
+        .sort((a, b) => a.amountRaised - b.amountRaised)
+        .slice(0, 5)
         .map((camp) => {
           const percent = Math.round((camp.amountRaised / camp.goalAmount) * 100);
           return (
