@@ -1,62 +1,48 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Icon } from '@iconify/react';
-
-const communities = [
-  {
-    name: 'Comunidad Agua Viva',
-    available: 148,
-    icon: 'mdi:account-group',
-    color: 'bg-green-200',
-    iconColor: 'text-green-500',
-  },
-  {
-    name: 'Comunidad Esperanza',
-    available: 107,
-    icon: 'mdi:account-group',
-    color: 'bg-yellow-100',
-    iconColor: 'text-yellow-500',
-  },
-  {
-    name: 'Comunidad Sonrisa',
-    available: 91,
-    icon: 'mdi:account-group',
-    color: 'bg-blue-100',
-    iconColor: 'text-blue-400',
-  },
-  {
-    name: 'Comunidad Corazón',
-    available: 54,
-    icon: 'mdi:account-group',
-    color: 'bg-red-100',
-    iconColor: 'text-red-400',
-  },
-  {
-    name: 'Comunidad Saludable',
-    available: 54,
-    icon: 'mdi:account-group',
-    color: 'bg-purple-100',
-    iconColor: 'text-purple-500',
-  },
-  {
-    name: 'Comunidad Saludable',
-    available: 54,
-    icon: 'mdi:account-group',
-    color: 'bg-gray-100',
-    iconColor: 'text-gray-400',
-  },
-];
+import { socketConnection } from '../../../../socket/socket'; // ajusta la ruta según tu proyecto
 
 export const NewCommunities = () => {
-  // Limitar a máximo 6 comunidades
-  const displayCommunities = communities.slice(0, 6);
+  const [communities, setCommunities] = useState([]);
+
+  useEffect(() => {
+
+    if (!socketConnection.connected) {
+      socketConnection.connect();
+    }
+
+
+    const handleLatest = (data) => {
+       console.log("🎯 Datos recibidos:", data);
+       console.log("📦 Hola Hola:", data);
+      const formatted = data.map((com) => ({
+        name: com.name,
+        available: com.members?.length || 0,
+        icon: 'mdi:account-group',
+        color: 'bg-blue-100',
+        iconColor: 'text-blue-500',
+      }));
+      setCommunities(formatted);
+    };
+
+    // Escuchar evento personalizado
+    socketConnection.on('latest-communities', handleLatest);
+
+    // Emitir petición de las más recientes
+    socketConnection.emit('get-latest-communities');
+
+    return () => {
+      socketConnection.off('latest-communities', handleLatest);
+    };
+  }, []);
 
   return (
-    <div className="bg-blue-50 rounded-lg p-6 w-full h-[50%] ">
+    <div className="bg-blue-50 rounded-lg p-6 w-full h-[50%]">
       <h2 className="text-2xl font-semibold mb-6">Nuevas Comunidades</h2>
       <div className="flex flex-wrap flex-grow gap-4 h-[80%] w-[100%]">
-        {displayCommunities.map((com, idx) => (
+        {communities.map((com, idx) => (
           <div
-            key={com.name}
+            key={idx}
             className="flex items-center bg-white rounded-lg shadow-sm p-3 hover:shadow-md transition border border-gray-100 w-[48%]"
           >
             <div className={`w-10 h-10 flex items-center justify-center rounded-lg mr-3 ${com.color}`}>

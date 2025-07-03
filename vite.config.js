@@ -8,4 +8,15 @@ export default defineConfig({
     tailwindcss(),
     react()
   ],
+  server: {
+    proxy: {
+      '/socket.io': {
+        target: 'http://localhost:3662', // tu backend
+        ws: true,
+        changeOrigin: true
+      }
+    }
+  }
 })
+
+
