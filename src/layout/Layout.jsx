@@ -8,6 +8,7 @@ import { jwtDecode } from 'jwt-decode'
 import { GenerateInitialsAvatar } from '../utils/Avatar' 
 import { useLogout } from '../hooks/useLogout' 
 import { motion, AnimatePresence } from 'framer-motion' 
+import { useLoadUserAssignedTurns } from '../hooks/useLoadUserAssignedTurns'
 
 export const Layout = () => {
     const { user } = UserAuth() 
@@ -40,6 +41,8 @@ export const Layout = () => {
     const handleLogoutClick  = ()=> {
         logout()
     }
+
+    useLoadUserAssignedTurns(); // Carga los turnos asignados al usuario al montar el layout
 
     return (
         <div className='w-full h-full absolute bg-gray-50 flex flex-col'>
@@ -121,4 +124,4 @@ export const Layout = () => {
             </main>
         </div>
     ) 
-} 
+}
