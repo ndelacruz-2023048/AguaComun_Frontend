@@ -46,7 +46,7 @@ export const HomeTemplate = memo(() => {
           </div>
         </div>
       </div>
-      <div className=' bg-red-500 h-full w-[30%]'>
+      <div className='h-full w-[30%]'>
         <CommunityCollaborationCalendar/>
       </div>
     </div>
