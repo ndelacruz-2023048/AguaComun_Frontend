@@ -128,3 +128,14 @@ export const getRecentUsersRequest = async () => {
     }
   }
 }
+
+export const getAllCollaborationsRequest = async () => {
+  try {
+    return await apiClient.get('/communityCollaboration/get')
+  } catch (e) {
+    return {
+      error: true,
+      e
+    }
+  }
+}
