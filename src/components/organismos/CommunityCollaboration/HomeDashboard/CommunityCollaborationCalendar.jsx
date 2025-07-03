@@ -26,8 +26,8 @@ export const CommunityCollaborationCalendar = () => {
   }
 
   return (
-    <div className="p-4 bg-white rounded shadow">
-      <Calendar cellRender={dateCellRender} />
+    <div className="p-4 bg-white rounded shadow w-full max-w-md mx-auto sm:max-w-lg md:max-w-xl lg:max-w-2xl overflow-x-auto">
+      <Calendar cellRender={dateCellRender} fullscreen={false} className="w-full min-w-[320px]" />
     </div>
   )
 }
