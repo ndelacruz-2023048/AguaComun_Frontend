@@ -36,6 +36,10 @@ export const useCommunityCollaboration = create((set,get)=>({
             data:responseJSON
         }
     },
+    turnsAssignedToUser:[],
+    setTurnsAssignedToUser:(p)=>{
+        set({turnsAssignedToUser:p})
+    },
     isModalCommunityTurnConfirmationOpen:false,
     setIsModalCommunityTurnConfirmationOpen:()=>{
         const {isModalCommunityTurnConfirmationOpen} = get()

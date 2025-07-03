@@ -5,6 +5,7 @@ import { UserAuth } from '../../../context/AuthContext';
 import { useSocket } from '../../../hooks/useSocket';
 import dayjs from 'dayjs';
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import { useCommunityCollaboration } from '../../../stores/communityCollaborationStore';
 
 dayjs.extend(customParseFormat)
 dayjs.locale('es')
@@ -16,6 +17,7 @@ export const ResumeTurnAssigned = () => {
   const {user} = UserAuth()
   const socket = useSocket()
   const [turnByUser,setTurnByUser] = useState()
+  const { setTurnsAssignedToUser } = useCommunityCollaboration()
   const turnos = [
     {
       fecha: '15 de Julio, 2024',
@@ -33,6 +35,7 @@ export const ResumeTurnAssigned = () => {
         socket.emit("get-list-community-collaboration-turn",decodedToken.uid)
         socket.on("list-community-collaboration-turn",(data)=>{
             setTurnByUser(data)
+            setTurnsAssignedToUser(Array.isArray(data) ? data : [])
         })
     } catch (error) {
         console.log(error);
