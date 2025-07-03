@@ -1,42 +1,39 @@
 import { Icon } from '@iconify/react/dist/iconify.js';
 import { useNavigate } from 'react-router';
 import React, { useEffect, useState, useMemo } from 'react';
-import { NavLink } from 'react-router';
-const API_URL = import.meta.env.VITE_API_URL
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const FundraisingCampaignsTemplates = () => {
-  const [campaigns, setcampaigns] = useState([])
-  const [search, setSearch] = useState("")
-  const [categoryFilter, setCategoryFilter] = useState("")
-  const [statusFilter, setStatusFilter] = useState("")
-  const [dateFilter, setDateFilter] = useState("")
-  const [startDateFilter, setStartDateFilter] = useState("")
-  const [endDateFilter, setEndDateFilter] = useState("")
-  const navigate = useNavigate()
+  const [campaigns, setCampaigns] = useState([]);
+  const [search, setSearch] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+  const [dateFilter, setDateFilter] = useState("");
+  const navigate = useNavigate();
 
   const getCampaigns = async () => {
     try {
       const res = await fetch(`${API_URL}/v1/aguacomun/campaign`);
       const data = await res.json();
-      setcampaigns(data);
+      setCampaigns(data);
     } catch (e) {
-      console.error('Error al obtener campañas', e)
+      console.error('Error al obtener campañas', e);
     }
-  }
+  };
 
   const filteredCampaigns = campaigns.filter((c) => {
     const matchesName = c.name.toLowerCase().includes(search.toLowerCase());
     const matchesCategory = categoryFilter ? c.category === categoryFilter : true;
     const matchesStatus = statusFilter ? c.status === statusFilter : true;
 
+    const selectedDate = dateFilter ? new Date(dateFilter) : null;
     const campaignStart = new Date(c.startDate);
     const campaignEnd = new Date(c.endDate);
-    const filterStart = startDateFilter ? new Date(startDateFilter) : null;
-    const filterEnd = endDateFilter ? new Date(endDateFilter) : null;
 
-    const matchesDate =
-      (!filterStart || campaignEnd >= filterStart) &&
-      (!filterEnd || campaignStart <= filterEnd);
+    const matchesDate = !selectedDate ||
+      (c.status === "Activa" &&
+        selectedDate >= campaignStart &&
+        selectedDate <= campaignEnd);
 
     return matchesName && matchesCategory && matchesStatus && matchesDate;
   });
@@ -48,22 +45,22 @@ export const FundraisingCampaignsTemplates = () => {
 
     const campañasMesActual = campaigns.filter(c => {
       const fecha = new Date(c.startDate);
-      return fecha.getMonth() === mesActual && fecha.getFullYear() === añoActual
-    })
+      return fecha.getMonth() === mesActual && fecha.getFullYear() === añoActual;
+    });
 
     const recaudadoMes = campañasMesActual.reduce((acc, c) => acc + (c.amountRaised || 0), 0);
     const activas = campaigns.filter(c => c.status === 'Activa').length;
     const proximasFinalizar = campaigns.filter(c => {
       const diasRestantes = (new Date(c.endDate) - new Date()) / (1000 * 60 * 60 * 24);
       return diasRestantes <= 7 && diasRestantes > 0;
-    }).length
+    }).length;
 
     return {
       recaudadoMes,
       activas,
       proximasFinalizar,
-    }
-  }, [campaigns])
+    };
+  }, [campaigns]);
 
   const actualizarEstado = async (id, nuevoEstado) => {
     try {
@@ -77,11 +74,11 @@ export const FundraisingCampaignsTemplates = () => {
     } catch (error) {
       console.error('Error al cambiar estado:', error);
     }
-  }
+  };
 
   useEffect(() => {
     getCampaigns();
-  }, [])
+  }, []);
 
   return (
     <div className="p-8 bg-gray-100 font-sans w-full">
@@ -133,17 +130,13 @@ export const FundraisingCampaignsTemplates = () => {
             <option value="Pausada">Pausada</option>
             <option value="Finalizada">Finalizada</option>
           </select>
+
+          {/* ✅ Único filtro de fecha */}
           <input
             type="date"
             className="p-2 border rounded w-full md:w-auto"
-            value={startDateFilter}
-            onChange={(e) => setStartDateFilter(e.target.value)}
-          />
-          <input
-            type="date"
-            className="p-2 border rounded w-full md:w-auto"
-            value={endDateFilter}
-            onChange={(e) => setEndDateFilter(e.target.value)}
+            value={dateFilter}
+            onChange={(e) => setDateFilter(e.target.value)}
           />
         </div>
       </div>
@@ -163,83 +156,93 @@ export const FundraisingCampaignsTemplates = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredCampaigns.map((c, idx) => (
-              <tr key={idx} className="border-t">
-                <td className="p-4">{c.name}</td>
-                <td className="p-4 text-blue-600">{c.category}</td>
-                <td className="p-4">
-                  {new Date(c.startDate).toLocaleDateString()} - {new Date(c.endDate).toLocaleDateString()}
-                </td>
-                <td className="p-4">
-                  ${c.amountRaised} / ${c.goalAmount}
-                </td>
-                <td className="p-4 w-40">
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div
-                      className="bg-blue-500 h-2 rounded-full"
-                      style={{ width: `${(c.amountRaised / c.goalAmount) * 100}%` }}
-                    ></div>
-                  </div>
-                </td>
-                <td className="p-4">
-                  <span
-                    className={`px-2 py-1 rounded text-white text-xs ${
-                      c.status === 'Activa'
-                        ? 'bg-green-500'
-                        : c.status === 'Finalizada'
-                        ? 'bg-gray-600'
-                        : 'bg-yellow-500'
-                    }`}
-                  >
-                    {c.status}
-                  </span>
-                </td>
-                <td className="p-4 space-y-1 text-sm">
-                  <div
-                    onClick={() => navigate(`/campaigns/edit/${c._id}`)}
-                    className="hover:underline cursor-pointer flex items-center gap-1 text-blue-600"
-                  >
-                    <Icon icon="mdi:pencil" className="text-lg" />
-                    Editar
-                  </div>
-
-                  <button
-                    disabled={c.status === 'Finalizada'}
-                    onClick={() => actualizarEstado(c._id, 'Finalizada')}
-                    className="flex items-center gap-1 text-gray-700 disabled:opacity-40"
-                  >
-                    <Icon icon="mdi:check-circle-outline" className="text-lg" />
-                    Finalizar
-                  </button>
-
-                  <button
-                    disabled={c.status === 'Pausada'}
-                    onClick={() => actualizarEstado(c._id, 'Pausada')}
-                    className="flex items-center gap-1 text-yellow-600 disabled:opacity-40"
-                  >
-                    <Icon icon="mdi:pause-circle-outline" className="text-lg" />
-                    Pausar
-                  </button>
-
-                  <button
-                    disabled={c.status === 'Activa'}
-                    onClick={() => actualizarEstado(c._id, 'Activa')}
-                    className="flex items-center gap-1 text-green-600 disabled:opacity-40"
-                  >
-                    <Icon icon="mdi:play-circle-outline" className="text-lg" />
-                    Activar
-                  </button>
-
-                  <div
-                    onClick={() => navigate(`/campaigns/delete/${c._id}`)}
-                    className="hover:underline cursor-pointer flex items-center gap-1 text-red-600"
-                  >
-                    <Icon icon="mdi:delete-outline" className="text-lg" />
-                    Eliminar
-                  </div>
+            {filteredCampaigns.length === 0 ? (
+              <tr>
+                <td colSpan="7" className="p-4 text-center text-gray-500">
+                  No hay campañas que coincidan con los filtros seleccionados.
                 </td>
               </tr>
-            ))}
+            ) : (
+              filteredCampaigns.map((c, idx) => (
+                <tr key={idx} className="border-t">
+                  <td className="p-4">{c.name}</td>
+                  <td className="p-4 text-blue-600">{c.category}</td>
+                  <td className="p-4">
+                    {new Date(c.startDate).toLocaleDateString()} - {new Date(c.endDate).toLocaleDateString()}
+                  </td>
+                  <td className="p-4">
+                    ${c.amountRaised || 0} / ${c.goalAmount}
+                  </td>
+                  <td className="p-4 w-40">
+                    <div className="w-full bg-gray-200 rounded-full h-2">
+                      <div
+                        className="bg-blue-500 h-2 rounded-full"
+                        style={{
+                          width: `${(c.amountRaised / c.goalAmount) * 100}%`,
+                        }}
+                      ></div>
+                    </div>
+                  </td>
+                  <td className="p-4">
+                    <span
+                      className={`px-2 py-1 rounded text-white text-xs ${
+                        c.status === 'Activa'
+                          ? 'bg-green-500'
+                          : c.status === 'Finalizada'
+                          ? 'bg-gray-600'
+                          : 'bg-yellow-500'
+                      }`}
+                    >
+                      {c.status}
+                    </span>
+                  </td>
+                  <td className="p-4 space-y-1 text-sm">
+                    <div
+                      onClick={() => navigate(`/campaigns/edit/${c._id}`)}
+                      className="hover:underline cursor-pointer flex items-center gap-1 text-blue-600"
+                    >
+                      <Icon icon="mdi:pencil" className="text-lg" />
+                      Editar
+                    </div>
+
+                    <button
+                      disabled={c.status === 'Finalizada'}
+                      onClick={() => actualizarEstado(c._id, 'Finalizada')}
+                      className="flex items-center gap-1 text-gray-700 disabled:opacity-40"
+                    >
+                      <Icon icon="mdi:check-circle-outline" className="text-lg" />
+                      Finalizar
+                    </button>
+
+                    <button
+                      disabled={c.status === 'Pausada'}
+                      onClick={() => actualizarEstado(c._id, 'Pausada')}
+                      className="flex items-center gap-1 text-yellow-600 disabled:opacity-40"
+                    >
+                      <Icon icon="mdi:pause-circle-outline" className="text-lg" />
+                      Pausar
+                    </button>
+
+                    <button
+                      disabled={c.status === 'Activa'}
+                      onClick={() => actualizarEstado(c._id, 'Activa')}
+                      className="flex items-center gap-1 text-green-600 disabled:opacity-40"
+                    >
+                      <Icon icon="mdi:play-circle-outline" className="text-lg" />
+                      Activar
+                    </button>
+
+                    <div
+                      onClick={() => navigate(`/campaigns/delete/${c._id}`)}
+                      className="hover:underline cursor-pointer flex items-center gap-1 text-red-600"
+                    >
+                      <Icon icon="mdi:delete-outline" className="text-lg" />
+                      Eliminar
+                    </div>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
