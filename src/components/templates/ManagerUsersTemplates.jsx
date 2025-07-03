@@ -3,13 +3,15 @@ import { Icon } from '@iconify/react';
 import useManagerCommunityStore from '../../hooks/useManagerCommunity';
 import { socketConnection } from '../../socket/socket';
 import { useLogout } from '../../hooks/useLogout';
+import { UserAuth } from '../../context/AuthContext';
 
 export const ManagerUsersTemplate = () => {
-    const { logout } = useLogout()
-    
-        const handleLogoutClick  = ()=> {
-            logout()
-        }
+    const { logout } = useLogout();
+    const { user: currentUser } = UserAuth();
+
+    const handleLogoutClick = () => {
+        logout();
+    };
     const { selectedCommunity, managers, fetchManagersByCommunity } = useManagerCommunityStore();
     const [searchAddress, setSearchAddress] = useState('');
 
@@ -47,9 +49,10 @@ export const ManagerUsersTemplate = () => {
         let newRole;
         if (user.rol === 'COORDINADOR') {
             newRole = 'CLIENT';
+            if (currentUser && user._id === currentUser._id) handleLogoutClick();
         } else if (user.rol === 'CLIENT' || user.rol === 'client') {
             newRole = 'COORDINADOR';
-            handleLogoutClick()
+            if (currentUser && user._id === currentUser._id) handleLogoutClick();
         } else {
             // Si es ADMIN, no permitir cambio
             return;
