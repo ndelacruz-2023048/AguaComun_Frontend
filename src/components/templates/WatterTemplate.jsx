@@ -31,7 +31,7 @@ export const WatterTemplate = () => {
     const [isModalOpen, setIsModalOpen] = useState(false)
     return (
         <div className='w-full'>
-            <div className='flex flex-col gap-2 w-full h-full ml-50 mt-10 '>
+            <div className='flex flex-col gap-2 xl:w-380 h-full ml-50 mt-10'>
                 <div>
                     <h1 className='text-[#338826] text-2xl font-bold'>Reportes de agua</h1>
                     <span className='text-[#61788A]'>
@@ -52,7 +52,7 @@ export const WatterTemplate = () => {
                             <span>Error al cargar los reportes</span>
                         ) : (
                             isReport.map(report => (
-                                <div className='flex gap-2 mt-5' key={report._id}>
+                                <div className='flex gap-2 mt-5 xl:w-3/4' key={report._id}>
                                     <div className='bg-[#F4EFB3] rounded px-2 py-2 h-11'>
                                         <Icon icon="ph:waves" width="256" height="256" className='text-black w-7 h-7'/>
                                     </div>

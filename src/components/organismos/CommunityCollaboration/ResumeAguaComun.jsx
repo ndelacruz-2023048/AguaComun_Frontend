@@ -2,22 +2,38 @@ import React from 'react';
 import { Icon } from '@iconify/react';
 import { useResume } from '../../../hooks/useResume';
 import { Avatar, Progress } from 'antd';
+import { jwtDecode } from 'jwt-decode';
+import { UserAuth } from '../../../context/AuthContext';
+import { GenerateInitialsAvatar } from '../../../utils/Avatar';
 
 export const ResumeAguaComun = () => {
   const { resume } = useResume();
+  const { user } = UserAuth();
 
-  const dineroRecaudado = resume?.dineroRecaudado || '0.00'
+  let userDecoded = null
+  let community = 'null'
+  if(user) {
+    try {
+      userDecoded = jwtDecode(user)
+      community = userDecoded.community || null
+    } catch (e) {
+      console.error('Error al obtener la comunidad del usuario:', e)
+    }
+  }
+
+  const comunidad = community.name
+
+  const dineroRecaudado = resume?.dineroRecaudado || '0'
   const actividades = resume?.actividades || 0
   const reportes = resume?.reportes || 0
   const tasaNuevosUsuarios = resume?.tasaNuevosUsuarios || '0%'
+  const miembros = resume?.miembros || []
+  const usuarios = resume?.usuarios || 0
 
-  // Datos de ejemplo
-  const teamMembers = [
-    { name: 'Ana', src: 'https://randomuser.me/api/portraits/women/44.jpg' },
-    { name: 'Luis', src: 'https://randomuser.me/api/portraits/men/32.jpg' },
-    { name: 'María', src: 'https://randomuser.me/api/portraits/women/68.jpg' },
-    { name: 'Carlos', src: 'https://randomuser.me/api/portraits/men/76.jpg' },
-  ];
+  console.log('miembros', miembros);
+  console.log('usuarios', usuarios);
+
+  
   return (
     <div className="w-full mx-auto bg-white rounded-2xl shadow-lg flex flex-col p-6 gap-2 ">
         <div className="flex items-center gap-2">
@@ -62,13 +78,19 @@ export const ResumeAguaComun = () => {
           <div className="flex flex-col gap-4 h-full min-w-[180px] w-[30%]">
             <div className="flex items-center gap-2 mb-2">
               <Icon icon="mdi:account-group-outline" className="text-4xl text-[#338826]" />
-              <span className="font-semibold text-[#338826] text-2xl">Comunidad</span>
+              <span className="font-semibold text-[#338826] text-2xl">{comunidad}</span>
             </div>
-            <span className="text-xs text-[#338826] mb-1">Miembros</span>
+            <span className="text-xs text-[#338826] mb-1">Miembros {usuarios}</span>
             <Avatar.Group maxCount={3} maxStyle={{ color: '#fff', backgroundColor: '#338826' }}>
-              {teamMembers.map((member, idx) => (
-                <Avatar key={idx} src={member.src} size={60} className='border-2 border-white' />
-              ))}
+              {miembros.map((member, idx) => (
+                        <div key={idx}>
+                            {member.profilePicture ? (
+                                <Avatar src={member.profilePicture} size={60} className='border-2 border-white' />
+                            ) : (
+                                <GenerateInitialsAvatar name={member.name} surname={member.surname} />
+                            )}
+                        </div>
+                    ))}
             </Avatar.Group>
             <div className="flex flex-col items-center mt-2 border-1 border-[#338826] rounded-2xl p-2">
               <span className="text-xl font-bold text-[#338826] mb-1">Reportes de problemas</span>

@@ -118,9 +118,9 @@ export const getCommunitysRequest = async()=> {
 }
 
 //RESUME
-export const getResumeRequest = async()=> {
+export const getResumeRequest = async(id)=> {
     try {
-        return await apiClient.get('/resume/list')
+        return await apiClient.get(`/resume/list/${id}`)
     } catch (e) {
         return {
             error: true,
