@@ -8,7 +8,7 @@ export default function FormularioCampana({ modo = "crear" }) {
   const [formData, setFormData] = useState({
     name: "",
     category: "Emergencia",
-    status: "Activa",
+    status: "Pausada",
     goalAmount: "",
     startDate: "",
     endDate: "",
