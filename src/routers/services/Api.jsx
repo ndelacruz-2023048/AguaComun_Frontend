@@ -139,3 +139,15 @@ export const getAllCollaborationsRequest = async () => {
     }
   }
 }
+
+// GET ALL PAYMENTS
+export const getPaymentsRequest = async () => {
+    try {
+        return await apiClient.get('/payment/payment');
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};
