@@ -116,3 +116,38 @@ export const getCommunitysRequest = async()=> {
         }
     }
 }
+
+//GET RECENT USERS
+export const getRecentUsersRequest = async () => {
+  try {
+    return await apiClient.get('/user/recent')
+  } catch (e) {
+    return {
+      error: true,
+      e
+    }
+  }
+}
+
+export const getAllCollaborationsRequest = async () => {
+  try {
+    return await apiClient.get('/communityCollaboration/get')
+  } catch (e) {
+    return {
+      error: true,
+      e
+    }
+  }
+}
+
+// GET ALL PAYMENTS
+export const getPaymentsRequest = async () => {
+    try {
+        return await apiClient.get('/payment/payment');
+    } catch (e) {
+        return {
+            error: true,
+            e
+        };
+    }
+};
