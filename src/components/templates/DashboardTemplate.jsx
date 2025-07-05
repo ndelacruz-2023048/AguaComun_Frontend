@@ -7,7 +7,7 @@ import { NewUsers } from '../organismos/CommunityCollaboration/Dashboard/NewUser
 import { NewCommunities } from '../organismos/CommunityCollaboration/Dashboard/NewCommunities'
 export const DashboardTemplate = () => {
   return (
-    <div className='flex flex-col flex-grow h-screen'>
+    <div className='flex flex-col flex-grow h-screen p-4'>
         <div className='w-full h-[25%] flex justify-end items-center bg-[#b4ecfce9] relative'>
             <img src={banner} alt="banner" className='w-[65%] h-[100%] object-cover object-[50%_54%]' />
             <div className='flex flex-col h-100% absolute top-[30%] left-[2%]  w-[50%]'>

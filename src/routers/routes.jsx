@@ -22,6 +22,7 @@ import { AsignTurnPage } from "../pages/AsignTurnPage.jsx"
 import { CommunityCollaborationDashboardPage } from "../pages/CommunityCollaborationDashboardPage.jsx"
 import { WatterReportViewPage } from "../pages/WatterReportViewPage.jsx"
 import { DashboardPage } from "../pages/DashboardPage.jsx"
+import { RolBaseHome } from "../pages/RolBaseHome.jsx"
 
 const router = createBrowserRouter(
     [
@@ -33,8 +34,8 @@ const router = createBrowserRouter(
             errorElement: <div>Error</div>,
             children: [
                 {
-                    path:'',
-                    element: <HomePage/>
+                    index: true,
+                    element: <RolBaseHome/>
                 },
                 {
                     path: '/community',

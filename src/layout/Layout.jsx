@@ -156,7 +156,7 @@ export const Layout = () => {
                                     animate={{ opacity: 1, y: 0, scale: 1 }}
                                     exit={{ opacity: 0, y: -10, scale: 0.95 }}
                                     transition={{ duration: 0.2 }}
-                                    className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50 border border-green-200/50"
+                                    className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg border z-50 border-green-200/50"
                                 >
                                     <div className='absolute -top-2 right-6 h-4 w-4 bg-white border-l border-t border-green-200/50 transform rotate-45'/>
                                     
