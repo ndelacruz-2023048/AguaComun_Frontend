@@ -30,14 +30,29 @@ export const HistorialTemplate = () => {
 
   const socket = useSocket();
 
-  const handleConfirm = async(paymentId) => {
-    const response = await fetch(`${API_URL}/v1/aguacomun/payment/confirm/${paymentId}`,{
-      method:"PUT",
-      headers: {
-        "Content-Type": "application/json" // Le dice al servidor que el cuerpo es JSON
+  const handleConfirm = async (paymentId) => {
+    try {
+      const response = await fetch(`${API_URL}/v1/aguacomun/payment/confirm/${paymentId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" }
+      });
+  
+      const data = await response.json();
+  
+      if (!response.ok) {
+        if (data?.errorCode === 'EXCEEDS_GOAL_ON_CONFIRMATION') {
+          alert('El pago fue eliminado porque superaba la cantidad restante de la campaña.');
+        } else {
+          alert('No se pudo confirmar el pago. Intenta nuevamente.');
+        }
       }
-    })
-    socket.emit('confirm-payment', paymentId); // Enviar ID al backend
+  
+      socket.emit('confirm-payment', paymentId); // Emitimos siempre para actualizar lista
+  
+    } catch (err) {
+      console.error(err);
+      alert('Error al intentar confirmar el pago.');
+    }
   };
 
   useEffect(() => {

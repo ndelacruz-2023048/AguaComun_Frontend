@@ -27,25 +27,48 @@ export const PaymentModal = ({ campaignId, onClose }) => {
         ...data,
         campaign: campaignId
       }
-
+  
       try {
         const res = await axios.post(
           `${API_URL}/v1/aguacomun/payment/payment`,
           payload,
-          { withCredentials: true } 
+          { withCredentials: true }
         )
-
+  
         console.log('Pago guardado:', res.data)
         alert('¡Donación registrada con éxito!')
         onClose()
       } catch (err) {
         console.error('Error al guardar el pago:', err)
-        alert('Error al enviar el pago.')
+  
+        
+        const errorCode = err.response?.data?.errorCode
+  
+        switch (errorCode) {
+          case 'CAMPAIGN_NOT_FOUND':
+            alert('La campaña no existe. Verifica e intenta nuevamente.')
+            break
+          case 'CAMPAIGN_NOT_ACTIVE':
+            alert('La campaña no está activa. No se puede procesar el pago.')
+            break
+          case 'DATE_OUT_OF_RANGE':
+            alert('No puedes hacer donaciones fuera del periodo de la campaña.')
+            break
+          case 'EXCEEDS_GOAL_LIMIT':
+            alert('El monto ingresado excede el límite restante para esta campaña.')
+          break
+          case 'INTERNAL_ERROR':
+            alert('Ocurrió un error interno. Intenta más tarde.')
+            break
+          default:
+            alert('Error al enviar el pago. Intenta nuevamente.')
+        }
       }
     } else {
       stepper.next()
     }
   }
+  
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-opacity-40">
