@@ -8,7 +8,7 @@ export default function FormularioCampana({ modo = "crear" }) {
   const [formData, setFormData] = useState({
     name: "",
     category: "Emergencia",
-    status: "Pausada",
+    status: "Activa",
     goalAmount: "",
     startDate: "",
     endDate: "",
@@ -46,66 +46,75 @@ export default function FormularioCampana({ modo = "crear" }) {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const { name, category, status, goalAmount, startDate, endDate, description, imageUrl } = formData;
+  e.preventDefault();
+  const { name, category, status, goalAmount, startDate, endDate, description, imageUrl } = formData;
 
-    // Validación campos vacíos
-    if (!name || !category || !goalAmount || !startDate || !endDate || !description || !imageUrl) {
-      alert("Todos los campos son obligatorios");
-      return;
+  // Validación campos vacíos
+  if (!name || !category || !goalAmount || !startDate || !endDate || !description || !imageUrl) {
+    alert("Todos los campos son obligatorios");
+    return;
+  }
+
+  // Validación de fechas (manejo de zona horaria)
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0);
+
+  const [y1, m1, d1] = startDate.split("-").map(Number);
+  const [y2, m2, d2] = endDate.split("-").map(Number);
+  const fechaInicio = new Date(y1, m1 - 1, d1);
+  const fechaFin = new Date(y2, m2 - 1, d2);
+
+  if (fechaInicio < hoy) {
+    alert("La fecha de inicio no puede ser anterior a hoy");
+    return;
+  }
+
+  if (fechaFin < hoy) {
+    alert("La fecha de finalización no puede ser anterior a hoy");
+    return;
+  }
+
+  if (fechaFin < fechaInicio) {
+    alert("La fecha de finalización no puede ser anterior a la de inicio");
+    return;
+  }
+
+  // Validación de nombre único
+  const nombreExiste = todasCampanas.some(camp =>
+    camp.name.trim().toLowerCase() === name.trim().toLowerCase() &&
+    camp._id !== id
+  );
+
+  if (nombreExiste) {
+    alert("Ya existe una campaña con ese nombre");
+    return;
+  }
+
+  const url = modo === "editar"
+    ? `${API_URL}/v1/aguacomun/campaign/${id}`
+    : `${API_URL}/v1/aguacomun/campaign`;
+
+  const method = modo === "editar" ? "PUT" : "POST";
+
+  try {
+    const res = await fetch(url, {
+      method,
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(formData),
+    });
+
+    if (!res.ok) {
+      throw new Error("Error al guardar la campaña");
     }
 
-    // Validación de fechas
-    const hoy = new Date();
-    const fechaInicio = new Date(startDate);
-    const fechaFin = new Date(endDate);
-    hoy.setHours(0, 0, 0, 0);
+    navigate("/campaigns");
+  } catch (err) {
+    console.error("Error al guardar campaña:", err);
+    alert("Hubo un error al guardar la campaña.");
+  }
+};
 
-    if (fechaInicio < hoy || fechaFin < hoy) {
-      alert("No se pueden seleccionar fechas anteriores a la fecha actual");
-      return;
-    }
 
-    if (fechaFin < fechaInicio) {
-      alert("La fecha de finalización no puede ser anterior a la de inicio");
-      return;
-    }
-
-    // Validación de nombre único (excepto si estás editando esta misma campaña)
-    const nombreExiste = todasCampanas.some(camp =>
-      camp.name.trim().toLowerCase() === name.trim().toLowerCase() &&
-      camp._id !== id // evita conflicto al editar
-    );
-
-    if (nombreExiste) {
-      alert("Ya existe una campaña con ese nombre");
-      return;
-    }
-
-    const url =
-      modo === "editar"
-        ? `${API_URL}/v1/aguacomun/campaign/${id}`
-        : `${API_URL}/v1/aguacomun/campaign`;
-
-    const method = modo === "editar" ? "PUT" : "POST";
-
-    try {
-      const res = await fetch(url, {
-        method,
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      if (!res.ok) {
-        throw new Error("Error al guardar la campaña");
-      }
-
-      navigate("/campaigns");
-    } catch (err) {
-      console.error("Error al guardar campaña:", err);
-      alert("Hubo un error al guardar la campaña.");
-    }
-  };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl mx-auto w-[100vw]">
